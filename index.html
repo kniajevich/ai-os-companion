@@ -3,26 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>AI OS Companion — GAME &amp; PRO</title>
+<title>AI OS Companion — GAME &amp; PRO (Adaptive)</title>
 <style>
 :root {
-  --bg: #05080d;
-  --panel: #0b111b;
-  --panel-alt: #0f1724;
-  --border: #1e2d42;
-  --text: #e6edf3;
-  --muted: #7b8ca3;
-  --accent: #00f5b8;
-  --accent-2: #38bdf8;
-  --warn: #ffb020;
-  --danger: #ff3b6b;
-  --purple: #c084fc;
+  --bg: #05080d; --panel: #0b111b; --panel-alt: #0f1724; --border: #1e2d42;
+  --text: #e6edf3; --muted: #7b8ca3; --accent: #00f5b8; --accent-2: #38bdf8;
+  --warn: #ffb020; --danger: #ff3b6b; --purple: #c084fc;
   --font-main: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --radius: 20px;
-  --scan-opacity: 0;
-  --hazard-opacity: 0;
-  --grid-color: rgba(56, 189, 248, 0.06);
+  --radius: 20px; --scan-opacity: 0; --hazard-opacity: 0; --grid-color: rgba(56, 189, 248, 0.06);
 }
 body.ui-cyber { --bg: #05080d; --panel: #0b111b; --panel-alt: #0f1724; --border: #1f3047; --radius: 22px; --scan-opacity: 0; --hazard-opacity: 0; }
 body.ui-crt { --bg: #030905; --panel: #07140b; --panel-alt: #0a1c10; --border: #1b4d2c; --text: #b7ffca; --muted: #58a673; --accent: #39ff14; --accent-2: #00e5ff; --font-main: ui-monospace, Menlo, monospace; --radius: 10px; --scan-opacity: 0.2; --hazard-opacity: 0; --grid-color: rgba(57, 255, 20, 0.07); }
@@ -34,83 +23,37 @@ body.ui-cyber.theme-relic { --accent: #c084fc; --accent-2: #ff3b6b; }
 body.ui-cyber.theme-monolith { --accent: #a855f7; --accent-2: #38bdf8; }
 
 * { box-sizing: border-box; }
-body {
-  margin: 0; min-height: 100vh;
-  background: radial-gradient(circle at 50% -10%, color-mix(in srgb, var(--accent) 16%, var(--bg)) 0%, transparent 60%), var(--bg);
-  color: var(--text); font-family: var(--font-main); display: flex; justify-content: center; padding: 10px;
-}
-.crt-overlay {
-  pointer-events: none; position: fixed; inset: 0; z-index: 50; opacity: var(--scan-opacity);
-  background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,0.45) 3px, rgba(0,0,0,0.45) 4px);
-}
-.app {
-  width: 100%; max-width: 1380px; background: var(--panel); border: 1.5px solid var(--border);
-  border-radius: var(--radius); padding: 14px; box-shadow: 0 24px 80px rgba(0,0,0,0.85);
-  position: relative; overflow: hidden; align-self: flex-start;
-}
-body.app-mode-game .app { max-width: 550px; }
+body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 50% -10%, color-mix(in srgb, var(--accent) 16%, var(--bg)) 0%, transparent 60%), var(--bg); color: var(--text); font-family: var(--font-main); display: flex; justify-content: center; padding: 10px; }
+.crt-overlay { pointer-events: none; position: fixed; inset: 0; z-index: 50; opacity: var(--scan-opacity); background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,0.45) 3px, rgba(0,0,0,0.45) 4px); }
+.app { width: 100%; max-width: 1380px; background: var(--panel); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 14px; box-shadow: 0 24px 80px rgba(0,0,0,0.85); position: relative; overflow: hidden; align-self: flex-start; }
+body.app-mode-game .app { max-width: 540px; }
 body.app-mode-game .pro-only { display: none !important; }
 body.app-mode-pro .game-only { display: none !important; }
-
-.hazard-strip {
-  height: 6px; margin: -14px -14px 12px -14px; opacity: var(--hazard-opacity);
-  background: repeating-linear-gradient(-45deg, #ffb020, #ffb020 12px, #18181b 12px, #18181b 24px);
-}
+.hazard-strip { height: 6px; margin: -14px -14px 12px -14px; opacity: var(--hazard-opacity); background: repeating-linear-gradient(-45deg, #ffb020, #ffb020 12px, #18181b 12px, #18181b 24px); }
 
 .top-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
 .title-wrap { display: flex; align-items: center; gap: 9px; }
 .dot-live { width: 10px; height: 10px; border-radius: 50%; background: #475569; flex-shrink: 0; }
 .dot-live.on { background: var(--accent); box-shadow: 0 0 12px var(--accent); }
 .mode-switch { display: flex; gap: 4px; background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 11px; padding: 3px; }
-.mode-btn {
-  background: transparent; border: none; color: var(--muted); font-family: var(--font-mono); font-size: 11px;
-  font-weight: 800; padding: 6px 11px; border-radius: 8px; cursor: pointer; transition: all 0.16s;
-}
+.mode-btn { background: transparent; border: none; color: var(--muted); font-family: var(--font-mono); font-size: 11px; font-weight: 800; padding: 6px 11px; border-radius: 8px; cursor: pointer; }
 .mode-btn.active { background: color-mix(in srgb, var(--accent) 20%, var(--panel-alt)); color: var(--accent); }
 .top-badges { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.badge {
-  font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; padding: 5px 9px; border-radius: 9px;
-  background: var(--panel-alt); border: 1px solid var(--border); color: var(--muted);
-}
+.badge { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; padding: 5px 9px; border-radius: 9px; background: var(--panel-alt); border: 1px solid var(--border); color: var(--muted); }
 .badge.online { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
 .badge.warn { color: var(--warn); border-color: rgba(255,176,32,0.5); }
-.icon-btn {
-  background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text);
-  border-radius: 9px; padding: 5px 9px; font-size: 12px; cursor: pointer;
-}
+.icon-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 9px; padding: 5px 9px; font-size: 12px; cursor: pointer; }
 
+/* GAME MODE */
 .game-shell { display: flex; flex-direction: column; gap: 9px; }
-.game-hud {
-  display: flex; justify-content: space-between; align-items: center; gap: 10px;
-  background: var(--panel-alt); border: 1px solid var(--border); border-radius: 14px; padding: 9px 12px;
-}
+.game-hud { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: var(--panel-alt); border: 1px solid var(--border); border-radius: 14px; padding: 9px 12px; }
 .xp-wrap { flex: 1; display: flex; flex-direction: column; gap: 4px; }
 .xp-top { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); }
 .xp-bar { height: 7px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
 .xp-fill { height: 100%; width: 10%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width 0.3s ease; }
 
-.mod-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-@media (max-width: 460px) { .mod-strip { grid-template-columns: repeat(2, 1fr); } }
-.mod-pill {
-  background: rgba(8,13,22,0.85); border: 1px dashed var(--border); border-radius: 10px; padding: 6px 8px;
-  font-family: var(--font-mono); font-size: 10px; color: var(--muted); cursor: pointer;
-  display: flex; align-items: center; justify-content: space-between; gap: 4px; transition: all 0.2s;
-}
-.mod-pill.on { border-style: solid; border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
-.mod-pill.on-blue { border-style: solid; border-color: var(--accent-2); color: var(--accent-2); background: color-mix(in srgb, var(--accent-2) 12%, transparent); }
-.mod-pill.on-purple { border-style: solid; border-color: var(--purple); color: var(--purple); background: color-mix(in srgb, var(--purple) 12%, transparent); }
-
-.game-stage {
-  position: relative;
-  background: linear-gradient(to right, var(--grid-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px), radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--accent) 14%, var(--panel-alt)) 0%, #05080e 88%);
-  background-size: 26px 26px, 26px 26px, 100% 100%;
-  border: 1px solid var(--border); border-radius: 18px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;
-}
-.xp-pop {
-  position: absolute; top: 14px; right: 16px; font-family: var(--font-mono); font-weight: 800; font-size: 13px;
-  color: var(--accent); background: rgba(5,8,13,0.9); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 99px;
-  opacity: 0; transform: translateY(10px); pointer-events: none; transition: all 0.4s ease; z-index: 15;
-}
+.game-stage { position: relative; background: linear-gradient(to right, var(--grid-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px), radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--accent) 14%, var(--panel-alt)) 0%, #05080e 88%); background-size: 26px 26px, 26px 26px, 100% 100%; border: 1px solid var(--border); border-radius: 18px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.xp-pop { position: absolute; top: 14px; right: 16px; font-family: var(--font-mono); font-weight: 800; font-size: 13px; color: var(--accent); background: rgba(5,8,13,0.9); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 99px; opacity: 0; transform: translateY(10px); pointer-events: none; transition: all 0.4s ease; z-index: 15; }
 .xp-pop.show { opacity: 1; transform: translateY(0); }
 
 .egg-card { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 10px; text-align: center; cursor: pointer; user-select: none; }
@@ -120,69 +63,51 @@ body.app-mode-pro .game-only { display: none !important; }
 .egg-cracks-1 .crack-1 { opacity: 1; }
 .egg-cracks-2 .crack-1, .egg-cracks-2 .crack-2 { opacity: 1; }
 
-.game-card {
-  width: 100%; background: rgba(7, 11, 19, 0.92); border: 1px solid var(--border); border-radius: 14px; padding: 12px;
-  display: flex; flex-direction: column; gap: 8px;
-}
-.game-input, .game-textarea {
-  width: 100%; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 10px;
-  padding: 9px 11px; color: var(--text); font-family: var(--font-main); font-size: 13.5px; outline: none;
-}
-.game-input:focus, .game-textarea:focus { border-color: var(--accent); }
-.primary-btn {
-  background: color-mix(in srgb, var(--accent) 20%, var(--panel-alt)); border: 1.5px solid var(--accent); color: var(--accent);
-  border-radius: 11px; padding: 9px 13px; font-weight: 700; font-size: 13px; cursor: pointer; text-align: center;
-}
-.secondary-btn {
-  background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text);
-  border-radius: 11px; padding: 8px 12px; font-weight: 600; font-size: 12.5px; cursor: pointer; text-decoration: none; text-align: center;
-}
+.game-card { width: 100%; background: rgba(7, 11, 19, 0.92); border: 1px solid var(--border); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.game-input, .game-textarea { width: 100%; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px; color: var(--text); font-family: var(--font-main); font-size: 13.5px; outline: none; }
+.game-input:focus { border-color: var(--accent); }
+.primary-btn { background: color-mix(in srgb, var(--accent) 20%, var(--panel-alt)); border: 1.5px solid var(--accent); color: var(--accent); border-radius: 10px; padding: 8px 12px; font-weight: 700; font-size: 12.5px; cursor: pointer; text-align: center; }
+.secondary-btn { background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 7px 10px; font-weight: 600; font-size: 12px; cursor: pointer; text-decoration: none; text-align: center; }
 .skin-chips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-.chip-btn {
-  background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 10px;
-  padding: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer;
-}
+.chip-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
 .chip-btn.active { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 16%, transparent); }
 
-.chat-box {
-  width: 100%; max-height: 185px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;
-  background: rgba(4, 7, 13, 0.72); border: 1px solid var(--border); border-radius: 14px; padding: 10px;
-}
+.chat-box { width: 100%; max-height: 195px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; background: rgba(4, 7, 13, 0.72); border: 1px solid var(--border); border-radius: 14px; padding: 10px; }
 .msg-bubble { padding: 8px 10px; border-radius: 11px; font-size: 13px; line-height: 1.4; max-width: 92%; }
 .msg-user { align-self: flex-end; background: color-mix(in srgb, var(--accent-2) 18%, var(--panel-alt)); border: 1px solid color-mix(in srgb, var(--accent-2) 40%, transparent); }
 .msg-ai { align-self: flex-start; background: rgba(17, 25, 39, 0.95); border: 1px solid var(--border); }
 .msg-meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 9.5px; color: var(--muted); margin-top: 4px; }
 .msg-bad-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 5px; font-size: 10px; padding: 1px 5px; cursor: pointer; }
 
-.game-actions-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
+.game-actions-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
 @media (max-width: 480px) { .game-actions-grid { grid-template-columns: repeat(3, 1fr); } }
-.g-act-btn {
-  background: var(--panel-alt); border: 1px solid var(--border); border-radius: 12px; padding: 8px 4px;
-  color: var(--text); font-size: 11px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px;
-}
+.g-act-btn { background: var(--panel-alt); border: 1px solid var(--border); border-radius: 12px; padding: 8px 4px; color: var(--text); font-size: 11px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; }
 .g-act-btn:hover, .g-act-btn.active { border-color: var(--accent); color: var(--accent); }
 
-.game-drawer {
-  background: var(--panel-alt); border: 1px solid var(--accent-2); border-radius: 14px; padding: 11px; display: none; flex-direction: column; gap: 9px;
-}
+.game-drawer { background: var(--panel-alt); border: 1px solid var(--accent-2); border-radius: 14px; padding: 11px; display: none; flex-direction: column; gap: 9px; }
 .game-drawer.open { display: flex; }
-.mod-wizard-card {
-  background: rgba(5, 8, 14, 0.85); border: 1px solid var(--border); border-radius: 11px; padding: 10px; display: flex; flex-direction: column; gap: 6px;
-}
-.mod-wizard-head { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; font-weight: 700; }
 .slider-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; }
 .slider-row input[type=range] { flex: 1; accent-color: var(--accent); }
 .mem-list { max-height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; }
 .mem-item { background: rgba(0,0,0,0.35); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; font-size: 11.5px; display: flex; justify-content: space-between; gap: 6px; }
 
-.game-chat-bar {
-  display: flex; gap: 6px; align-items: center; background: var(--panel-alt); border: 1px solid var(--border); border-radius: 14px; padding: 6px;
-}
+.game-chat-bar { display: flex; gap: 6px; align-items: center; background: var(--panel-alt); border: 1px solid var(--border); border-radius: 14px; padding: 6px; }
 .game-chat-input { flex: 1; background: transparent; border: none; color: var(--text); font-size: 14px; padding: 6px; outline: none; min-width: 0; }
 .chat-tool-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 8px 10px; font-size: 14px; cursor: pointer; flex-shrink: 0; }
 .chat-tool-btn.rec { border-color: var(--danger); color: var(--danger); }
 
-/* ================= PRO MODE ================= */
+/* PRO MODE: CLEAN QUICK CONNECT DECK + TOPOLOGY */
+.pro-connect-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+@media (max-width: 1100px) { .pro-connect-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .pro-connect-grid { grid-template-columns: 1fr; } }
+.pro-mod-card { background: var(--panel-alt); border: 1px solid var(--border); border-radius: 12px; padding: 9px; display: flex; flex-direction: column; gap: 6px; }
+.pro-mod-card.active { border-color: var(--accent); }
+.pro-mod-head { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; }
+.pro-mod-row { display: flex; gap: 5px; align-items: center; }
+.pro-mini-in { flex: 1; min-width: 0; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 7px; padding: 5px 7px; color: var(--text); font-family: var(--font-mono); font-size: 10.5px; outline: none; }
+.pro-mini-btn { background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text); border-radius: 7px; padding: 5px 8px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; cursor: pointer; text-decoration: none; white-space: nowrap; }
+.pro-mini-btn.go { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 16%, transparent); }
+
 .switcher-grid { display: grid; grid-template-columns: 0.85fr 1.25fr 1.4fr; gap: 10px; margin-bottom: 10px; }
 @media (max-width: 980px) { .switcher-grid { grid-template-columns: 1fr; } }
 .group-box { background: var(--panel-alt); border: 1px solid var(--border); border-radius: 14px; padding: 10px; }
@@ -197,6 +122,7 @@ body.app-mode-pro .game-only { display: none !important; }
 .host-pill.pet-host strong { color: var(--accent-2); }
 .host-pill.vault-host strong { color: var(--purple); }
 .swap-btn { background: color-mix(in srgb, var(--accent-2) 15%, var(--panel)); border: 1px solid var(--accent-2); color: var(--accent-2); border-radius: 9px; padding: 6px 9px; font-family: var(--font-mono); font-size: 11px; font-weight: 700; cursor: pointer; }
+
 .workspace { display: grid; grid-template-columns: 1.68fr 0.92fr; gap: 12px; }
 @media (max-width: 1024px) { .workspace { grid-template-columns: 1fr; } }
 .stage { background: linear-gradient(to right, var(--grid-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px), radial-gradient(circle at 45% 48%, color-mix(in srgb, var(--accent) 12%, var(--panel-alt)) 0%, #05080e 86%); background-size: 28px 28px, 28px 28px, 100% 100%; border: 1px solid var(--border); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
@@ -249,7 +175,7 @@ svg#wireSvg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-e
 .log-wrap { margin-top: 12px; background: rgba(4,7,12,0.85); border: 1px solid var(--border); border-radius: 12px; }
 .log { padding: 8px 12px; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); max-height: 120px; overflow-y: auto; }
 
-svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-select: none; }
+svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-select: none; }
 @keyframes floatRoot { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
 @keyframes jitterShock { 0%,100% { transform: translate(0,0); } 25% { transform: translate(-4px,2px) rotate(-2deg); } 75% { transform: translate(4px,-2px) rotate(2deg); } }
 @keyframes spinCore { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -278,12 +204,10 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
 .state-awake.grim-shock .eyes-error, .state-awake.grim-shock .mouth-shock { display: block; }
 .eyelid-blink { transform-origin: 270px 140px; transform: scaleY(0); transition: transform 0.08s; }
 .is-blinking .eyelid-blink { transform: scaleY(1); }
-
 .wire-active { opacity: 0; stroke-dasharray: 8 7; transition: opacity 0.35s ease; }
 .state-booting .wire-brain, .state-awake .wire-brain { opacity: 1; animation: dashFlow 0.7s linear infinite; }
 .mod-memory-on .wire-memory { opacity: 1; animation: dashFlow 0.6s linear infinite; }
 .mod-turbo-on .wire-term, .mod-critic-on .wire-term { opacity: 1; animation: dashFlow 0.55s linear infinite; }
-
 .attach-memory { transform: translate(-42px, 16px) rotate(-12deg); opacity: 0.25; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease; }
 .mod-memory-on .attach-memory { transform: translate(0, 0) rotate(0deg); opacity: 1; }
 .attach-term { transform: translate(42px, 16px) rotate(12deg); opacity: 0.25; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease; }
@@ -303,15 +227,17 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
 
 <div id="settingsModal" class="modal-bg">
   <div class="modal-card">
-    <strong style="font-family:var(--font-mono);color:var(--accent);font-size:13px;">⚙ КЛЮЧИ И ОБЛАЧНАЯ ПАМЯТЬ</strong>
-    <label style="font-size:11.5px;color:var(--muted);">Google AI Studio Key (Gemini):</label>
+    <strong style="font-family:var(--font-mono);color:var(--accent);font-size:13px;">⚙ КЛЮЧИ И НАСТРОЙКИ</strong>
+    <label style="font-size:11.5px;color:var(--muted);">Google AI Studio Key:</label>
     <input id="setGeminiKey" class="game-input" type="password" placeholder="AIzaSy..." />
-    <label style="font-size:11.5px;color:var(--muted);">Groq API Key (Скорость + Голос):</label>
+    <label style="font-size:11.5px;color:var(--muted);">Groq API Key:</label>
     <input id="setGroqKey" class="game-input" type="password" placeholder="gsk_..." />
-    <label style="font-size:11.5px;color:var(--muted);">OpenRouter Key (Критик + Резерв):</label>
+    <label style="font-size:11.5px;color:var(--muted);">OpenRouter Key:</label>
     <input id="setOrKey" class="game-input" type="password" placeholder="sk-or-..." />
-    <label style="font-size:11.5px;color:var(--muted);">Cloudflare Worker URL (Память D1):</label>
-    <input id="setWorkerUrl" class="game-input" type="text" placeholder="https://ai-os-brain.твой-поддомен.workers.dev" />
+    <label style="font-size:11.5px;color:var(--muted);">Cloudflare Worker URL (D1):</label>
+    <input id="setWorkerUrl" class="game-input" type="text" placeholder="https://ai-os-brain....workers.dev" />
+    <label style="font-size:11.5px;color:var(--muted);">APP PIN (если задан в секретах Worker):</label>
+    <input id="setAppPin" class="game-input" type="password" placeholder="Опционально" />
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px;">
       <button id="btnResetAll" class="secondary-btn" style="color:var(--danger);">↺ Сброс</button>
       <button id="btnCloseSettings" class="secondary-btn">Отмена</button>
@@ -327,7 +253,7 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
       <span id="liveDot" class="dot-live"></span>
       <div>
         <strong style="font-size:14px;">AI OS Companion</strong>
-        <div style="font-size:11px;color:var(--muted);" id="topSubLabel">GAME Mode • Единая память D1 и модули</div>
+        <div style="font-size:11px;color:var(--muted);" id="topSubLabel">GAME Mode • Питомец</div>
       </div>
     </div>
     <div class="top-badges">
@@ -340,6 +266,7 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
     </div>
   </div>
 
+  <!-- ===================== GAME MODE (SIMPLE) ===================== -->
   <div id="gameView" class="game-shell game-only">
     <div class="game-hud">
       <div style="font-weight:800;font-size:14px;" id="hudPetName">🥚 Яйцо</div>
@@ -352,20 +279,11 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
       </div>
     </div>
 
-    <div class="mod-strip">
-      <button class="mod-pill" id="pillGemini" data-open-mod="gemini"><span>🤖 Мозг</span><span id="pillGeminiSt">OFF</span></button>
-      <button class="mod-pill" id="pillMemory" data-open-mod="memory"><span>💾 Память D1</span><span id="pillMemorySt">OFF</span></button>
-      <button class="mod-pill" id="pillGroq" data-open-mod="groq"><span>⚡ Groq</span><span id="pillGroqSt">OFF</span></button>
-      <button class="mod-pill" id="pillCritic" data-open-mod="critic"><span>🛡 Критик</span><span id="pillCriticSt">OFF</span></button>
-    </div>
-
     <div class="game-stage">
       <div id="xpPop" class="xp-pop">+25 XP!</div>
       <div id="gameEggBox" class="egg-card">
         <svg id="eggSvg" class="egg-svg" viewBox="0 0 160 190" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="eggGrad" cx="38%" cy="30%" r="68%"><stop offset="0%" stop-color="#38bdf8" /><stop offset="55%" stop-color="#0f2942" /><stop offset="100%" stop-color="#060c18" /></radialGradient>
-          </defs>
+          <defs><radialGradient id="eggGrad" cx="38%" cy="30%" r="68%"><stop offset="0%" stop-color="#38bdf8" /><stop offset="55%" stop-color="#0f2942" /><stop offset="100%" stop-color="#060c18" /></radialGradient></defs>
           <ellipse cx="80" cy="175" rx="46" ry="10" fill="rgba(0,245,184,0.22)" />
           <path d="M80 18 C118 18, 136 74, 134 118 C132 152, 108 168, 80 168 C52 168, 28 152, 26 118 C24 74, 42 18, 80 18 Z" fill="url(#eggGrad)" stroke="#00f5b8" stroke-width="3" />
           <circle cx="80" cy="102" r="16" fill="none" stroke="#00f5b8" stroke-width="2" stroke-dasharray="6 4" />
@@ -391,7 +309,7 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
           <circle id="burstRing" class="burst-ring" cx="270" cy="220" r="24" fill="none" stroke="var(--accent)" stroke-width="4" filter="url(#neonGlow)" />
           <g id="dock-brain">
             <rect x="175" y="10" width="190" height="28" rx="10" fill="#0f1726" stroke="#2b3d5c" stroke-width="1.8" />
-            <text id="svgLeaderDockText" x="270" y="28" text-anchor="middle" fill="var(--accent)" font-size="10.5" font-weight="700">BRAIN // GEMINI + D1</text>
+            <text id="svgLeaderDockText" x="270" y="28" text-anchor="middle" fill="var(--accent)" font-size="10.5" font-weight="700">BRAIN // AUTO-FLASH</text>
             <path d="M270 38 L270 84" stroke="#223047" stroke-width="4" />
             <path class="wire-active wire-brain" d="M270 38 L270 84" stroke="var(--accent)" stroke-width="3.5" filter="url(#neonGlow)" />
           </g>
@@ -441,18 +359,9 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
                 <line x1="270" y1="92" x2="270" y2="62" stroke="#64748b" stroke-width="4" />
                 <circle id="antennaOrb" cx="270" cy="56" r="8" fill="#334155" stroke="#64748b" stroke-width="2" />
               </g>
-              <g class="skin-layer layer-beast">
-                <path d="M192 108 L184 54 L232 94 Z" fill="url(#foxFurGrad)" stroke="#fb923c" stroke-width="2.2" />
-                <path d="M348 108 L356 54 L308 94 Z" fill="url(#foxFurGrad)" stroke="#fb923c" stroke-width="2.2" />
-              </g>
-              <g class="skin-layer layer-relic">
-                <path d="M194 106 L174 58 L218 92 Z" fill="#1e1333" stroke="#c084fc" stroke-width="2" />
-                <path d="M346 106 L366 58 L322 92 Z" fill="#1e1333" stroke="#c084fc" stroke-width="2" />
-                <polygon points="270,54 279,74 270,84 261,74" fill="#ff3b6b" />
-              </g>
-              <g class="skin-layer layer-monolith">
-                <polygon points="270,48 318,92 222,92" fill="#240b36" stroke="#a855f7" stroke-width="2.2" />
-              </g>
+              <g class="skin-layer layer-beast"><path d="M192 108 L184 54 L232 94 Z" fill="url(#foxFurGrad)" stroke="#fb923c" stroke-width="2.2" /><path d="M348 108 L356 54 L308 94 Z" fill="url(#foxFurGrad)" stroke="#fb923c" stroke-width="2.2" /></g>
+              <g class="skin-layer layer-relic"><path d="M194 106 L174 58 L218 92 Z" fill="#1e1333" stroke="#c084fc" stroke-width="2" /><path d="M346 106 L366 58 L322 92 Z" fill="#1e1333" stroke="#c084fc" stroke-width="2" /><polygon points="270,54 279,74 270,84 261,74" fill="#ff3b6b" /></g>
+              <g class="skin-layer layer-monolith"><polygon points="270,48 318,92 222,92" fill="#240b36" stroke="#a855f7" stroke-width="2.2" /></g>
               <rect class="skin-layer layer-robot" x="186" y="92" width="168" height="124" rx="38" fill="url(#carbonTex)" stroke="#475a7a" stroke-width="3" />
               <rect class="skin-layer layer-beast" x="186" y="92" width="168" height="124" rx="44" fill="url(#foxFurGrad)" stroke="#fb923c" stroke-width="3" />
               <rect class="skin-layer layer-relic" x="186" y="92" width="168" height="124" rx="32" fill="url(#obsidianGrad)" stroke="#c084fc" stroke-width="3" />
@@ -495,12 +404,12 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
       </div>
 
       <div id="gameSparkBox" class="game-card" style="display:none;">
-        <strong style="color:var(--accent);">⚡ Зажги искру разума (Google Gemini Flash-Lite)</strong>
-        <div style="font-size:12.5px;color:var(--muted);line-height:1.4;">Получи бесплатный ключ в Google AI Studio (карта не нужна) — тогда я смогу по-настоящему думать и видеть фото.</div>
-        <button id="btnOpenAiStudio" class="secondary-btn">↗ Получить бесплатный ключ в AI Studio</button>
+        <strong style="color:var(--accent);">⚡ Зажги искру разума (Google AI Studio)</strong>
+        <div style="font-size:12.5px;color:var(--muted);line-height:1.4;">Вставь бесплатный ключ — я сам найду самую свежую бесплатную модель Flash-Lite.</div>
+        <button id="btnOpenAiStudio" class="secondary-btn">↗ Взять бесплатный ключ в AI Studio</button>
         <input id="gameKeyInput" class="game-input" type="password" placeholder="Вставь ключ AIzaSy..." />
-        <button id="btnIgniteSpark" class="primary-btn">🔥 Зажечь искру и начать общение</button>
-        <button id="btnDemoSpark" class="secondary-btn" style="font-size:11.5px;color:var(--muted);">🧪 Пока пропустить (тест в Демо-режиме)</button>
+        <button id="btnIgniteSpark" class="primary-btn">🔥 Найти свежий Flash-Lite и начать</button>
+        <button id="btnDemoSpark" class="secondary-btn" style="font-size:11.5px;color:var(--muted);">🧪 Пока пропустить (Демо)</button>
       </div>
     </div>
 
@@ -510,59 +419,19 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
       <div class="game-actions-grid">
         <button class="g-act-btn" data-drawer="feed"><span>🍖</span><span>Факт</span></button>
         <button class="g-act-btn" data-drawer="traits"><span>🧪</span><span>Характер</span></button>
-        <button class="g-act-btn" data-drawer="modules"><span>🧩</span><span>Модули</span></button>
         <button class="g-act-btn" id="btnGameSleep"><span>💤</span><span>Сон</span></button>
         <button class="g-act-btn" id="btnGameDuel"><span>⚔️</span><span>Спор ИИ</span></button>
         <button class="g-act-btn" data-drawer="memory"><span>🧠</span><span>Память</span></button>
       </div>
 
-      <div id="drawerModules" class="game-drawer">
-        <strong style="font-size:13px;color:var(--accent);">🧩 Мастерская апгрейдов (в 2 тапа, с анимацией)</strong>
-        <div class="mod-wizard-card" id="wizCardMemory">
-          <div class="mod-wizard-head"><span>💾 Общая Память (Cloudflare D1)</span><span id="wizMemBadge" style="color:var(--accent-2);font-family:var(--font-mono);font-size:10px;">НЕ ПОДКЛЮЧЁН</span></div>
-          <div style="font-size:11.5px;color:var(--muted);line-height:1.35;">Синхронизирует Спарки, XP и все факты между ПК, телефоном и ESP32. Таблицы создаются сами!</div>
-          <a class="secondary-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ 1. Поднять Память в 1 клик (Cloudflare)</a>
-          <div style="display:flex;gap:6px;">
-            <input id="modWorkerInput" class="game-input" type="text" placeholder="2. Вставь URL вида https://ai-os-brain....workers.dev" style="padding:7px 9px;font-size:12px;" />
-            <button id="btnConnectMemory" class="primary-btn" style="padding:7px 11px;white-space:nowrap;">⚡ Включить</button>
-          </div>
-        </div>
-        <div class="mod-wizard-card" id="wizCardGroq">
-          <div class="mod-wizard-head"><span>⚡ Турбо + Голос (Groq Free)</span><span id="wizGroqBadge" style="color:var(--warn);font-family:var(--font-mono);font-size:10px;">НЕ ПОДКЛЮЧЁН</span></div>
-          <div style="font-size:11.5px;color:var(--muted);">Ответы за 0.3 сек для лёгкого трёпа + Whisper для распознавания голоса.</div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <a class="secondary-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys" style="flex:1;">↗ Ключ Groq</a>
-            <input id="modGroqInput" class="game-input" type="password" placeholder="gsk_..." style="flex:2;padding:7px 9px;font-size:12px;" />
-            <button id="btnConnectGroq" class="primary-btn" style="padding:7px 11px;">⚡</button>
-          </div>
-        </div>
-        <div class="mod-wizard-card" id="wizCardCritic">
-          <div class="mod-wizard-head"><span>🛡 Критик и Резерв (OpenRouter Free)</span><span id="wizCriticBadge" style="color:var(--purple);font-family:var(--font-mono);font-size:10px;">НЕ ПОДКЛЮЧЁН</span></div>
-          <div style="font-size:11.5px;color:var(--muted);">Подстрахует при лимитах и проверит сложные ответы в «Споре ИИ».</div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <a class="secondary-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys" style="flex:1;">↗ Ключ OR</a>
-            <input id="modOrInput" class="game-input" type="password" placeholder="sk-or-..." style="flex:2;padding:7px 9px;font-size:12px;" />
-            <button id="btnConnectOr" class="primary-btn" style="padding:7px 11px;">🛡</button>
-          </div>
-        </div>
-        <div class="mod-wizard-card" id="wizCardGemini">
-          <div class="mod-wizard-head"><span>🤖 Базовый Мозг (Google AI Studio)</span><span id="wizGeminiBadge" style="color:var(--accent);font-family:var(--font-mono);font-size:10px;">НЕ ПОДКЛЮЧЁН</span></div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <a class="secondary-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey" style="flex:1;">↗ Ключ Google</a>
-            <input id="modGeminiInput" class="game-input" type="password" placeholder="AIzaSy..." style="flex:2;padding:7px 9px;font-size:12px;" />
-            <button id="btnConnectGemini" class="primary-btn" style="padding:7px 11px;">🤖</button>
-          </div>
-        </div>
-      </div>
-
       <div id="drawerFeed" class="game-drawer">
         <strong style="font-size:12.5px;color:var(--accent);">🍖 Покормить питомца фактом о тебе</strong>
-        <input id="feedFactInput" class="game-input" type="text" placeholder="Например: Я люблю эспрессо и пишу прошивки под ESP32" />
-        <button id="btnSaveFact" class="primary-btn">Скормить (+15 XP в общую память)</button>
+        <input id="feedFactInput" class="game-input" type="text" placeholder="Например: Я люблю эспрессо и пишу под ESP32" />
+        <button id="btnSaveFact" class="primary-btn">Скормить (+15 XP в память)</button>
       </div>
 
       <div id="drawerTraits" class="game-drawer">
-        <strong style="font-size:12.5px;color:var(--accent);">🧪 Зелья характера (меняют стиль всех ИИ)</strong>
+        <strong style="font-size:12.5px;color:var(--accent);">🧪 Зелья характера</strong>
         <div class="slider-row"><span>Юмор</span><input type="range" min="0" max="10" data-trait="humor" /><span id="val-humor">6</span></div>
         <div class="slider-row"><span>Дерзость</span><input type="range" min="0" max="10" data-trait="sass" /><span id="val-sass">4</span></div>
         <div class="slider-row"><span>Забота</span><input type="range" min="0" max="10" data-trait="care" /><span id="val-care">8</span></div>
@@ -570,21 +439,59 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
       </div>
 
       <div id="drawerMemory" class="game-drawer">
-        <strong style="font-size:12.5px;color:var(--accent);">🧠 Общая память (Факты + Сны + Уроки)</strong>
+        <strong style="font-size:12.5px;color:var(--accent);">🧠 Память (Факты + Сны + Уроки)</strong>
         <div id="gameMemoryList" class="mem-list"></div>
       </div>
 
       <div class="game-chat-bar">
         <input id="gamePhotoInput" type="file" accept="image/*" style="display:none;" />
-        <button id="btnGamePhoto" class="chat-tool-btn" title="Показать фото камерой">📷</button>
-        <button id="btnGameVoice" class="chat-tool-btn" title="Сказать голосом">🎙</button>
+        <button id="btnGamePhoto" class="chat-tool-btn" title="Фото">📷</button>
+        <button id="btnGameVoice" class="chat-tool-btn" title="Голос">🎙</button>
         <input id="gameChatInput" class="game-chat-input" type="text" placeholder="Напиши питомцу..." />
         <button id="btnGameSend" class="primary-btn" style="padding:8px 13px;">➤</button>
       </div>
     </div>
   </div>
 
+  <!-- ===================== PRO MODE (CLEAN & MODULAR) ===================== -->
   <div id="proView" class="pro-only">
+    <!-- БЫСТРОЕ ПОДКЛЮЧЕНИЕ ВСЕХ МОДУЛЕЙ БЕЗ ВОДЫ -->
+    <div class="pro-connect-grid">
+      <div class="pro-mod-card" id="proCardGemini">
+        <div class="pro-mod-head"><span>🤖 AI Studio (Auto Lite)</span><span id="proStGemini" style="color:var(--accent);">OFF</span></div>
+        <div class="pro-mod-row">
+          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Ключ</a>
+          <input id="proInGemini" class="pro-mini-in" type="password" placeholder="AIzaSy..." />
+          <button id="proBtnGemini" class="pro-mini-btn go">Вкл</button>
+        </div>
+      </div>
+      <div class="pro-mod-card" id="proCardGroq">
+        <div class="pro-mod-head"><span>⚡ Groq (Flash-Lite подбор)</span><span id="proStGroq" style="color:var(--warn);">OFF</span></div>
+        <div class="pro-mod-row">
+          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Ключ</a>
+          <input id="proInGroq" class="pro-mini-in" type="password" placeholder="gsk_..." />
+          <button id="proBtnGroq" class="pro-mini-btn go">Вкл</button>
+        </div>
+      </div>
+      <div class="pro-mod-card" id="proCardOr">
+        <div class="pro-mod-head"><span>🛡 OpenRouter (Free)</span><span id="proStOr" style="color:var(--purple);">OFF</span></div>
+        <div class="pro-mod-row">
+          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ Ключ</a>
+          <input id="proInOr" class="pro-mini-in" type="password" placeholder="sk-or-..." />
+          <button id="proBtnOr" class="pro-mini-btn go">Вкл</button>
+        </div>
+      </div>
+      <div class="pro-mod-card" id="proCardD1">
+        <div class="pro-mod-head"><span>💾 Память D1 + PIN</span><span id="proStD1" style="color:var(--accent-2);">LOCAL</span></div>
+        <div class="pro-mod-row">
+          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend" title="1-клик деплой Worker + D1">☁️ 1-клик</a>
+          <input id="proInD1" class="pro-mini-in" type="text" placeholder="https://...workers.dev" />
+          <input id="proInPin" class="pro-mini-in" type="password" placeholder="PIN" style="max-width:52px;" />
+          <button id="proBtnD1" class="pro-mini-btn go">Вкл</button>
+        </div>
+      </div>
+    </div>
+
     <div class="switcher-grid">
       <div class="group-box">
         <span class="group-label"><span>1. Оболочка UI</span><span>3 СТИЛЯ</span></span>
@@ -609,7 +516,7 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
           <div class="host-pill"><strong>LEADER</strong><span id="leaderHostLabel">Linux DietPi</span></div>
           <button id="btnSwapHosts" class="swap-btn">⇄ СВАП</button>
           <div class="host-pill pet-host"><strong>PET</strong><span id="petHostLabel">ESP32-C5</span></div>
-          <div class="host-pill vault-host"><strong>D1 VAULT</strong><span id="vaultStatusLabel">LOCAL</span></div>
+          <div class="host-pill vault-host"><strong>VAULT</strong><span id="vaultStatusLabel">LOCAL</span></div>
         </div>
       </div>
     </div>
@@ -622,9 +529,12 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
             <button class="view-mode-btn" data-view="avatar">🤖 Перс</button>
             <button class="view-mode-btn" data-view="graph">🧠 Граф DAG</button>
           </div>
-          <span id="proEmotionBadge" class="badge">GRIMACE: NORMAL</span>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <button id="btnRefreshCatalog" class="pro-mini-btn go">🔄 Авто-скан моделей</button>
+            <span id="proEmotionBadge" class="badge">GRIMACE: NORMAL</span>
+          </div>
         </div>
-        <div id="proSpeechBox" class="speech">PRO-консоль синхронизирована с GAME-режимом и облачной памятью D1.</div>
+        <div id="proSpeechBox" class="speech">Подключай модули сверху — модели определяются автоматически под доступные бесплатные квоты.</div>
         <div id="stageArena" class="stage-arena mode-hybrid">
           <div id="proAvatarSlot" class="avatar-pane"></div>
           <div class="graph-pane">
@@ -645,7 +555,7 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
           </div>
         </div>
         <div class="game-chat-bar">
-          <input id="proCmdInput" class="game-chat-input" type="text" placeholder="Команда для волн DAG (или: ping)..." />
+          <input id="proCmdInput" class="game-chat-input" type="text" placeholder="Команда для волн DAG..." />
           <button id="btnProRunGraph" class="primary-btn" style="padding:7px 12px;">▶ ПУСК DAG</button>
         </div>
       </div>
@@ -655,19 +565,20 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
           <div class="tele-title"><span>ИНСПЕКТОР МОДУЛЯ</span><span id="inspProviderTag">AI STUDIO</span></div>
           <input id="inspTitle" class="insp-input" type="text" placeholder="Название" />
           <select id="inspProvider" class="insp-select">
-            <option value="aistudio">Google AI Studio (Free)</option>
-            <option value="groq">Groq API (Free LPU)</option>
-            <option value="openai">OpenRouter / OpenAI</option>
+            <option value="aistudio">Google AI Studio (Auto)</option>
+            <option value="groq">Groq API (Auto)</option>
+            <option value="openai">OpenRouter / OpenAI (Auto)</option>
             <option value="critic">Критик / Cross-Audit</option>
           </select>
           <select id="inspModel" class="insp-select"></select>
-          <input id="inspKey" class="insp-input" type="password" placeholder="API Key (или глобальный)" />
+          <input id="inspKey" class="insp-input" type="password" placeholder="API Key (или общий)" />
           <textarea id="inspPrompt" class="insp-textarea" rows="2" placeholder="Промпт блока"></textarea>
           <div id="inspOutput" class="insp-output">Нет вывода.</div>
           <button id="btnDeleteModNode" class="secondary-btn" style="margin-top:6px;width:100%;color:var(--danger);">Удалить блок</button>
         </div>
         <div class="tele-card">
-          <div class="tele-title"><span>DISCOVERY УЗЛОВ</span><span id="proRouteLabel">IDLE</span></div>
+          <div class="tele-title"><span>КАТАЛОГ + УЗЛЫ</span><span id="proRouteLabel">IDLE</span></div>
+          <div id="catalogSummary" style="font-family:var(--font-mono);font-size:9.5px;color:var(--accent);margin-bottom:6px;line-height:1.35;"></div>
           <div id="nodeList"></div>
         </div>
       </div>
@@ -677,20 +588,19 @@ svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-sel
 </div>
 
 <script>
-const STORAGE_KEY = 'aios_v10_unified';
+const STORAGE_KEY = 'aios_v11_adaptive';
 const NL = String.fromCharCode(10);
-
-const MODELS = {
-  aistudio: ['gemini-3.1-flash-lite', 'gemini-3.5-flash-lite', 'gemini-3.8-flash', 'gemini-flash-lite-latest'],
-  groq: ['openai/gpt-oss-20b', 'qwen/qwen3.8-27b', 'openai/gpt-oss-120b'],
-  openai: ['openrouter/free', 'gpt-4o', 'gpt-4.1'],
-  critic: ['gemini-3.1-flash-lite', 'cross-audit-diff']
-};
 
 const STATE = {
   appMode: 'game', ui: 'cyber', skin: 'robot', viewMode: 'hybrid', swappedHosts: false,
   stage: 'egg', eggTaps: 0, name: 'Яйцо', xp: 0, mood: 'normal',
-  apiKey: '', groqKey: '', orKey: '', geminiModel: 'gemini-3.1-flash-lite', workerUrl: '', d1Online: false,
+  apiKey: '', groqKey: '', orKey: '', workerUrl: '', appPin: '', d1Online: false,
+  catalog: {
+    aistudio: { fast: 'gemini-3.1-flash-lite', smart: 'gemini-3.8-flash', list: ['gemini-3.1-flash-lite', 'gemini-flash-lite-latest'], reason: 'default' },
+    groq: { fast: 'openai/gpt-oss-20b', smart: 'openai/gpt-oss-120b', whisper: 'whisper-large-v3-turbo', list: ['openai/gpt-oss-20b', 'openai/gpt-oss-120b'], reason: 'default' },
+    openai: { fast: 'openrouter/free', smart: 'openrouter/free', list: ['openrouter/free'], reason: 'default' },
+    critic: { fast: 'gemini-3.1-flash-lite', smart: 'gemini-3.1-flash-lite', list: ['gemini-3.1-flash-lite', 'cross-audit-diff'], reason: 'default' }
+  },
   traits: { humor: 6, sass: 4, care: 8, concise: 7 },
   facts: [], summaries: [], lessons: [], chat: [], modNodes: [], modEdges: [], selectedModId: null
 };
@@ -703,10 +613,11 @@ const RT = {
 const $ = id => document.getElementById(id);
 
 function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); } catch (_) {} }
-function loadState() { try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) Object.assign(STATE, JSON.parse(raw)); } catch (_) {} }
+function loadState() { try { const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('aios_v10_unified'); if (raw) Object.assign(STATE, JSON.parse(raw)); } catch (_) {} }
 function isRealKey(k) { return Boolean(k && k.trim().length > 16 && !k.includes('demo') && !k.includes('free')); }
 function workerHeaders() {
   const h = { 'Content-Type': 'application/json' };
+  if (STATE.appPin) h['X-App-Pin'] = STATE.appPin;
   if (isRealKey(STATE.apiKey)) h['X-Gemini-Key'] = STATE.apiKey;
   if (isRealKey(STATE.groqKey)) h['X-Groq-Key'] = STATE.groqKey;
   if (isRealKey(STATE.orKey)) h['X-OpenRouter-Key'] = STATE.orKey;
@@ -718,7 +629,7 @@ function addLog(msg, tag = 'SYS') {
   const t = new Date().toLocaleTimeString('ru-RU', { hour12: false });
   el.textContent = '[' + t + '][' + tag + '] ' + msg;
   const box = $('logBox');
-  if (box) { box.prepend(el); while (box.children.length > 40) box.removeChild(box.lastChild); }
+  if (box) { box.prepend(el); while (box.children.length > 45) box.removeChild(box.lastChild); }
 }
 
 function showXpPop(label) {
@@ -750,57 +661,166 @@ function setPetVisual(powerState, mood) {
   $('proEmotionBadge').textContent = 'GRIMACE: ' + STATE.mood.toUpperCase();
 }
 
-function syncModuleBadges() {
-  const gOn = isRealKey(STATE.apiKey), mOn = Boolean(STATE.workerUrl && STATE.d1Online), qOn = isRealKey(STATE.groqKey), cOn = isRealKey(STATE.orKey);
-  $('pillGemini').className = 'mod-pill' + (gOn ? ' on' : ''); $('pillGeminiSt').textContent = gOn ? 'ON' : 'OFF';
-  $('pillMemory').className = 'mod-pill' + (mOn ? ' on-blue' : ''); $('pillMemorySt').textContent = mOn ? 'D1' : 'OFF';
-  $('pillGroq').className = 'mod-pill' + (qOn ? ' on' : ''); $('pillGroqSt').textContent = qOn ? 'LPU' : 'OFF';
-  $('pillCritic').className = 'mod-pill' + (cOn ? ' on-purple' : ''); $('pillCriticSt').textContent = cOn ? 'ON' : 'OFF';
-  $('wizMemBadge').textContent = mOn ? 'ПОДКЛЮЧЕНА ✓' : 'НЕ ПОДКЛЮЧЁН';
-  $('wizGroqBadge').textContent = qOn ? 'ТУРБО ON ✓' : 'НЕ ПОДКЛЮЧЁН';
-  $('wizCriticBadge').textContent = cOn ? 'ЗАЩИТА ON ✓' : 'НЕ ПОДКЛЮЧЁН';
-  $('wizGeminiBadge').textContent = gOn ? 'АКТИВЕН ✓' : 'НЕ ПОДКЛЮЧЁН';
+/* ================= ADAPTIVE MODEL DISCOVERY (GEMINI + GROQ VIA FLASH-LITE + OPENROUTER) ================= */
+function versionScore(id) {
+  const m = id.match(/(\d+(?:\.\d+)?)/);
+  let s = m ? parseFloat(m[1]) * 100 : 200;
+  if (id.includes('latest')) s = Math.max(s, 305);
+  if (id.includes('exp') || id.includes('001')) s -= 25;
+  return s;
+}
+
+async function discoverGeminiClient(key) {
+  if (!isRealKey(key)) return null;
+  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models?key=' + encodeURIComponent(key));
+  if (!res.ok) throw new Error('AI Studio HTTP ' + res.status);
+  const data = await res.json();
+  const raw = (data.models || [])
+    .filter(m => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes('generateContent'))
+    .map(m => m.name.replace('models/', ''))
+    .filter(id => id.includes('gemini') && !id.includes('embedding') && !id.includes('tts') && !id.includes('image') && !id.includes('robotics') && !id.includes('aqa'));
+  const lites = raw.filter(id => id.includes('flash-lite') || id.includes('flash_lite')).sort((a, b) => versionScore(b) - versionScore(a));
+  const flashes = raw.filter(id => id.includes('flash') && !id.includes('lite')).sort((a, b) => versionScore(b) - versionScore(a));
+  const fast = lites[0] || flashes[0] || 'gemini-flash-lite-latest';
+  const smart = flashes[0] || fast;
+  const list = [...new Set([...lites.slice(0, 4), ...flashes.slice(0, 4), ...raw.slice(0, 4)])];
+  STATE.catalog.aistudio = { fast, smart, list: list.length ? list : [fast], reason: 'auto-scan' };
+  STATE.catalog.critic = { fast, smart, list: [fast, 'cross-audit-diff'], reason: 'auto-scan' };
+  addLog('AI Studio авто-выбор: Lite=' + fast + ', Flash=' + smart + ' (из ' + raw.length + ' моделей)', 'PIPE');
+  return STATE.catalog.aistudio;
+}
+
+async function discoverGroqClient(groqKey) {
+  if (!isRealKey(groqKey)) return null;
+  const res = await fetch('https://api.groq.com/openai/v1/models', { headers: { 'Authorization': 'Bearer ' + groqKey } });
+  if (!res.ok) throw new Error('Groq HTTP ' + res.status);
+  const data = await res.json();
+  const active = (data.data || []).filter(m => m.active !== false);
+  const whispers = active.filter(m => m.id.includes('whisper')).map(m => m.id);
+  const chatIds = active.map(m => m.id).filter(id => !id.includes('whisper') && !id.includes('guard') && !id.includes('tts') && !id.includes('orpheus'));
+  const whisper = whispers.find(w => w.includes('turbo')) || whispers[0] || 'whisper-large-v3-turbo';
+
+  let fast = chatIds.find(id => id.includes('20b') || id.includes('8b')) || chatIds[0] || 'openai/gpt-oss-20b';
+  let smart = chatIds.find(id => id.includes('120b') || id.includes('70b') || id.includes('qwen')) || chatIds[0] || 'openai/gpt-oss-120b';
+  let reason = 'heuristic';
+
+  // Если подключен Flash-Lite, просим его самого оценить и выбрать лучшие модели Groq
+  if (isRealKey(STATE.apiKey) && chatIds.length > 0) {
+    try {
+      const evalPrompt = 'Живой список доступных моделей Groq: ' + chatIds.join(', ') + '. Выбери 1 быструю лёгкую (fast) и 1 самую мощную бесплатную (smart, например 120b/70b/qwen). Ответь СТРОГО JSON с полями fast, smart, reason (кратко).';
+      const raw = await callGeminiDirect(STATE.apiKey, STATE.catalog.aistudio.fast, 'Отвечай только JSON без markdown.', evalPrompt);
+      const m = raw.match(/\{[\s\S]*\}/);
+      if (m) {
+        const parsed = JSON.parse(m[0]);
+        if (parsed.fast && chatIds.includes(parsed.fast)) fast = parsed.fast;
+        if (parsed.smart && chatIds.includes(parsed.smart)) smart = parsed.smart;
+        if (parsed.reason) reason = 'Flash-Lite: ' + parsed.reason;
+      }
+    } catch (_) {}
+  }
+  STATE.catalog.groq = { fast, smart, whisper, list: chatIds.length ? chatIds : [fast, smart], reason };
+  addLog('Groq авто-подбор (' + reason + '): fast=' + fast + ', smart=' + smart, 'PIPE');
+  return STATE.catalog.groq;
+}
+
+async function discoverOpenRouterClient(orKey) {
+  try {
+    const hdrs = isRealKey(orKey) ? { 'Authorization': 'Bearer ' + orKey } : {};
+    const res = await fetch('https://openrouter.ai/api/v1/models', { headers: hdrs });
+    if (!res.ok) return STATE.catalog.openai;
+    const data = await res.json();
+    const freeIds = (data.data || []).filter(m => m.id === 'openrouter/free' || (m.pricing && String(m.pricing.prompt) === '0' && String(m.pricing.completion) === '0')).map(m => m.id);
+    const list = [...new Set(['openrouter/free', ...freeIds.filter(id => id !== 'openrouter/free').slice(0, 12)])];
+    const smart = freeIds.find(id => id.includes('gemma') || id.includes('qwen') || id.includes('llama')) || 'openrouter/free';
+    STATE.catalog.openai = { fast: 'openrouter/free', smart, list, reason: 'zero-pricing' };
+    addLog('OpenRouter скан: найдено ' + freeIds.length + ' бесплатных моделей.', 'PIPE');
+  } catch (_) {}
+  return STATE.catalog.openai;
+}
+
+async function refreshAllAdaptiveModels() {
+  $('proRouteLabel').textContent = 'SCANNING...';
+  if (STATE.workerUrl && STATE.d1Online) {
+    try {
+      const r = await fetch(STATE.workerUrl + '/api/models/refresh', { method: 'POST', headers: workerHeaders() });
+      if (r.ok) {
+        const d = await r.json();
+        if (d.catalog) {
+          if (d.catalog.aistudio) STATE.catalog.aistudio = d.catalog.aistudio;
+          if (d.catalog.groq) STATE.catalog.groq = d.catalog.groq;
+          if (d.catalog.openrouter) STATE.catalog.openai = d.catalog.openrouter;
+        }
+      }
+    } catch (_) {}
+  }
+  try { await discoverGeminiClient(STATE.apiKey); } catch (_) {}
+  try { await discoverGroqClient(STATE.groqKey); } catch (_) {}
+  await discoverOpenRouterClient(STATE.orKey);
+  syncNodesToFreshCatalog();
+  syncProDeckStatus();
+  syncInspector();
+  renderModGraph();
+  saveState();
+  $('proRouteLabel').textContent = 'READY';
+}
+
+function syncNodesToFreshCatalog() {
+  STATE.modNodes.forEach(n => {
+    if (n.provider === 'aistudio') n.model = STATE.catalog.aistudio.fast;
+    else if (n.provider === 'groq') n.model = STATE.catalog.groq.fast;
+    else if (n.provider === 'openai') n.model = STATE.catalog.openai.smart || 'openrouter/free';
+    else if (n.provider === 'critic') n.model = STATE.catalog.aistudio.fast;
+  });
+}
+
+function syncProDeckStatus() {
+  const gOn = isRealKey(STATE.apiKey), qOn = isRealKey(STATE.groqKey), cOn = isRealKey(STATE.orKey), mOn = Boolean(STATE.workerUrl && STATE.d1Online);
+  $('proCardGemini').classList.toggle('active', gOn); $('proStGemini').textContent = gOn ? STATE.catalog.aistudio.fast : 'OFF';
+  $('proCardGroq').classList.toggle('active', qOn); $('proStGroq').textContent = qOn ? STATE.catalog.groq.fast : 'OFF';
+  $('proCardOr').classList.toggle('active', cOn); $('proStOr').textContent = cOn ? STATE.catalog.openai.smart : 'OFF';
+  $('proCardD1').classList.toggle('active', mOn); $('proStD1').textContent = mOn ? 'ONLINE ✓' : 'LOCAL';
   $('vaultStatusLabel').textContent = mOn ? 'CLOUD D1 ✓' : 'LOCAL';
-  if ($('modWorkerInput').value !== STATE.workerUrl) $('modWorkerInput').value = STATE.workerUrl;
-  if ($('modGroqInput').value !== STATE.groqKey) $('modGroqInput').value = STATE.groqKey;
-  if ($('modOrInput').value !== STATE.orKey) $('modOrInput').value = STATE.orKey;
-  if ($('modGeminiInput').value !== STATE.apiKey) $('modGeminiInput').value = STATE.apiKey;
+  $('proInGemini').value = STATE.apiKey; $('proInGroq').value = STATE.groqKey; $('proInOr').value = STATE.orKey;
+  $('proInD1').value = STATE.workerUrl; $('proInPin').value = STATE.appPin;
+  $('catalogSummary').textContent = 'Lite: ' + STATE.catalog.aistudio.fast + NL + 'Groq Fast/Smart: ' + STATE.catalog.groq.fast + ' / ' + STATE.catalog.groq.smart + NL + 'OR Free: ' + STATE.catalog.openai.smart;
 }
 
 function applyThemeAndMode() {
   document.body.className = 'ui-' + STATE.ui + ' theme-' + STATE.skin + ' app-mode-' + STATE.appMode;
   $('btnModeGame').classList.toggle('active', STATE.appMode === 'game');
   $('btnModePro').classList.toggle('active', STATE.appMode === 'pro');
-  $('topSubLabel').textContent = STATE.appMode === 'game' ? 'GAME Mode • Питомец и модули' : 'PRO Mode • DAG-оркестратор и узлы';
+  $('topSubLabel').textContent = STATE.appMode === 'game' ? ('GAME Mode • ' + STATE.catalog.aistudio.fast) : 'PRO Mode • Адаптивный оркестратор';
   const pet = $('pet');
   if (STATE.appMode === 'game') $('gameAvatarSlot').appendChild(pet);
   else { $('proAvatarSlot').appendChild(pet); setTimeout(renderWires, 30); }
   const live = isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey) || Boolean(STATE.workerUrl);
-  $('brainBadge').textContent = STATE.d1Online ? 'D1 + LIVE' : (live ? 'LIVE // API' : 'DEMO');
+  $('brainBadge').textContent = STATE.d1Online ? ('D1 + ' + STATE.catalog.aistudio.fast) : (live ? ('AUTO // ' + STATE.catalog.aistudio.fast) : 'DEMO');
   $('brainBadge').className = 'badge ' + (live ? 'online' : 'warn');
-  syncModuleBadges(); renderNodesList();
+  syncProDeckStatus(); renderNodesList();
 }
 
-async function playModuleInstallAnim(modType, title, commentText) {
-  const pet = $('pet');
-  setPetVisual('booting', 'focus');
+async function playModuleInstallAnim(title, commentText) {
+  const pet = $('pet'); setPetVisual('booting', 'focus');
   pet.classList.remove('anim-burst'); void pet.offsetWidth; pet.classList.add('anim-burst');
   await new Promise(r => setTimeout(r, 750));
   addXP(25); setPetVisual('awake', 'smug');
   STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'upgrade', model: title, mood: 'smug', text: commentText });
+  $('proSpeechBox').textContent = commentText;
   renderGameChat(); saveState();
   setTimeout(() => pet.classList.remove('anim-burst'), 400);
 }
 
-async function connectD1Memory(url) {
+async function connectD1Memory(url, pin = '') {
   const clean = url.trim().replace(/\/+$/, '');
-  if (!clean.startsWith('http')) { alert('Вставь корректный URL Worker (https://...)'); return; }
-  $('wizMemBadge').textContent = 'ПРОВЕРКА...';
+  if (!clean.startsWith('http')) { alert('Вставь URL Worker (https://...)'); return; }
+  if (pin !== undefined) STATE.appPin = pin.trim();
+  $('proStD1').textContent = 'ПРОВЕРКА...';
   try {
     const hRes = await fetch(clean + '/api/health', { headers: workerHeaders() });
+    if (hRes.status === 401) throw new Error('Неверный PIN-код (401)');
     if (!hRes.ok) throw new Error('HTTP ' + hRes.status);
     const hData = await hRes.json();
-    if (!hData.ok || !hData.d1) throw new Error('D1 не привязана к Worker');
+    if (!hData.ok || !hData.d1) throw new Error('D1 не привязана');
     STATE.workerUrl = clean; STATE.d1Online = true;
     const syncRes = await fetch(clean + '/api/sync', {
       method: 'POST', headers: workerHeaders(),
@@ -808,6 +828,11 @@ async function connectD1Memory(url) {
     });
     if (syncRes.ok) {
       const bundle = await syncRes.json();
+      if (bundle.catalog) {
+        if (bundle.catalog.aistudio) STATE.catalog.aistudio = bundle.catalog.aistudio;
+        if (bundle.catalog.groq) STATE.catalog.groq = bundle.catalog.groq;
+        if (bundle.catalog.openrouter) STATE.catalog.openai = bundle.catalog.openrouter;
+      }
       if (bundle.profile && !bundle.adoptedClient) {
         STATE.name = bundle.profile.name; STATE.stage = bundle.profile.stage; STATE.xp = bundle.profile.xp; STATE.skin = bundle.profile.skin;
         try { STATE.traits = JSON.parse(bundle.profile.traits_json); } catch (_) {}
@@ -817,45 +842,63 @@ async function connectD1Memory(url) {
         STATE.chat = (bundle.chat || []).map(c => ({ id: c.id, role: c.role, provider: c.provider, model: c.model, mood: c.mood, text: c.content }));
       }
     }
-    applyThemeAndMode(); renderGameStage();
-    await playModuleInstallAnim('memory', 'Cloudflare D1', 'Клик! Модуль общей памяти Cloudflare D1 прищёлкнулся к моему ядру! Теперь я помню тебя одинаково на компьютере, телефоне и ESP32! (+25 XP)');
+    applyThemeAndMode(); renderGameStage(); renderModGraph(); syncInspector();
+    await playModuleInstallAnim('Cloudflare D1', 'Клик! Общая память Cloudflare D1 прищёлкнулась, а каталог свежих моделей синхронизирован!');
   } catch (err) {
-    STATE.d1Online = false; syncModuleBadges(); setPetVisual('awake', 'shock');
-    alert('Не удалось подключить D1: ' + err.message);
+    STATE.d1Online = false; syncProDeckStatus(); setPetVisual('awake', 'shock');
+    alert('Ошибка D1: ' + err.message);
   }
 }
 
+/* PRO MODULE BUTTONS */
+$('proBtnGemini').onclick = async () => {
+  const k = $('proInGemini').value.trim(); if (!isRealKey(k)) { alert('Вставь ключ AIza...'); return; }
+  STATE.apiKey = k; await discoverGeminiClient(k).catch(e => alert(e.message));
+  if (isRealKey(STATE.groqKey)) await discoverGroqClient(STATE.groqKey).catch(() => {});
+  syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector();
+  await playModuleInstallAnim('AI Studio', 'Подключен свежий ' + STATE.catalog.aistudio.fast + '!');
+};
+$('proBtnGroq').onclick = async () => {
+  const k = $('proInGroq').value.trim(); if (!isRealKey(k)) { alert('Вставь ключ gsk_...'); return; }
+  STATE.groqKey = k;
+  const res = await discoverGroqClient(k).catch(e => { alert(e.message); return null; });
+  if (res) { syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector(); await playModuleInstallAnim('Groq LPU', 'Турбина Groq подключена! Выбрано (' + res.reason + '): быстрая ' + res.fast + ' и умная ' + res.smart + '!'); }
+};
+$('proBtnOr').onclick = async () => {
+  const k = $('proInOr').value.trim(); if (!isRealKey(k)) { alert('Вставь ключ sk-or-...'); return; }
+  STATE.orKey = k; await discoverOpenRouterClient(k); syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector();
+  await playModuleInstallAnim('OpenRouter Free', 'Критик OpenRouter пристёгнут! Найдено бесплатных моделей: ' + STATE.catalog.openai.list.length + '.');
+};
+$('proBtnD1').onclick = () => connectD1Memory($('proInD1').value, $('proInPin').value);
+$('btnRefreshCatalog').onclick = async () => {
+  await refreshAllAdaptiveModels();
+  await playModuleInstallAnim('Auto-Scan', 'Обновил живые модели: Gemini=' + STATE.catalog.aistudio.fast + ', Groq=' + STATE.catalog.groq.fast + '/' + STATE.catalog.groq.smart + '.');
+};
+
+/* PERSONA & API CALLS */
 function buildUnifiedSystemPrompt(extraRole = '') {
   const t = STATE.traits;
-  const factsText = STATE.facts.slice(0, 10).map(f => '- ' + f.text).join(NL) || '- Пока нет фактов о хозяине.';
-  const sumText = STATE.summaries.slice(0, 2).map(s => '- ' + s.text).join(NL) || '- Снов ещё не было.';
-  const rulesText = STATE.lessons.slice(0, 5).map(l => '- ' + l.rule).join(NL) || '- Ошибок пока не отмечено.';
+  const factsText = STATE.facts.slice(0, 10).map(f => '- ' + f.text).join(NL) || '- Пока нет фактов.';
+  const sumText = STATE.summaries.slice(0, 2).map(s => '- ' + s.text).join(NL) || '- Снов нет.';
+  const rulesText = STATE.lessons.slice(0, 5).map(l => '- ' + l.rule).join(NL) || '- Ошибок нет.';
   return [
-    'ТЫ — живой цифровой питомец по имени ' + STATE.name + ' (форма: ' + STATE.skin + ', XP: ' + STATE.xp + ').',
+    'ТЫ — живой цифровой питомец ' + STATE.name + ' (форма: ' + STATE.skin + ', XP: ' + STATE.xp + ').',
     'ХАРАКТЕР (0..10): Юмор=' + t.humor + ', Дерзость=' + t.sass + ', Забота=' + t.care + ', Краткость=' + t.concise + '.',
-    'ПРАВИЛО МИМИКИ: В самом начале ответа ставь ровно один тег: [MOOD:normal], [MOOD:smug], [MOOD:focus] или [MOOD:shock].',
-    'Никогда не пиши, что ты языковая модель. Отвечай живо, по-русски и по характеру.',
-    'ПАМЯТЬ О ХОЗЯИНЕ:' + NL + factsText,
-    'СЖАТЫЕ СНЫ:' + NL + sumText,
-    'УРОКИ (НЕ ПОВТОРЯТЬ):' + NL + rulesText,
-    extraRole ? ('ДОП. РОЛЬ: ' + extraRole) : ''
+    'ПРАВИЛО МИМИКИ: Начинай ответ с одного тега [MOOD:normal], [MOOD:smug], [MOOD:focus] или [MOOD:shock].',
+    'ФАКТЫ:' + NL + factsText,
+    'СНЫ:' + NL + sumText,
+    'УРОКИ:' + NL + rulesText,
+    extraRole ? ('РОЛЬ: ' + extraRole) : ''
   ].filter(Boolean).join(NL + NL);
 }
 
 async function callGeminiDirect(apiKey, model, sysPrompt, userText, imageObj = null) {
   const parts = [{ text: userText }];
   if (imageObj) parts.push({ inlineData: { mimeType: imageObj.mime, data: imageObj.base64 } });
-  const tryCall = async m => {
-    const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(m) + ':generateContent?key=' + encodeURIComponent(apiKey);
-    const res = await fetch(url, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ systemInstruction: { parts: [{ text: sysPrompt }] }, contents: [{ role: 'user', parts }], generationConfig: { temperature: 0.55, maxOutputTokens: 500 } })
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json(); return data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-  };
-  try { return await tryCall(model); }
-  catch (e) { if (String(e.message).includes('404') && model !== 'gemini-flash-lite-latest') return await tryCall('gemini-flash-lite-latest'); throw e; }
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(apiKey);
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ systemInstruction: { parts: [{ text: sysPrompt }] }, contents: [{ role: 'user', parts }], generationConfig: { temperature: 0.55, maxOutputTokens: 500 } }) });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const data = await res.json(); return data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
 
 async function callOpenAICompat(endpoint, key, model, sysPrompt, userText) {
@@ -889,21 +932,21 @@ async function askPetBrain(userText, imageObj = null, mode = 'game') {
   if (!rawReply) {
     const isShort = !imageObj && mode !== 'duel' && userText.length < 90;
     if (isShort && isRealKey(STATE.groqKey)) {
-      try { rawReply = await callOpenAICompat('https://api.groq.com/openai/v1/chat/completions', STATE.groqKey, 'openai/gpt-oss-20b', sys, (shortHist ? shortHist + NL + NL : '') + userText); usedModel = 'groq / gpt-oss-20b'; } catch (_) {}
+      try { rawReply = await callOpenAICompat('https://api.groq.com/openai/v1/chat/completions', STATE.groqKey, STATE.catalog.groq.fast, sys, (shortHist ? shortHist + NL + NL : '') + userText); usedModel = 'groq / ' + STATE.catalog.groq.fast; } catch (_) {}
     }
     if (!rawReply && isRealKey(STATE.apiKey)) {
-      try { rawReply = await callGeminiDirect(STATE.apiKey, STATE.geminiModel, sys, (fullHist ? fullHist + NL + NL : '') + userText, imageObj); usedModel = STATE.geminiModel; }
+      try { rawReply = await callGeminiDirect(STATE.apiKey, STATE.catalog.aistudio.fast, sys, (fullHist ? fullHist + NL + NL : '') + userText, imageObj); usedModel = STATE.catalog.aistudio.fast; }
       catch (err) {
-        if (isRealKey(STATE.orKey)) { try { rawReply = await callOpenAICompat('https://openrouter.ai/api/v1/chat/completions', STATE.orKey, 'openrouter/free', sys, userText); usedModel = 'openrouter/free'; } catch (_) {} }
+        if (isRealKey(STATE.orKey)) { try { rawReply = await callOpenAICompat('https://openrouter.ai/api/v1/chat/completions', STATE.orKey, STATE.catalog.openai.fast, sys, userText); usedModel = STATE.catalog.openai.fast; } catch (_) {} }
         if (!rawReply) rawReply = '[MOOD:shock] Ой! Ошибка API (' + err.message + ').';
       }
     }
   }
 
   if (!rawReply) {
-    await new Promise(r => setTimeout(r, 340));
-    const memHint = STATE.facts.length > 0 ? ' Помню про тебя: «' + STATE.facts[0].text + '».' : '';
-    rawReply = '[MOOD:smug] Принял, хозяин! Я ' + STATE.name + ' (демо).' + memHint + ' На «' + userText.slice(0, 40) + '» отвечаю бодро!';
+    await new Promise(r => setTimeout(r, 320));
+    const memHint = STATE.facts.length > 0 ? ' Помню: «' + STATE.facts[0].text + '».' : '';
+    rawReply = '[MOOD:smug] Принял! Я ' + STATE.name + ' (демо).' + memHint + ' На «' + userText.slice(0, 40) + '» отвечаю бодро!';
   }
 
   const { mood, cleanText } = parseMoodAndClean(rawReply);
@@ -914,6 +957,7 @@ async function askPetBrain(userText, imageObj = null, mode = 'game') {
   renderGameChat(); saveState();
 }
 
+/* GAME MODE */
 function renderGameStage() {
   $('gameEggBox').style.display = STATE.stage === 'egg' ? 'flex' : 'none';
   $('gameAvatarSlot').style.display = STATE.stage !== 'egg' ? 'flex' : 'none';
@@ -925,7 +969,7 @@ function renderGameStage() {
   else if (STATE.stage === 'spark') setPetVisual('booting', 'focus');
   else if (STATE.stage === 'active') setPetVisual('awake', STATE.mood);
   else setPetVisual('off', 'normal');
-  addXP(0); renderGameChat(); renderMemoryDrawer(); syncModuleBadges();
+  addXP(0); renderGameChat(); renderMemoryDrawer();
 }
 
 function renderGameChat() {
@@ -937,7 +981,7 @@ function renderGameChat() {
       const meta = document.createElement('div'); meta.className = 'msg-meta'; meta.innerHTML = '<span>' + msg.model + ' • ' + msg.mood + '</span>';
       const bad = document.createElement('button'); bad.className = 'msg-bad-btn'; bad.textContent = '👎 Ошибка';
       bad.onclick = () => {
-        const rule = prompt('Чему научить ' + STATE.name + ', чтобы больше так не ошибался?', 'Быть точнее');
+        const rule = prompt('Чему научить ' + STATE.name + '?', 'Быть точнее');
         if (rule) {
           STATE.lessons.unshift({ id: Date.now(), mistake: msg.text.slice(0, 60), rule });
           if (STATE.workerUrl && STATE.d1Online) fetch(STATE.workerUrl + '/api/lesson', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ mistake: msg.text.slice(0, 60), rule }) }).catch(() => {});
@@ -958,7 +1002,7 @@ function renderMemoryDrawer() {
     ...STATE.summaries.map(s => ({ type: 'Сон', text: s.text, list: 'summaries', id: s.id })),
     ...STATE.lessons.map(l => ({ type: 'Урок', text: l.rule, list: 'lessons', id: l.id }))
   ];
-  if (all.length === 0) { box.innerHTML = '<div style="color:var(--muted);font-size:11.5px;">Память пока пуста. Покорми питомца фактом!</div>'; return; }
+  if (all.length === 0) { box.innerHTML = '<div style="color:var(--muted);font-size:11.5px;">Память пока пуста.</div>'; return; }
   all.forEach(item => {
     const row = document.createElement('div'); row.className = 'mem-item';
     row.innerHTML = '<span><strong>[' + item.type + ']</strong> ' + item.text + '</span>';
@@ -972,41 +1016,6 @@ function renderMemoryDrawer() {
   });
 }
 
-function openGameDrawer(name) {
-  const target = 'drawer' + name[0].toUpperCase() + name.slice(1);
-  const el = $(target); if (!el) return;
-  const wasOpen = el.classList.contains('open');
-  document.querySelectorAll('.game-drawer').forEach(d => d.classList.remove('open'));
-  document.querySelectorAll('.g-act-btn').forEach(b => b.classList.remove('active'));
-  if (!wasOpen) { el.classList.add('open'); const btn = document.querySelector('.g-act-btn[data-drawer="' + name + '"]'); if (btn) btn.classList.add('active'); }
-}
-
-document.querySelectorAll('.mod-pill').forEach(p => {
-  p.addEventListener('click', () => {
-    if (STATE.stage !== 'active') return;
-    openGameDrawer('modules');
-    const map = { gemini: 'wizCardGemini', memory: 'wizCardMemory', groq: 'wizCardGroq', critic: 'wizCardCritic' };
-    const card = $(map[p.dataset.openMod]); if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  });
-});
-
-$('btnConnectMemory').onclick = () => connectD1Memory($('modWorkerInput').value);
-$('btnConnectGroq').onclick = async () => {
-  const k = $('modGroqInput').value.trim(); if (!isRealKey(k)) { alert('Вставь корректный ключ Groq (gsk_...)'); return; }
-  STATE.groqKey = k; applyThemeAndMode();
-  await playModuleInstallAnim('groq', 'Groq LPU', 'Вжух! Турбина Groq подключена! Теперь болтаю за 0.3 секунды и могу слушать голос через Whisper! (+25 XP)');
-};
-$('btnConnectOr').onclick = async () => {
-  const k = $('modOrInput').value.trim(); if (!isRealKey(k)) { alert('Вставь корректный ключ OpenRouter (sk-or-...)'); return; }
-  STATE.orKey = k; applyThemeAndMode();
-  await playModuleInstallAnim('critic', 'OpenRouter Critic', 'Щит поднят! Модуль Критика и Резерва OpenRouter пристёгнут. Теперь на сложные вопросы у нас есть второе мнение! (+25 XP)');
-};
-$('btnConnectGemini').onclick = async () => {
-  const k = $('modGeminiInput').value.trim(); if (!isRealKey(k)) { alert('Вставь ключ Google AI Studio (AIza...)'); return; }
-  STATE.apiKey = k; applyThemeAndMode();
-  await playModuleInstallAnim('gemini', 'Gemini Flash-Lite', 'Связь с ядром Google AI Studio обновлена! Готов думать и смотреть через камеру! (+25 XP)');
-};
-
 $('gameEggBox').addEventListener('click', () => {
   STATE.eggTaps += 1;
   const egg = $('eggSvg'); egg.classList.remove('egg-shake'); void egg.offsetWidth; egg.classList.add('egg-shake');
@@ -1015,14 +1024,10 @@ $('gameEggBox').addEventListener('click', () => {
   if (STATE.eggTaps >= 3) { STATE.stage = 'naming'; addXP(10); renderGameStage(); }
   saveState();
 });
-
-document.querySelectorAll('[data-gskin]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    STATE.skin = btn.dataset.gskin; document.querySelectorAll('[data-gskin]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active'); applyThemeAndMode(); setPetVisual('awake', 'smug'); saveState();
-  });
-});
-
+document.querySelectorAll('[data-gskin]').forEach(btn => btn.addEventListener('click', () => {
+  STATE.skin = btn.dataset.gskin; document.querySelectorAll('[data-gskin]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active'); applyThemeAndMode(); setPetVisual('awake', 'smug'); saveState();
+}));
 $('btnConfirmName').addEventListener('click', () => {
   STATE.name = $('gameNameInput').value.trim() || 'Спарки';
   STATE.stage = isRealKey(STATE.apiKey) ? 'active' : 'spark';
@@ -1030,36 +1035,44 @@ $('btnConfirmName').addEventListener('click', () => {
   if (STATE.stage === 'active') askPetBrain('Меня только что назвали ' + STATE.name + '. Поздоровайся!');
   saveState();
 });
-
 $('btnOpenAiStudio').addEventListener('click', () => window.open('https://aistudio.google.com/apikey', '_blank', 'noopener'));
-$('btnIgniteSpark').addEventListener('click', () => {
-  const k = $('gameKeyInput').value.trim(); if (!k) { alert('Вставь API-ключ AIza... или нажми Демо-режим ниже'); return; }
-  STATE.apiKey = k; STATE.stage = 'active'; applyThemeAndMode(); renderGameStage();
-  askPetBrain('Искра зажжена! Поздоровайся как ' + STATE.name + ' и предложи открыть вкладку Модули, чтобы пристегнуть Память D1 и Скорость Groq!');
+$('btnIgniteSpark').addEventListener('click', async () => {
+  const k = $('gameKeyInput').value.trim(); if (!k) { alert('Вставь API-ключ AIza...'); return; }
+  STATE.apiKey = k;
+  try { await discoverGeminiClient(k); } catch (_) {}
+  syncNodesToFreshCatalog(); STATE.stage = 'active'; applyThemeAndMode(); renderGameStage();
+  askPetBrain('Искра зажжена! Автоматически выбран ' + STATE.catalog.aistudio.fast + '. Поздоровайся как ' + STATE.name + '!');
   saveState();
 });
 $('btnDemoSpark').addEventListener('click', () => {
   STATE.stage = 'active';
-  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'demo', model: 'demo-sim', mood: 'smug', text: 'Привет! Я ' + STATE.name + '! Загляни в «🧩 Модули» — там в 2 тапа можно подключить Память D1, Groq и Gemini!' });
+  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'demo', model: 'demo-sim', mood: 'smug', text: 'Привет! Я ' + STATE.name + '! Пока работаю в Демо, но можешь покормить меня фактами!' });
   renderGameStage(); saveState();
 });
 
 async function sendGameMessage(text, img = null) {
   if (!text && !img) return;
-  STATE.chat.push({ id: Date.now(), role: 'user', text: text || '[Фото с камеры]' });
-  renderGameChat(); await askPetBrain(text || 'Что изображено на этом фото?', img);
+  STATE.chat.push({ id: Date.now(), role: 'user', text: text || '[Фото]' });
+  renderGameChat(); await askPetBrain(text || 'Что на этом фото?', img);
 }
 $('btnGameSend').addEventListener('click', () => { const v = $('gameChatInput').value.trim(); if (!v) return; $('gameChatInput').value = ''; sendGameMessage(v); });
 $('gameChatInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('btnGameSend').click(); });
 
-document.querySelectorAll('.g-act-btn[data-drawer]').forEach(btn => btn.addEventListener('click', () => openGameDrawer(btn.dataset.drawer)));
+document.querySelectorAll('.g-act-btn[data-drawer]').forEach(btn => btn.addEventListener('click', () => {
+  const target = 'drawer' + btn.dataset.drawer[0].toUpperCase() + btn.dataset.drawer.slice(1);
+  const el = $(target); if (!el) return;
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.game-drawer').forEach(d => d.classList.remove('open'));
+  document.querySelectorAll('.g-act-btn').forEach(b => b.classList.remove('active'));
+  if (!wasOpen) { el.classList.add('open'); btn.classList.add('active'); }
+}));
 
 $('btnSaveFact').addEventListener('click', () => {
   const txt = $('feedFactInput').value.trim(); if (!txt) return;
   STATE.facts.unshift({ id: Date.now(), text: txt, weight: 8 }); $('feedFactInput').value = '';
   if (STATE.workerUrl && STATE.d1Online) fetch(STATE.workerUrl + '/api/fact', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ text: txt }) }).catch(() => {});
   addXP(15); setPetVisual('awake', 'smug');
-  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'memory', model: STATE.d1Online ? 'Cloudflare D1' : 'Local Mem', mood: 'smug', text: 'Ням! Запомнил навсегда: «' + txt + '» (+15 XP)' });
+  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'memory', model: STATE.d1Online ? 'Cloudflare D1' : 'Local Mem', mood: 'smug', text: 'Ням! Запомнил: «' + txt + '» (+15 XP)' });
   renderGameChat(); renderMemoryDrawer(); saveState();
 });
 
@@ -1078,15 +1091,15 @@ $('btnGameSleep').addEventListener('click', async () => {
   if (STATE.workerUrl && STATE.d1Online) {
     try { const r = await fetch(STATE.workerUrl + '/api/sleep', { method: 'POST', headers: workerHeaders() }); if (r.ok) { const d = await r.json(); if (d.summary) summaryText = d.summary; } } catch (_) {}
   } else if (isRealKey(STATE.apiKey)) {
-    try { summaryText = await callGeminiDirect(STATE.apiKey, STATE.geminiModel, 'Сожми переписку в 1-2 коротких факта памяти на русском.', STATE.chat.map(c => c.role + ': ' + c.text).join(NL)); } catch (_) {}
+    try { summaryText = await callGeminiDirect(STATE.apiKey, STATE.catalog.aistudio.fast, 'Сожми диалог в 1-2 факта памяти.', STATE.chat.map(c => c.role + ': ' + c.text).join(NL)); } catch (_) {}
   }
   STATE.summaries.unshift({ id: Date.now(), text: summaryText.trim() });
-  STATE.chat = [{ id: Date.now(), role: 'ai', provider: 'sleep', model: 'Flash-Lite', mood: 'smug', text: '💤 Выспался! Сжал прошлый диалог в сон-память (+20 XP).' }];
+  STATE.chat = [{ id: Date.now(), role: 'ai', provider: 'sleep', model: STATE.catalog.aistudio.fast, mood: 'smug', text: '💤 Выспался! Сжал диалог в сон-память (+20 XP).' }];
   addXP(20); setPetVisual('awake', 'smug'); renderGameChat(); renderMemoryDrawer(); saveState();
 });
 
 $('btnGameDuel').addEventListener('click', async () => {
-  const q = prompt('О чём спросить сразу нескольких мудрецов (Cross-Audit)?', 'Как улучшить наш проект?');
+  const q = prompt('О чём спросить в режиме Спор ИИ (Cross-Audit)?', 'Как улучшить наш проект?');
   if (!q) return;
   STATE.chat.push({ id: Date.now(), role: 'user', text: '⚔️ Спор ИИ: ' + q }); renderGameChat();
   await askPetBrain(q, null, 'duel'); addXP(20);
@@ -1096,10 +1109,7 @@ $('btnGamePhoto').addEventListener('click', () => $('gamePhotoInput').click());
 $('gamePhotoInput').addEventListener('change', e => {
   const file = e.target.files?.[0]; if (!file) return;
   const reader = new FileReader();
-  reader.onload = () => {
-    const base64 = String(reader.result || '').replace(/^data:[^;]+;base64,/, '');
-    sendGameMessage('Посмотри на это фото и скажи, что видишь!', { mime: file.type || 'image/jpeg', base64 });
-  };
+  reader.onload = () => sendGameMessage('Посмотри на это фото и скажи, что видишь!', { mime: file.type || 'image/jpeg', base64: String(reader.result || '').replace(/^data:[^;]+;base64,/, '') });
   reader.readAsDataURL(file);
 });
 
@@ -1113,23 +1123,24 @@ $('btnGameVoice').addEventListener('click', () => {
   RT.rec.start();
 });
 
+/* PRO DAG ENGINE */
 function loadPreset(name) {
   document.querySelectorAll('.preset-chip').forEach(c => c.classList.toggle('active', c.dataset.preset === name));
   if (name === 'chain') {
     STATE.modNodes = [
-      { id: 'm1', provider: 'groq', title: '1. Быстрый Groq', model: 'openai/gpt-oss-20b', key: '', prompt: 'Быстрый черновик.', lastOutput: '', x: 16, y: 100, ms: '130 ms', status: 'idle' },
-      { id: 'm2', provider: 'critic', title: '2. Критик', model: 'gemini-3.1-flash-lite', key: '', prompt: 'Найди слабые места.', lastOutput: '', x: 215, y: 100, ms: '180 ms', status: 'idle' },
-      { id: 'm3', provider: 'openai', title: '3. Финал OpenRouter', model: 'openrouter/free', key: '', prompt: 'Итоговый ответ.', lastOutput: '', x: 415, y: 100, ms: '420 ms', status: 'idle' }
+      { id: 'm1', provider: 'groq', title: '1. Быстрый Groq', model: STATE.catalog.groq.fast, key: '', prompt: 'Быстрый черновик.', lastOutput: '', x: 16, y: 100, ms: '130 ms', status: 'idle' },
+      { id: 'm2', provider: 'critic', title: '2. Критик', model: STATE.catalog.aistudio.fast, key: '', prompt: 'Найди ошибки.', lastOutput: '', x: 215, y: 100, ms: '180 ms', status: 'idle' },
+      { id: 'm3', provider: 'openai', title: '3. Финал OR', model: STATE.catalog.openai.smart, key: '', prompt: 'Итоговый ответ.', lastOutput: '', x: 415, y: 100, ms: '420 ms', status: 'idle' }
     ];
     STATE.modEdges = [{ from: 'm1', to: 'm2', state: 'idle' }, { from: 'm2', to: 'm3', state: 'idle' }];
   } else if (name === 'fast') {
-    STATE.modNodes = [{ id: 'm1', provider: 'aistudio', title: 'Gemini Flash-Lite', model: STATE.geminiModel, key: '', prompt: 'Ответь точно.', lastOutput: '', x: 190, y: 100, ms: '210 ms', status: 'idle' }];
+    STATE.modNodes = [{ id: 'm1', provider: 'aistudio', title: 'Auto Flash-Lite', model: STATE.catalog.aistudio.fast, key: '', prompt: 'Ответь точно.', lastOutput: '', x: 190, y: 100, ms: '210 ms', status: 'idle' }];
     STATE.modEdges = [];
   } else {
     STATE.modNodes = [
-      { id: 'm1', provider: 'groq', title: 'Groq LPU', model: 'openai/gpt-oss-20b', key: '', prompt: 'Быстрый разбор.', lastOutput: '', x: 16, y: 35, ms: '120 ms', status: 'idle' },
-      { id: 'm2', provider: 'aistudio', title: 'Gemini 3.1 Lite', model: STATE.geminiModel, key: '', prompt: 'Системный взгляд.', lastOutput: '', x: 16, y: 165, ms: '210 ms', status: 'idle' },
-      { id: 'm3', provider: 'critic', title: 'Cross-Audit Критик', model: 'gemini-3.1-flash-lite', key: '', prompt: 'Сверь два черновика.', lastOutput: '', x: 220, y: 100, ms: '190 ms', status: 'idle' }
+      { id: 'm1', provider: 'groq', title: 'Groq (Auto)', model: STATE.catalog.groq.smart, key: '', prompt: 'Быстрый глубокий разбор.', lastOutput: '', x: 16, y: 35, ms: '140 ms', status: 'idle' },
+      { id: 'm2', provider: 'aistudio', title: 'Auto Flash-Lite', model: STATE.catalog.aistudio.fast, key: '', prompt: 'Системный взгляд.', lastOutput: '', x: 16, y: 165, ms: '210 ms', status: 'idle' },
+      { id: 'm3', provider: 'critic', title: 'Cross-Audit Критик', model: STATE.catalog.aistudio.fast, key: '', prompt: 'Сверь два черновика.', lastOutput: '', x: 220, y: 100, ms: '190 ms', status: 'idle' }
     ];
     STATE.modEdges = [{ from: 'm1', to: 'm3', state: 'idle' }, { from: 'm2', to: 'm3', state: 'idle' }];
   }
@@ -1172,8 +1183,7 @@ function renderModGraph() {
     card.addEventListener('pointerdown', e => {
       if (e.target.classList.contains('node-port')) return;
       e.preventDefault(); STATE.selectedModId = node.id; RT.dragModId = node.id; RT.dragEl = card;
-      const r = c.getBoundingClientRect();
-      RT.dragOffset = { x: e.clientX - r.left - node.x, y: e.clientY - r.top - node.y };
+      const r = c.getBoundingClientRect(); RT.dragOffset = { x: e.clientX - r.left - node.x, y: e.clientY - r.top - node.y };
       c.querySelectorAll('.ai-node').forEach(el => el.classList.remove('selected')); card.classList.add('selected'); syncInspector();
     });
     card.querySelector('.port-out').addEventListener('pointerdown', e => {
@@ -1238,13 +1248,14 @@ function syncInspector() {
   const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (!n) return;
   $('inspProviderTag').textContent = n.provider.toUpperCase();
   $('inspTitle').value = n.title; $('inspProvider').value = n.provider;
-  const ms = MODELS[n.provider] || [n.model];
+  const catEntry = STATE.catalog[n.provider] || STATE.catalog.aistudio;
+  const ms = [...new Set([...(catEntry.list || []), n.model])];
   $('inspModel').innerHTML = ms.map(m => '<option value="' + m + '" ' + (m === n.model ? 'selected' : '') + '>' + m + '</option>').join('');
   $('inspKey').value = n.key || ''; $('inspPrompt').value = n.prompt || ''; $('inspOutput').textContent = n.lastOutput || 'Нет вывода.';
 }
 
 $('inspTitle').oninput = () => { const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (n) { n.title = $('inspTitle').value; renderModGraph(); saveState(); } };
-$('inspProvider').onchange = () => { const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (n) { n.provider = $('inspProvider').value; n.model = MODELS[n.provider][0]; renderModGraph(); syncInspector(); saveState(); } };
+$('inspProvider').onchange = () => { const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (n) { n.provider = $('inspProvider').value; n.model = (STATE.catalog[n.provider]?.fast || 'openrouter/free'); renderModGraph(); syncInspector(); saveState(); } };
 $('inspModel').onchange = () => { const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (n) { n.model = $('inspModel').value; renderModGraph(); saveState(); } };
 $('inspKey').oninput = () => { const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (n) { n.key = $('inspKey').value; saveState(); } };
 $('inspPrompt').oninput = () => { const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (n) { n.prompt = $('inspPrompt').value; saveState(); } };
@@ -1258,7 +1269,8 @@ $('btnDeleteModNode').onclick = () => {
 document.querySelectorAll('.preset-chip').forEach(b => b.onclick = () => loadPreset(b.dataset.preset));
 document.querySelectorAll('.add-node-btn').forEach(b => b.onclick = () => {
   const p = b.dataset.addType; const id = 'm' + Math.floor(100 + Math.random() * 900);
-  STATE.modNodes.push({ id, provider: p, title: p.toUpperCase() + ' Блок', model: MODELS[p][0], key: '', prompt: 'Обработай контекст.', lastOutput: '', x: 35, y: 40, ms: '200 ms', status: 'idle' });
+  const m = STATE.catalog[p]?.fast || 'openrouter/free';
+  STATE.modNodes.push({ id, provider: p, title: p.toUpperCase() + ' Блок', model: m, key: '', prompt: 'Обработай контекст.', lastOutput: '', x: 35, y: 40, ms: '200 ms', status: 'idle' });
   STATE.selectedModId = id; renderModGraph(); syncInspector(); saveState();
 });
 
@@ -1319,25 +1331,22 @@ $('btnModeGame').onclick = () => { STATE.appMode = 'game'; applyThemeAndMode(); 
 $('btnModePro').onclick = () => { STATE.appMode = 'pro'; applyThemeAndMode(); renderModGraph(); syncInspector(); saveState(); };
 
 $('btnOpenSettings').onclick = () => {
-  $('setGeminiKey').value = STATE.apiKey;
-  $('setGroqKey').value = STATE.groqKey;
-  $('setOrKey').value = STATE.orKey;
-  $('setWorkerUrl').value = STATE.workerUrl;
+  $('setGeminiKey').value = STATE.apiKey; $('setGroqKey').value = STATE.groqKey;
+  $('setOrKey').value = STATE.orKey; $('setWorkerUrl').value = STATE.workerUrl; $('setAppPin').value = STATE.appPin;
   $('settingsModal').classList.add('open');
 };
 $('btnCloseSettings').onclick = () => $('settingsModal').classList.remove('open');
-$('btnSaveSettings').onclick = () => {
-  STATE.apiKey = $('setGeminiKey').value.trim();
-  STATE.groqKey = $('setGroqKey').value.trim();
-  STATE.orKey = $('setOrKey').value.trim();
+$('btnSaveSettings').onclick = async () => {
+  STATE.apiKey = $('setGeminiKey').value.trim(); STATE.groqKey = $('setGroqKey').value.trim();
+  STATE.orKey = $('setOrKey').value.trim(); STATE.appPin = $('setAppPin').value.trim();
   const newW = $('setWorkerUrl').value.trim().replace(/\/+$/, '');
   $('settingsModal').classList.remove('open');
-  if (newW && newW !== STATE.workerUrl) { connectD1Memory(newW); return; }
-  applyThemeAndMode(); saveState();
+  if (newW && newW !== STATE.workerUrl) { await connectD1Memory(newW, STATE.appPin); return; }
+  await refreshAllAdaptiveModels(); applyThemeAndMode();
 };
 $('btnResetAll').onclick = () => {
   if (!confirm('Сбросить питомца, память и граф до яйца?')) return;
-  try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+  try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem('aios_v10_unified'); } catch (_) {}
   location.reload();
 };
 
@@ -1360,8 +1369,9 @@ if (!STATE.modNodes || STATE.modNodes.length === 0) loadPreset('ensemble');
 else { renderModGraph(); syncInspector(); }
 applyThemeAndMode();
 renderGameStage();
-if (STATE.workerUrl) { connectD1Memory(STATE.workerUrl).catch(() => {}); }
-addLog('AI OS Companion v10.5 готов.', 'SYS');
+if (STATE.workerUrl) { connectD1Memory(STATE.workerUrl, STATE.appPin).catch(() => {}); }
+else if (isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey)) { refreshAllAdaptiveModels().catch(() => {}); }
+addLog('AI OS Companion v11 (Adaptive Auto-Discovery) готов.', 'SYS');
 </script>
 </body>
 </html>
