@@ -1,0 +1,20 @@
+{
+  "name": "ai-os-brain",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-01",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ai_os_memory",
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+    }
+  ],
+  "vars": {
+    "GEMINI_MODEL_LITE": "gemini-3.1-flash-lite",
+    "GEMINI_MODEL_PRO": "gemini-3.8-flash",
+    "GROQ_MODEL_FAST": "openai/gpt-oss-20b",
+    "GROQ_MODEL_SMART": "qwen/qwen3.8-27b",
+    "GROQ_MODEL_WHISPER": "whisper-large-v3-turbo",
+    "OPENROUTER_MODEL_FREE": "openrouter/free"
+  }
+}
