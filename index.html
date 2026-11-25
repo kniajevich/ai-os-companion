@@ -35,14 +35,9 @@ body.ui-cyber.theme-monolith { --accent: #a855f7; --accent-2: #38bdf8; }
 
 * { box-sizing: border-box; }
 body {
-  margin: 0;
-  min-height: 100vh;
+  margin: 0; min-height: 100vh;
   background: radial-gradient(circle at 50% -10%, color-mix(in srgb, var(--accent) 16%, var(--bg)) 0%, transparent 60%), var(--bg);
-  color: var(--text);
-  font-family: var(--font-main);
-  display: flex;
-  justify-content: center;
-  padding: 10px;
+  color: var(--text); font-family: var(--font-main); display: flex; justify-content: center; padding: 10px;
 }
 .crt-overlay {
   pointer-events: none; position: fixed; inset: 0; z-index: 50; opacity: var(--scan-opacity);
@@ -53,7 +48,7 @@ body {
   border-radius: var(--radius); padding: 14px; box-shadow: 0 24px 80px rgba(0,0,0,0.85);
   position: relative; overflow: hidden; align-self: flex-start;
 }
-body.app-mode-game .app { max-width: 540px; }
+body.app-mode-game .app { max-width: 550px; }
 body.app-mode-game .pro-only { display: none !important; }
 body.app-mode-pro .game-only { display: none !important; }
 
@@ -62,7 +57,6 @@ body.app-mode-pro .game-only { display: none !important; }
   background: repeating-linear-gradient(-45deg, #ffb020, #ffb020 12px, #18181b 12px, #18181b 24px);
 }
 
-/* TOP HEADER */
 .top-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
 .title-wrap { display: flex; align-items: center; gap: 9px; }
 .dot-live { width: 10px; height: 10px; border-radius: 50%; background: #475569; flex-shrink: 0; }
@@ -84,10 +78,8 @@ body.app-mode-pro .game-only { display: none !important; }
   background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text);
   border-radius: 9px; padding: 5px 9px; font-size: 12px; cursor: pointer;
 }
-.icon-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-/* ================= GAME MODE ================= */
-.game-shell { display: flex; flex-direction: column; gap: 10px; }
+.game-shell { display: flex; flex-direction: column; gap: 9px; }
 .game-hud {
   display: flex; justify-content: space-between; align-items: center; gap: 10px;
   background: var(--panel-alt); border: 1px solid var(--border); border-radius: 14px; padding: 9px 12px;
@@ -97,11 +89,30 @@ body.app-mode-pro .game-only { display: none !important; }
 .xp-bar { height: 7px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
 .xp-fill { height: 100%; width: 10%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width 0.3s ease; }
 
+.mod-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+@media (max-width: 460px) { .mod-strip { grid-template-columns: repeat(2, 1fr); } }
+.mod-pill {
+  background: rgba(8,13,22,0.85); border: 1px dashed var(--border); border-radius: 10px; padding: 6px 8px;
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 4px; transition: all 0.2s;
+}
+.mod-pill.on { border-style: solid; border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.mod-pill.on-blue { border-style: solid; border-color: var(--accent-2); color: var(--accent-2); background: color-mix(in srgb, var(--accent-2) 12%, transparent); }
+.mod-pill.on-purple { border-style: solid; border-color: var(--purple); color: var(--purple); background: color-mix(in srgb, var(--purple) 12%, transparent); }
+
 .game-stage {
+  position: relative;
   background: linear-gradient(to right, var(--grid-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px), radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--accent) 14%, var(--panel-alt)) 0%, #05080e 88%);
   background-size: 26px 26px, 26px 26px, 100% 100%;
-  border: 1px solid var(--border); border-radius: 18px; padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  border: 1px solid var(--border); border-radius: 18px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;
 }
+.xp-pop {
+  position: absolute; top: 14px; right: 16px; font-family: var(--font-mono); font-weight: 800; font-size: 13px;
+  color: var(--accent); background: rgba(5,8,13,0.9); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 99px;
+  opacity: 0; transform: translateY(10px); pointer-events: none; transition: all 0.4s ease; z-index: 15;
+}
+.xp-pop.show { opacity: 1; transform: translateY(0); }
+
 .egg-card { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 10px; text-align: center; cursor: pointer; user-select: none; }
 .egg-svg { width: 148px; height: 175px; filter: drop-shadow(0 0 24px color-mix(in srgb, var(--accent) 32%, transparent)); animation: floatRoot 3s ease-in-out infinite; }
 .egg-shake { animation: jitterShock 0.25s ease !important; }
@@ -110,21 +121,21 @@ body.app-mode-pro .game-only { display: none !important; }
 .egg-cracks-2 .crack-1, .egg-cracks-2 .crack-2 { opacity: 1; }
 
 .game-card {
-  width: 100%; background: rgba(7, 11, 19, 0.9); border: 1px solid var(--border); border-radius: 14px; padding: 12px;
+  width: 100%; background: rgba(7, 11, 19, 0.92); border: 1px solid var(--border); border-radius: 14px; padding: 12px;
   display: flex; flex-direction: column; gap: 8px;
 }
 .game-input, .game-textarea {
   width: 100%; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 10px;
-  padding: 10px 12px; color: var(--text); font-family: var(--font-main); font-size: 14px; outline: none;
+  padding: 9px 11px; color: var(--text); font-family: var(--font-main); font-size: 13.5px; outline: none;
 }
 .game-input:focus, .game-textarea:focus { border-color: var(--accent); }
 .primary-btn {
   background: color-mix(in srgb, var(--accent) 20%, var(--panel-alt)); border: 1.5px solid var(--accent); color: var(--accent);
-  border-radius: 11px; padding: 10px 14px; font-weight: 700; font-size: 13.5px; cursor: pointer; text-align: center;
+  border-radius: 11px; padding: 9px 13px; font-weight: 700; font-size: 13px; cursor: pointer; text-align: center;
 }
 .secondary-btn {
   background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text);
-  border-radius: 11px; padding: 9px 12px; font-weight: 600; font-size: 12.5px; cursor: pointer;
+  border-radius: 11px; padding: 8px 12px; font-weight: 600; font-size: 12.5px; cursor: pointer; text-decoration: none; text-align: center;
 }
 .skin-chips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
 .chip-btn {
@@ -137,16 +148,13 @@ body.app-mode-pro .game-only { display: none !important; }
   width: 100%; max-height: 185px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;
   background: rgba(4, 7, 13, 0.72); border: 1px solid var(--border); border-radius: 14px; padding: 10px;
 }
-.msg-bubble {
-  padding: 8px 10px; border-radius: 11px; font-size: 13px; line-height: 1.4; max-width: 92%; position: relative;
-}
+.msg-bubble { padding: 8px 10px; border-radius: 11px; font-size: 13px; line-height: 1.4; max-width: 92%; }
 .msg-user { align-self: flex-end; background: color-mix(in srgb, var(--accent-2) 18%, var(--panel-alt)); border: 1px solid color-mix(in srgb, var(--accent-2) 40%, transparent); }
 .msg-ai { align-self: flex-start; background: rgba(17, 25, 39, 0.95); border: 1px solid var(--border); }
 .msg-meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 9.5px; color: var(--muted); margin-top: 4px; }
 .msg-bad-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 5px; font-size: 10px; padding: 1px 5px; cursor: pointer; }
-.msg-bad-btn:hover { border-color: var(--danger); color: var(--danger); }
 
-.game-actions-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.game-actions-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
 @media (max-width: 480px) { .game-actions-grid { grid-template-columns: repeat(3, 1fr); } }
 .g-act-btn {
   background: var(--panel-alt); border: 1px solid var(--border); border-radius: 12px; padding: 8px 4px;
@@ -155,23 +163,23 @@ body.app-mode-pro .game-only { display: none !important; }
 .g-act-btn:hover, .g-act-btn.active { border-color: var(--accent); color: var(--accent); }
 
 .game-drawer {
-  background: var(--panel-alt); border: 1px solid var(--accent-2); border-radius: 14px; padding: 11px; display: none; flex-direction: column; gap: 8px;
+  background: var(--panel-alt); border: 1px solid var(--accent-2); border-radius: 14px; padding: 11px; display: none; flex-direction: column; gap: 9px;
 }
 .game-drawer.open { display: flex; }
+.mod-wizard-card {
+  background: rgba(5, 8, 14, 0.85); border: 1px solid var(--border); border-radius: 11px; padding: 10px; display: flex; flex-direction: column; gap: 6px;
+}
+.mod-wizard-head { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; font-weight: 700; }
 .slider-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; }
 .slider-row input[type=range] { flex: 1; accent-color: var(--accent); }
 .mem-list { max-height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; }
 .mem-item { background: rgba(0,0,0,0.35); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; font-size: 11.5px; display: flex; justify-content: space-between; gap: 6px; }
 
 .game-chat-bar {
-  display: flex; gap: 6px; align-items: center; background: var(--panel-alt); border: 1px solid var(--border);
-  border-radius: 14px; padding: 6px;
+  display: flex; gap: 6px; align-items: center; background: var(--panel-alt); border: 1px solid var(--border); border-radius: 14px; padding: 6px;
 }
 .game-chat-input { flex: 1; background: transparent; border: none; color: var(--text); font-size: 14px; padding: 6px; outline: none; min-width: 0; }
-.chat-tool-btn {
-  background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 10px;
-  padding: 8px 10px; font-size: 14px; cursor: pointer; flex-shrink: 0;
-}
+.chat-tool-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 8px 10px; font-size: 14px; cursor: pointer; flex-shrink: 0; }
 .chat-tool-btn.rec { border-color: var(--danger); color: var(--danger); }
 
 /* ================= PRO MODE ================= */
@@ -189,7 +197,6 @@ body.app-mode-pro .game-only { display: none !important; }
 .host-pill.pet-host strong { color: var(--accent-2); }
 .host-pill.vault-host strong { color: var(--purple); }
 .swap-btn { background: color-mix(in srgb, var(--accent-2) 15%, var(--panel)); border: 1px solid var(--accent-2); color: var(--accent-2); border-radius: 9px; padding: 6px 9px; font-family: var(--font-mono); font-size: 11px; font-weight: 700; cursor: pointer; }
-
 .workspace { display: grid; grid-template-columns: 1.68fr 0.92fr; gap: 12px; }
 @media (max-width: 1024px) { .workspace { grid-template-columns: 1fr; } }
 .stage { background: linear-gradient(to right, var(--grid-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px), radial-gradient(circle at 45% 48%, color-mix(in srgb, var(--accent) 12%, var(--panel-alt)) 0%, #05080e 86%); background-size: 28px 28px, 28px 28px, 100% 100%; border: 1px solid var(--border); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
@@ -214,7 +221,6 @@ body.app-mode-pro .game-only { display: none !important; }
 .graph-canvas.cycle-warn { box-shadow: inset 0 0 0 2px var(--danger); }
 svg#wireSvg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
 .wire-edge { fill: none; stroke: rgba(123,140,163,0.45); stroke-width: 2.3; pointer-events: stroke; cursor: pointer; }
-.wire-edge:hover { stroke: var(--danger); }
 .wire-edge.active-flow { stroke: var(--accent); stroke-width: 3.2; stroke-dasharray: 8 6; animation: dashFlow 0.55s linear infinite; }
 .wire-edge.done-flow { stroke: var(--accent-2); }
 .wire-temp { fill: none; stroke: var(--warn); stroke-width: 2.4; stroke-dasharray: 5 5; }
@@ -234,28 +240,28 @@ svg#wireSvg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-e
 .node-port { position: absolute; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; border-radius: 50%; background: var(--panel); border: 2px solid var(--accent-2); cursor: crosshair; touch-action: none; z-index: 6; }
 .port-in { left: -7px; }
 .port-out { right: -7px; border-color: var(--accent); }
-
 .telemetry { background: var(--panel-alt); border: 1px solid var(--border); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
 .tele-card { background: rgba(5,8,14,0.68); border: 1px solid var(--border); border-radius: 12px; padding: 10px; }
 .tele-title { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); margin-bottom: 7px; display: flex; justify-content: space-between; }
 .insp-input, .insp-select, .insp-textarea { width: 100%; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; color: var(--text); font-family: var(--font-mono); font-size: 10.5px; margin-bottom: 5px; outline: none; }
 .insp-output { background: rgba(2,4,9,0.85); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-family: var(--font-mono); font-size: 9.5px; color: var(--accent); max-height: 75px; overflow-y: auto; white-space: pre-wrap; }
-.node-item { padding: 6px 8px; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 5px; font-family: var(--font-mono); font-size: 10.5px; cursor: pointer; }
-.node-item.selected { border-color: var(--accent); }
+.node-item { padding: 6px 8px; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 5px; font-family: var(--font-mono); font-size: 10.5px; }
 .log-wrap { margin-top: 12px; background: rgba(4,7,12,0.85); border: 1px solid var(--border); border-radius: 12px; }
 .log { padding: 8px 12px; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); max-height: 120px; overflow-y: auto; }
 
-/* ================= SVG PET ANIMATIONS ================= */
-svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-select: none; }
+svg#pet { width: 100%; max-width: 460px; height: auto; cursor: pointer; user-select: none; }
 @keyframes floatRoot { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
 @keyframes jitterShock { 0%,100% { transform: translate(0,0); } 25% { transform: translate(-4px,2px) rotate(-2deg); } 75% { transform: translate(4px,-2px) rotate(2deg); } }
 @keyframes spinCore { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes dashFlow { to { stroke-dashoffset: -28; } }
 @keyframes haloSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes burstRing { 0% { r: 22; opacity: 0.95; stroke-width: 6; } 100% { r: 145; opacity: 0; stroke-width: 1; } }
+
 .pet-root { transform-origin: 270px 195px; animation: floatRoot 3.8s ease-in-out infinite; }
 .state-booting .pet-root { animation: jitterShock 0.16s infinite; }
-.core-outer { transform-origin: 270px 266px; opacity: 0.25; }
+.core-outer { transform-origin: 270px 265px; opacity: 0.25; }
 .state-awake .core-outer, .state-booting .core-outer { opacity: 1; animation: spinCore 4.5s linear infinite; }
+.mod-turbo-on .core-outer { animation: spinCore 1.1s linear infinite !important; }
 .relic-halo, .mono-satellites { transform-origin: 270px 152px; animation: haloSpin 14s linear infinite; }
 .skin-layer { display: none; }
 .skin-robot .layer-robot { display: block; }
@@ -272,10 +278,21 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
 .state-awake.grim-shock .eyes-error, .state-awake.grim-shock .mouth-shock { display: block; }
 .eyelid-blink { transform-origin: 270px 140px; transform: scaleY(0); transition: transform 0.08s; }
 .is-blinking .eyelid-blink { transform: scaleY(1); }
-.wire-active { opacity: 0; stroke-dasharray: 8 7; }
-.state-booting .wire-brain, .state-awake .wire-brain { opacity: 1; animation: dashFlow 0.7s linear infinite; }
 
-/* MODAL */
+.wire-active { opacity: 0; stroke-dasharray: 8 7; transition: opacity 0.35s ease; }
+.state-booting .wire-brain, .state-awake .wire-brain { opacity: 1; animation: dashFlow 0.7s linear infinite; }
+.mod-memory-on .wire-memory { opacity: 1; animation: dashFlow 0.6s linear infinite; }
+.mod-turbo-on .wire-term, .mod-critic-on .wire-term { opacity: 1; animation: dashFlow 0.55s linear infinite; }
+
+.attach-memory { transform: translate(-42px, 16px) rotate(-12deg); opacity: 0.25; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease; }
+.mod-memory-on .attach-memory { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+.attach-term { transform: translate(42px, 16px) rotate(12deg); opacity: 0.25; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease; }
+.mod-turbo-on .attach-term, .mod-critic-on .attach-term { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+.shield-aura { opacity: 0; transition: opacity 0.4s; }
+.mod-critic-on .shield-aura { opacity: 0.55; animation: haloSpin 18s linear infinite; transform-origin: 270px 210px; }
+.burst-ring { opacity: 0; }
+.anim-burst .burst-ring { animation: burstRing 0.9s ease-out forwards; }
+
 .modal-bg { position: fixed; inset: 0; background: rgba(2,5,10,0.86); display: none; align-items: center; justify-content: center; z-index: 100; padding: 14px; }
 .modal-bg.open { display: flex; }
 .modal-card { width: 100%; max-width: 440px; background: var(--panel); border: 1.5px solid var(--accent); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
@@ -284,15 +301,16 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
 <body class="ui-cyber theme-robot app-mode-game">
 <div class="crt-overlay"></div>
 
-<!-- SETTINGS MODAL (API / WORKER / RESET) -->
 <div id="settingsModal" class="modal-bg">
   <div class="modal-card">
-    <strong style="font-family:var(--font-mono);color:var(--accent);font-size:13px;">⚙ НАСТРОЙКИ И ОБЛАЧНАЯ ПАМЯТЬ</strong>
-    <label style="font-size:11.5px;color:var(--muted);">Google AI Studio API Key (Gemini Flash-Lite Free):</label>
+    <strong style="font-family:var(--font-mono);color:var(--accent);font-size:13px;">⚙ КЛЮЧИ И ОБЛАЧНАЯ ПАМЯТЬ</strong>
+    <label style="font-size:11.5px;color:var(--muted);">Google AI Studio Key (Gemini):</label>
     <input id="setGeminiKey" class="game-input" type="password" placeholder="AIzaSy..." />
-    <label style="font-size:11.5px;color:var(--muted);">Модель Gemini (по умолчанию 3.1 Flash-Lite):</label>
-    <input id="setGeminiModel" class="game-input" type="text" value="gemini-3.1-flash-lite" />
-    <label style="font-size:11.5px;color:var(--muted);">Cloudflare Worker URL (для общей D1 памяти, шаг 3):</label>
+    <label style="font-size:11.5px;color:var(--muted);">Groq API Key (Скорость + Голос):</label>
+    <input id="setGroqKey" class="game-input" type="password" placeholder="gsk_..." />
+    <label style="font-size:11.5px;color:var(--muted);">OpenRouter Key (Критик + Резерв):</label>
+    <input id="setOrKey" class="game-input" type="password" placeholder="sk-or-..." />
+    <label style="font-size:11.5px;color:var(--muted);">Cloudflare Worker URL (Память D1):</label>
     <input id="setWorkerUrl" class="game-input" type="text" placeholder="https://ai-os-brain.твой-поддомен.workers.dev" />
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px;">
       <button id="btnResetAll" class="secondary-btn" style="color:var(--danger);">↺ Сброс</button>
@@ -304,13 +322,12 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
 
 <div class="app">
   <div class="hazard-strip"></div>
-
   <div class="top-bar">
     <div class="title-wrap">
       <span id="liveDot" class="dot-live"></span>
       <div>
         <strong style="font-size:14px;">AI OS Companion</strong>
-        <div style="font-size:11px;color:var(--muted);" id="topSubLabel">GAME Mode • Единая память и личность</div>
+        <div style="font-size:11px;color:var(--muted);" id="topSubLabel">GAME Mode • Единая память D1 и модули</div>
       </div>
     </div>
     <div class="top-badges">
@@ -319,11 +336,10 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
         <button id="btnModePro" class="mode-btn">🛠 PRO</button>
       </div>
       <span id="brainBadge" class="badge warn">DEMO</span>
-      <button id="btnOpenSettings" class="icon-btn" title="Настройки API и Worker">⚙</button>
+      <button id="btnOpenSettings" class="icon-btn" title="Настройки">⚙</button>
     </div>
   </div>
 
-  <!-- ===================== GAME MODE VIEW ===================== -->
   <div id="gameView" class="game-shell game-only">
     <div class="game-hud">
       <div style="font-weight:800;font-size:14px;" id="hudPetName">🥚 Яйцо</div>
@@ -336,16 +352,19 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
       </div>
     </div>
 
+    <div class="mod-strip">
+      <button class="mod-pill" id="pillGemini" data-open-mod="gemini"><span>🤖 Мозг</span><span id="pillGeminiSt">OFF</span></button>
+      <button class="mod-pill" id="pillMemory" data-open-mod="memory"><span>💾 Память D1</span><span id="pillMemorySt">OFF</span></button>
+      <button class="mod-pill" id="pillGroq" data-open-mod="groq"><span>⚡ Groq</span><span id="pillGroqSt">OFF</span></button>
+      <button class="mod-pill" id="pillCritic" data-open-mod="critic"><span>🛡 Критик</span><span id="pillCriticSt">OFF</span></button>
+    </div>
+
     <div class="game-stage">
-      <!-- EGG STAGE -->
+      <div id="xpPop" class="xp-pop">+25 XP!</div>
       <div id="gameEggBox" class="egg-card">
         <svg id="eggSvg" class="egg-svg" viewBox="0 0 160 190" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <radialGradient id="eggGrad" cx="38%" cy="30%" r="68%">
-              <stop offset="0%" stop-color="#38bdf8" />
-              <stop offset="55%" stop-color="#0f2942" />
-              <stop offset="100%" stop-color="#060c18" />
-            </radialGradient>
+            <radialGradient id="eggGrad" cx="38%" cy="30%" r="68%"><stop offset="0%" stop-color="#38bdf8" /><stop offset="55%" stop-color="#0f2942" /><stop offset="100%" stop-color="#060c18" /></radialGradient>
           </defs>
           <ellipse cx="80" cy="175" rx="46" ry="10" fill="rgba(0,245,184,0.22)" />
           <path d="M80 18 C118 18, 136 74, 134 118 C132 152, 108 168, 80 168 C52 168, 28 152, 26 118 C24 74, 42 18, 80 18 Z" fill="url(#eggGrad)" stroke="#00f5b8" stroke-width="3" />
@@ -357,15 +376,10 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
         <div id="eggTapHint" style="font-family:var(--font-mono);font-size:12px;color:var(--accent);">Нажатий: 0 / 3</div>
       </div>
 
-      <!-- SHARED LIVING AVATAR SLOT (for Game Mode) -->
       <div id="gameAvatarSlot" style="width:100%;display:none;justify-content:center;">
-        <!-- #pet moves here in GAME mode -->
         <svg id="pet" class="state-off skin-robot grim-normal" viewBox="0 0 540 345" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern id="carbonTex" width="8" height="8" patternUnits="userSpaceOnUse">
-              <rect width="8" height="8" fill="#162032" />
-              <path d="M0 4 L4 0 L8 4 L4 8 Z" fill="#1e2b42" opacity="0.65" />
-            </pattern>
+            <pattern id="carbonTex" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#162032" /><path d="M0 4 L4 0 L8 4 L4 8 Z" fill="#1e2b42" opacity="0.65" /></pattern>
             <linearGradient id="foxFurGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c2591b" /><stop offset="100%" stop-color="#3b1308" /></linearGradient>
             <linearGradient id="obsidianGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#271b3d" /><stop offset="100%" stop-color="#090612" /></linearGradient>
             <linearGradient id="monolithGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#311042" /><stop offset="100%" stop-color="#090412" /></linearGradient>
@@ -374,16 +388,43 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
             <filter id="neonGlow" x="-35%" y="-35%" width="170%" height="170%"><feGaussianBlur stdDeviation="4" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
           </defs>
           <ellipse cx="270" cy="324" rx="110" ry="15" fill="url(#floorShadow)" />
+          <circle id="burstRing" class="burst-ring" cx="270" cy="220" r="24" fill="none" stroke="var(--accent)" stroke-width="4" filter="url(#neonGlow)" />
           <g id="dock-brain">
             <rect x="175" y="10" width="190" height="28" rx="10" fill="#0f1726" stroke="#2b3d5c" stroke-width="1.8" />
             <text id="svgLeaderDockText" x="270" y="28" text-anchor="middle" fill="var(--accent)" font-size="10.5" font-weight="700">BRAIN // GEMINI + D1</text>
             <path d="M270 38 L270 84" stroke="#223047" stroke-width="4" />
             <path class="wire-active wire-brain" d="M270 38 L270 84" stroke="var(--accent)" stroke-width="3.5" filter="url(#neonGlow)" />
           </g>
+          <g id="dock-memory" opacity="0.88">
+            <rect x="14" y="172" width="92" height="60" rx="13" fill="#0c1320" stroke="#25354e" stroke-width="1.8" stroke-dasharray="4 3" />
+            <text x="60" y="199" text-anchor="middle" fill="#38bdf8" font-size="10.5" font-weight="700">ПАМЯТЬ D1</text>
+            <text x="60" y="214" text-anchor="middle" fill="#64748b" font-size="8.5">Cloudflare</text>
+            <path d="M106 202 L180 202" stroke="#202e44" stroke-width="3.5" />
+            <path class="wire-active wire-memory" d="M106 202 L180 202" stroke="#38bdf8" stroke-width="3.5" filter="url(#neonGlow)" />
+          </g>
+          <g id="dock-term" opacity="0.88">
+            <rect x="434" y="172" width="92" height="60" rx="13" fill="#0c1320" stroke="#25354e" stroke-width="1.8" stroke-dasharray="4 3" />
+            <text x="480" y="199" text-anchor="middle" fill="#ffb020" font-size="10" font-weight="700">TURBO / CRIT</text>
+            <text x="480" y="214" text-anchor="middle" fill="#64748b" font-size="8.5">Groq + OR</text>
+            <path d="M434 202 L360 202" stroke="#202e44" stroke-width="3.5" />
+            <path class="wire-active wire-term" d="M434 202 L360 202" stroke="#ffb020" stroke-width="3.5" filter="url(#neonGlow)" />
+          </g>
           <g class="pet-root">
+            <circle class="shield-aura" cx="270" cy="210" r="124" fill="none" stroke="#c084fc" stroke-width="2" stroke-dasharray="18 8 4 8" />
             <g class="skin-layer layer-relic relic-halo"><circle cx="270" cy="152" r="102" fill="none" stroke="#c084fc" stroke-width="1.5" stroke-dasharray="16 10" opacity="0.6" /></g>
             <g class="skin-layer layer-monolith mono-satellites"><circle cx="270" cy="68" r="6" fill="#a855f7" /><circle cx="158" cy="195" r="6" fill="#ffb020" /><circle cx="382" cy="195" r="6" fill="#38bdf8" /></g>
             <g class="skin-layer layer-beast"><path d="M202 280 C142 285, 118 242, 144 214 C162 196, 188 218, 198 246 Z" fill="url(#foxFurGrad)" stroke="#fb923c" stroke-width="2" /></g>
+            <g class="attach-memory">
+              <rect x="148" y="226" width="42" height="58" rx="11" fill="#131c2e" stroke="#38bdf8" stroke-width="2" />
+              <rect x="156" y="236" width="26" height="8" rx="3" fill="#09111e" />
+              <rect x="158" y="238" width="16" height="4" rx="2" fill="#38bdf8" filter="url(#neonGlow)" />
+              <line x1="156" y1="254" x2="182" y2="254" stroke="#38bdf8" stroke-width="2" />
+              <line x1="156" y1="263" x2="175" y2="263" stroke="#38bdf8" stroke-width="2" opacity="0.6" />
+            </g>
+            <g class="attach-term">
+              <rect x="350" y="226" width="42" height="58" rx="11" fill="#131c2e" stroke="#ffb020" stroke-width="2" />
+              <polygon points="371,236 363,252 371,252 367,268 381,248 372,248" fill="#ffb020" filter="url(#neonGlow)" />
+            </g>
             <g class="pet-torso">
               <rect class="skin-layer layer-robot" x="200" y="222" width="140" height="86" rx="26" fill="url(#carbonTex)" stroke="#3d5273" stroke-width="2.5" />
               <rect class="skin-layer layer-beast" x="200" y="222" width="140" height="86" rx="30" fill="url(#foxFurGrad)" stroke="#fb923c" stroke-width="2.5" />
@@ -417,14 +458,8 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
               <rect class="skin-layer layer-relic" x="186" y="92" width="168" height="124" rx="32" fill="url(#obsidianGrad)" stroke="#c084fc" stroke-width="3" />
               <polygon class="skin-layer layer-monolith" points="204,92 336,92 350,216 190,216" fill="url(#monolithGrad)" stroke="#a855f7" stroke-width="3" />
               <rect x="202" y="108" width="136" height="92" rx="26" fill="url(#visorGrad)" stroke="#293852" stroke-width="2" />
-              <g class="face-layer eyes-off">
-                <path d="M222 146 Q236 152 250 146" stroke="#64748b" stroke-width="3.5" fill="none" stroke-linecap="round" />
-                <path d="M290 146 Q304 152 318 146" stroke="#64748b" stroke-width="3.5" fill="none" stroke-linecap="round" />
-              </g>
-              <g class="face-layer eyes-boot">
-                <circle cx="236" cy="144" r="13" fill="#0b1320" stroke="#ffb020" stroke-width="2.5" />
-                <circle cx="304" cy="144" r="9" fill="#0b1320" stroke="#ffb020" stroke-width="2.5" />
-              </g>
+              <g class="face-layer eyes-off"><path d="M222 146 Q236 152 250 146" stroke="#64748b" stroke-width="3.5" fill="none" stroke-linecap="round" /><path d="M290 146 Q304 152 318 146" stroke="#64748b" stroke-width="3.5" fill="none" stroke-linecap="round" /></g>
+              <g class="face-layer eyes-boot"><circle cx="236" cy="144" r="13" fill="#0b1320" stroke="#ffb020" stroke-width="2.5" /><circle cx="304" cy="144" r="9" fill="#0b1320" stroke="#ffb020" stroke-width="2.5" /></g>
               <g class="face-layer eyes-awake">
                 <circle cx="236" cy="144" r="15" fill="#07131d" stroke="var(--accent)" stroke-width="2.5" filter="url(#neonGlow)" />
                 <g id="pupilLeft"><circle cx="236" cy="144" r="7" fill="var(--accent)" /><circle cx="238" cy="141" r="2.2" fill="#fff" /></g>
@@ -432,22 +467,9 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
                 <g id="pupilRight"><circle cx="304" cy="144" r="7" fill="var(--accent)" /><circle cx="306" cy="141" r="2.2" fill="#fff" /></g>
                 <rect class="eyelid-blink" x="216" y="126" width="108" height="36" rx="10" fill="#0b1422" />
               </g>
-              <g class="face-layer eyes-smug">
-                <path d="M220 137 L252 143" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" />
-                <circle cx="236" cy="147" r="8" fill="var(--accent)" />
-                <path d="M320 137 L288 143" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" />
-                <circle cx="304" cy="147" r="8" fill="var(--accent)" />
-              </g>
-              <g class="face-layer eyes-focus">
-                <line x1="218" y1="133" x2="252" y2="143" stroke="#ffb020" stroke-width="3.5" stroke-linecap="round" />
-                <rect x="224" y="143" width="24" height="9" rx="4" fill="#ffb020" />
-                <line x1="322" y1="133" x2="288" y2="143" stroke="#ffb020" stroke-width="3.5" stroke-linecap="round" />
-                <rect x="292" y="143" width="24" height="9" rx="4" fill="#ffb020" />
-              </g>
-              <g class="face-layer eyes-error">
-                <path d="M227 135 L245 153 M245 135 L227 153" stroke="#ff3b6b" stroke-width="3.5" stroke-linecap="round" />
-                <path d="M295 135 L313 153 M313 135 L295 153" stroke="#ff3b6b" stroke-width="3.5" stroke-linecap="round" />
-              </g>
+              <g class="face-layer eyes-smug"><path d="M220 137 L252 143" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" /><circle cx="236" cy="147" r="8" fill="var(--accent)" /><path d="M320 137 L288 143" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" /><circle cx="304" cy="147" r="8" fill="var(--accent)" /></g>
+              <g class="face-layer eyes-focus"><line x1="218" y1="133" x2="252" y2="143" stroke="#ffb020" stroke-width="3.5" stroke-linecap="round" /><rect x="224" y="143" width="24" height="9" rx="4" fill="#ffb020" /><line x1="322" y1="133" x2="288" y2="143" stroke="#ffb020" stroke-width="3.5" stroke-linecap="round" /><rect x="292" y="143" width="24" height="9" rx="4" fill="#ffb020" /></g>
+              <g class="face-layer eyes-error"><path d="M227 135 L245 153 M245 135 L227 153" stroke="#ff3b6b" stroke-width="3.5" stroke-linecap="round" /><path d="M295 135 L313 153 M313 135 L295 153" stroke="#ff3b6b" stroke-width="3.5" stroke-linecap="round" /></g>
               <path class="mouth-layer mouth-off" d="M252 178 Q270 173 288 178" stroke="#64748b" stroke-width="3" fill="none" />
               <ellipse class="mouth-layer mouth-boot" cx="270" cy="179" rx="12" ry="7" fill="#09111e" stroke="#ffb020" stroke-width="2.5" />
               <path class="mouth-layer mouth-awake" d="M246 175 Q270 192 294 173" stroke="var(--accent)" stroke-width="3.2" fill="none" stroke-linecap="round" />
@@ -460,10 +482,9 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
         </svg>
       </div>
 
-      <!-- STEP 2: NAMING -->
       <div id="gameNamingBox" class="game-card" style="display:none;">
         <strong style="color:var(--accent);">🐣 Я вылупился! Как меня зовут и кто я?</strong>
-        <input id="gameNameInput" class="game-input" type="text" placeholder="Придумай имя (например: Спарки, Лис, Нова)..." />
+        <input id="gameNameInput" class="game-input" type="text" placeholder="Придумай имя (например: Спарки)..." />
         <div class="skin-chips">
           <button class="chip-btn active" data-gskin="robot">🤖 Кибер-Дрон</button>
           <button class="chip-btn" data-gskin="beast">🦊 Кибер-Лис</button>
@@ -473,10 +494,9 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
         <button id="btnConfirmName" class="primary-btn">✨ Назвать и двигаться дальше</button>
       </div>
 
-      <!-- STEP 3: CONNECT GEMINI FLASH-LITE -->
       <div id="gameSparkBox" class="game-card" style="display:none;">
         <strong style="color:var(--accent);">⚡ Зажги искру разума (Google Gemini Flash-Lite)</strong>
-        <div style="font-size:12.5px;color:var(--muted);line-height:1.4;">Получи бесплатный ключ в Google AI Studio (карта не нужна) — тогда я смогу по-настоящему думать, видеть фото и запоминать тебя.</div>
+        <div style="font-size:12.5px;color:var(--muted);line-height:1.4;">Получи бесплатный ключ в Google AI Studio (карта не нужна) — тогда я смогу по-настоящему думать и видеть фото.</div>
         <button id="btnOpenAiStudio" class="secondary-btn">↗ Получить бесплатный ключ в AI Studio</button>
         <input id="gameKeyInput" class="game-input" type="password" placeholder="Вставь ключ AIzaSy..." />
         <button id="btnIgniteSpark" class="primary-btn">🔥 Зажечь искру и начать общение</button>
@@ -484,19 +504,57 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
       </div>
     </div>
 
-    <!-- STEP 4: ACTIVE GAMEPLAY -->
     <div id="gamePlayBox" style="display:none;flex-direction:column;gap:9px;">
       <div id="gameChatList" class="chat-box"></div>
 
       <div class="game-actions-grid">
         <button class="g-act-btn" data-drawer="feed"><span>🍖</span><span>Факт</span></button>
         <button class="g-act-btn" data-drawer="traits"><span>🧪</span><span>Характер</span></button>
+        <button class="g-act-btn" data-drawer="modules"><span>🧩</span><span>Модули</span></button>
         <button class="g-act-btn" id="btnGameSleep"><span>💤</span><span>Сон</span></button>
         <button class="g-act-btn" id="btnGameDuel"><span>⚔️</span><span>Спор ИИ</span></button>
         <button class="g-act-btn" data-drawer="memory"><span>🧠</span><span>Память</span></button>
       </div>
 
-      <!-- INTERACTIVE DRAWERS -->
+      <div id="drawerModules" class="game-drawer">
+        <strong style="font-size:13px;color:var(--accent);">🧩 Мастерская апгрейдов (в 2 тапа, с анимацией)</strong>
+        <div class="mod-wizard-card" id="wizCardMemory">
+          <div class="mod-wizard-head"><span>💾 Общая Память (Cloudflare D1)</span><span id="wizMemBadge" style="color:var(--accent-2);font-family:var(--font-mono);font-size:10px;">НЕ ПОДКЛЮЧЁН</span></div>
+          <div style="font-size:11.5px;color:var(--muted);line-height:1.35;">Синхронизирует Спарки, XP и все факты между ПК, телефоном и ESP32. Таблицы создаются сами!</div>
+          <a class="secondary-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ 1. Поднять Память в 1 клик (Cloudflare)</a>
+          <div style="display:flex;gap:6px;">
+            <input id="modWorkerInput" class="game-input" type="text" placeholder="2. Вставь URL вида https://ai-os-brain....workers.dev" style="padding:7px 9px;font-size:12px;" />
+            <button id="btnConnectMemory" class="primary-btn" style="padding:7px 11px;white-space:nowrap;">⚡ Включить</button>
+          </div>
+        </div>
+        <div class="mod-wizard-card" id="wizCardGroq">
+          <div class="mod-wizard-head"><span>⚡ Турбо + Голос (Groq Free)</span><span id="wizGroqBadge" style="color:var(--warn);font-family:var(--font-mono);font-size:10px;">НЕ ПОДКЛЮЧЁН</span></div>
+          <div style="font-size:11.5px;color:var(--muted);">Ответы за 0.3 сек для лёгкого трёпа + Whisper для распознавания голоса.</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <a class="secondary-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys" style="flex:1;">↗ Ключ Groq</a>
+            <input id="modGroqInput" class="game-input" type="password" placeholder="gsk_..." style="flex:2;padding:7px 9px;font-size:12px;" />
+            <button id="btnConnectGroq" class="primary-btn" style="padding:7px 11px;">⚡</button>
+          </div>
+        </div>
+        <div class="mod-wizard-card" id="wizCardCritic">
+          <div class="mod-wizard-head"><span>🛡 Критик и Резерв (OpenRouter Free)</span><span id="wizCriticBadge" style="color:var(--purple);font-family:var(--font-mono);font-size:10px;">НЕ ПОДКЛЮЧЁН</span></div>
+          <div style="font-size:11.5px;color:var(--muted);">Подстрахует при лимитах и проверит сложные ответы в «Споре ИИ».</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <a class="secondary-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys" style="flex:1;">↗ Ключ OR</a>
+            <input id="modOrInput" class="game-input" type="password" placeholder="sk-or-..." style="flex:2;padding:7px 9px;font-size:12px;" />
+            <button id="btnConnectOr" class="primary-btn" style="padding:7px 11px;">🛡</button>
+          </div>
+        </div>
+        <div class="mod-wizard-card" id="wizCardGemini">
+          <div class="mod-wizard-head"><span>🤖 Базовый Мозг (Google AI Studio)</span><span id="wizGeminiBadge" style="color:var(--accent);font-family:var(--font-mono);font-size:10px;">НЕ ПОДКЛЮЧЁН</span></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <a class="secondary-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey" style="flex:1;">↗ Ключ Google</a>
+            <input id="modGeminiInput" class="game-input" type="password" placeholder="AIzaSy..." style="flex:2;padding:7px 9px;font-size:12px;" />
+            <button id="btnConnectGemini" class="primary-btn" style="padding:7px 11px;">🤖</button>
+          </div>
+        </div>
+      </div>
+
       <div id="drawerFeed" class="game-drawer">
         <strong style="font-size:12.5px;color:var(--accent);">🍖 Покормить питомца фактом о тебе</strong>
         <input id="feedFactInput" class="game-input" type="text" placeholder="Например: Я люблю эспрессо и пишу прошивки под ESP32" />
@@ -526,7 +584,6 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
     </div>
   </div>
 
-  <!-- ===================== PRO MODE VIEW ===================== -->
   <div id="proView" class="pro-only">
     <div class="switcher-grid">
       <div class="group-box">
@@ -552,7 +609,7 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
           <div class="host-pill"><strong>LEADER</strong><span id="leaderHostLabel">Linux DietPi</span></div>
           <button id="btnSwapHosts" class="swap-btn">⇄ СВАП</button>
           <div class="host-pill pet-host"><strong>PET</strong><span id="petHostLabel">ESP32-C5</span></div>
-          <div class="host-pill vault-host"><strong>VAULT</strong><span>Cloudflare/DietPi 🔒</span></div>
+          <div class="host-pill vault-host"><strong>D1 VAULT</strong><span id="vaultStatusLabel">LOCAL</span></div>
         </div>
       </div>
     </div>
@@ -567,7 +624,7 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
           </div>
           <span id="proEmotionBadge" class="badge">GRIMACE: NORMAL</span>
         </div>
-        <div id="proSpeechBox" class="speech">PRO-консоль синхронизирована с GAME-режимом. Запускай волны DAG или правь промпты блоков.</div>
+        <div id="proSpeechBox" class="speech">PRO-консоль синхронизирована с GAME-режимом и облачной памятью D1.</div>
         <div id="stageArena" class="stage-arena mode-hybrid">
           <div id="proAvatarSlot" class="avatar-pane"></div>
           <div class="graph-pane">
@@ -581,12 +638,10 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
                 <button class="add-node-btn" data-add-type="groq">+ Groq</button>
                 <button class="add-node-btn" data-add-type="aistudio">+ Gemini</button>
                 <button class="add-node-btn" data-add-type="critic">+ Критик</button>
-                <button class="add-node-btn" data-add-type="openai">+ OpenRouter/OpenAI</button>
+                <button class="add-node-btn" data-add-type="openai">+ OpenRouter</button>
               </div>
             </div>
-            <div id="graphCanvas" class="graph-canvas">
-              <svg id="wireSvg"></svg>
-            </div>
+            <div id="graphCanvas" class="graph-canvas"><svg id="wireSvg"></svg></div>
           </div>
         </div>
         <div class="game-chat-bar">
@@ -606,7 +661,7 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
             <option value="critic">Критик / Cross-Audit</option>
           </select>
           <select id="inspModel" class="insp-select"></select>
-          <input id="inspKey" class="insp-input" type="password" placeholder="API Key (или наследуется)" />
+          <input id="inspKey" class="insp-input" type="password" placeholder="API Key (или глобальный)" />
           <textarea id="inspPrompt" class="insp-textarea" rows="2" placeholder="Промпт блока"></textarea>
           <div id="inspOutput" class="insp-output">Нет вывода.</div>
           <button id="btnDeleteModNode" class="secondary-btn" style="margin-top:6px;width:100%;color:var(--danger);">Удалить блок</button>
@@ -617,10 +672,7 @@ svg#pet { width: 100%; max-width: 420px; height: auto; cursor: pointer; user-sel
         </div>
       </div>
     </div>
-
-    <div class="log-wrap">
-      <div id="logBox" class="log"></div>
-    </div>
+    <div class="log-wrap"><div id="logBox" class="log"></div></div>
   </div>
 </div>
 
@@ -636,27 +688,11 @@ const MODELS = {
 };
 
 const STATE = {
-  appMode: 'game',
-  ui: 'cyber',
-  skin: 'robot',
-  viewMode: 'hybrid',
-  swappedHosts: false,
-  stage: 'egg',
-  eggTaps: 0,
-  name: 'Яйцо',
-  xp: 0,
-  mood: 'normal',
-  apiKey: '',
-  geminiModel: 'gemini-3.1-flash-lite',
-  workerUrl: '',
+  appMode: 'game', ui: 'cyber', skin: 'robot', viewMode: 'hybrid', swappedHosts: false,
+  stage: 'egg', eggTaps: 0, name: 'Яйцо', xp: 0, mood: 'normal',
+  apiKey: '', groqKey: '', orKey: '', geminiModel: 'gemini-3.1-flash-lite', workerUrl: '', d1Online: false,
   traits: { humor: 6, sass: 4, care: 8, concise: 7 },
-  facts: [],
-  summaries: [],
-  lessons: [],
-  chat: [],
-  modNodes: [],
-  modEdges: [],
-  selectedModId: null
+  facts: [], summaries: [], lessons: [], chat: [], modNodes: [], modEdges: [], selectedModId: null
 };
 
 const RT = {
@@ -666,20 +702,15 @@ const RT = {
 
 const $ = id => document.getElementById(id);
 
-function saveState() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); } catch (_) {}
-}
-function loadState() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    const parsed = JSON.parse(raw);
-    Object.assign(STATE, parsed);
-  } catch (_) {}
-}
-
-function isRealKey(k) {
-  return Boolean(k && k.trim().length > 16 && !k.includes('demo') && !k.includes('free'));
+function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); } catch (_) {} }
+function loadState() { try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) Object.assign(STATE, JSON.parse(raw)); } catch (_) {} }
+function isRealKey(k) { return Boolean(k && k.trim().length > 16 && !k.includes('demo') && !k.includes('free')); }
+function workerHeaders() {
+  const h = { 'Content-Type': 'application/json' };
+  if (isRealKey(STATE.apiKey)) h['X-Gemini-Key'] = STATE.apiKey;
+  if (isRealKey(STATE.groqKey)) h['X-Groq-Key'] = STATE.groqKey;
+  if (isRealKey(STATE.orKey)) h['X-OpenRouter-Key'] = STATE.orKey;
+  return h;
 }
 
 function addLog(msg, tag = 'SYS') {
@@ -687,10 +718,12 @@ function addLog(msg, tag = 'SYS') {
   const t = new Date().toLocaleTimeString('ru-RU', { hour12: false });
   el.textContent = '[' + t + '][' + tag + '] ' + msg;
   const box = $('logBox');
-  if (box) {
-    box.prepend(el);
-    while (box.children.length > 40) box.removeChild(box.lastChild);
-  }
+  if (box) { box.prepend(el); while (box.children.length > 40) box.removeChild(box.lastChild); }
+}
+
+function showXpPop(label) {
+  const pop = $('xpPop'); pop.textContent = label; pop.classList.add('show');
+  setTimeout(() => pop.classList.remove('show'), 1400);
 }
 
 function addXP(pts) {
@@ -700,6 +733,7 @@ function addXP(pts) {
   $('hudXpLabel').textContent = 'Lv.' + lvl + ' • ' + STATE.xp + ' XP';
   $('hudXpFill').style.width = Math.max(8, pct) + '%';
   $('hudStageLabel').textContent = lvl >= 3 ? 'Стадия: PRO-Дух' : (lvl === 2 ? 'Стадия: Напарник' : 'Стадия: Малыш');
+  if (pts > 0) showXpPop('+' + pts + ' XP!');
   saveState();
 }
 
@@ -708,43 +742,103 @@ function setPetVisual(powerState, mood) {
   const pet = $('pet');
   pet.classList.remove('state-off', 'state-booting', 'state-awake', 'state-error', 'grim-normal', 'grim-smug', 'grim-focus', 'grim-shock', 'skin-robot', 'skin-beast', 'skin-relic', 'skin-monolith');
   pet.classList.add('state-' + powerState, 'grim-' + STATE.mood, 'skin-' + STATE.skin);
+  pet.classList.toggle('mod-memory-on', Boolean(STATE.workerUrl && STATE.d1Online));
+  pet.classList.toggle('mod-turbo-on', isRealKey(STATE.groqKey));
+  pet.classList.toggle('mod-critic-on', isRealKey(STATE.orKey));
   $('liveDot').classList.toggle('on', powerState === 'awake');
   $('coreDot').setAttribute('fill', powerState === 'awake' ? '#00f5b8' : (powerState === 'booting' ? '#ffb020' : '#475569'));
   $('proEmotionBadge').textContent = 'GRIMACE: ' + STATE.mood.toUpperCase();
+}
+
+function syncModuleBadges() {
+  const gOn = isRealKey(STATE.apiKey), mOn = Boolean(STATE.workerUrl && STATE.d1Online), qOn = isRealKey(STATE.groqKey), cOn = isRealKey(STATE.orKey);
+  $('pillGemini').className = 'mod-pill' + (gOn ? ' on' : ''); $('pillGeminiSt').textContent = gOn ? 'ON' : 'OFF';
+  $('pillMemory').className = 'mod-pill' + (mOn ? ' on-blue' : ''); $('pillMemorySt').textContent = mOn ? 'D1' : 'OFF';
+  $('pillGroq').className = 'mod-pill' + (qOn ? ' on' : ''); $('pillGroqSt').textContent = qOn ? 'LPU' : 'OFF';
+  $('pillCritic').className = 'mod-pill' + (cOn ? ' on-purple' : ''); $('pillCriticSt').textContent = cOn ? 'ON' : 'OFF';
+  $('wizMemBadge').textContent = mOn ? 'ПОДКЛЮЧЕНА ✓' : 'НЕ ПОДКЛЮЧЁН';
+  $('wizGroqBadge').textContent = qOn ? 'ТУРБО ON ✓' : 'НЕ ПОДКЛЮЧЁН';
+  $('wizCriticBadge').textContent = cOn ? 'ЗАЩИТА ON ✓' : 'НЕ ПОДКЛЮЧЁН';
+  $('wizGeminiBadge').textContent = gOn ? 'АКТИВЕН ✓' : 'НЕ ПОДКЛЮЧЁН';
+  $('vaultStatusLabel').textContent = mOn ? 'CLOUD D1 ✓' : 'LOCAL';
+  if ($('modWorkerInput').value !== STATE.workerUrl) $('modWorkerInput').value = STATE.workerUrl;
+  if ($('modGroqInput').value !== STATE.groqKey) $('modGroqInput').value = STATE.groqKey;
+  if ($('modOrInput').value !== STATE.orKey) $('modOrInput').value = STATE.orKey;
+  if ($('modGeminiInput').value !== STATE.apiKey) $('modGeminiInput').value = STATE.apiKey;
 }
 
 function applyThemeAndMode() {
   document.body.className = 'ui-' + STATE.ui + ' theme-' + STATE.skin + ' app-mode-' + STATE.appMode;
   $('btnModeGame').classList.toggle('active', STATE.appMode === 'game');
   $('btnModePro').classList.toggle('active', STATE.appMode === 'pro');
-  $('topSubLabel').textContent = STATE.appMode === 'game' ? 'GAME Mode • Дружелюбный питомец' : 'PRO Mode • DAG-оркестратор и узлы';
+  $('topSubLabel').textContent = STATE.appMode === 'game' ? 'GAME Mode • Питомец и модули' : 'PRO Mode • DAG-оркестратор и узлы';
   const pet = $('pet');
-  if (STATE.appMode === 'game') {
-    $('gameAvatarSlot').appendChild(pet);
-  } else {
-    $('proAvatarSlot').appendChild(pet);
-    setTimeout(renderWires, 30);
-  }
-  const live = isRealKey(STATE.apiKey) || Boolean(STATE.workerUrl);
-  $('brainBadge').textContent = live ? 'LIVE // GEMINI' : 'DEMO';
+  if (STATE.appMode === 'game') $('gameAvatarSlot').appendChild(pet);
+  else { $('proAvatarSlot').appendChild(pet); setTimeout(renderWires, 30); }
+  const live = isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey) || Boolean(STATE.workerUrl);
+  $('brainBadge').textContent = STATE.d1Online ? 'D1 + LIVE' : (live ? 'LIVE // API' : 'DEMO');
   $('brainBadge').className = 'badge ' + (live ? 'online' : 'warn');
+  syncModuleBadges(); renderNodesList();
 }
 
-/* ================= UNIFIED PERSONA & MEMORY COMPILER ================= */
+async function playModuleInstallAnim(modType, title, commentText) {
+  const pet = $('pet');
+  setPetVisual('booting', 'focus');
+  pet.classList.remove('anim-burst'); void pet.offsetWidth; pet.classList.add('anim-burst');
+  await new Promise(r => setTimeout(r, 750));
+  addXP(25); setPetVisual('awake', 'smug');
+  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'upgrade', model: title, mood: 'smug', text: commentText });
+  renderGameChat(); saveState();
+  setTimeout(() => pet.classList.remove('anim-burst'), 400);
+}
+
+async function connectD1Memory(url) {
+  const clean = url.trim().replace(/\/+$/, '');
+  if (!clean.startsWith('http')) { alert('Вставь корректный URL Worker (https://...)'); return; }
+  $('wizMemBadge').textContent = 'ПРОВЕРКА...';
+  try {
+    const hRes = await fetch(clean + '/api/health', { headers: workerHeaders() });
+    if (!hRes.ok) throw new Error('HTTP ' + hRes.status);
+    const hData = await hRes.json();
+    if (!hData.ok || !hData.d1) throw new Error('D1 не привязана к Worker');
+    STATE.workerUrl = clean; STATE.d1Online = true;
+    const syncRes = await fetch(clean + '/api/sync', {
+      method: 'POST', headers: workerHeaders(),
+      body: JSON.stringify({ profile: { name: STATE.name, stage: STATE.stage, xp: STATE.xp, mood: STATE.mood, skin: STATE.skin, ui: STATE.ui, traits: STATE.traits }, facts: STATE.facts })
+    });
+    if (syncRes.ok) {
+      const bundle = await syncRes.json();
+      if (bundle.profile && !bundle.adoptedClient) {
+        STATE.name = bundle.profile.name; STATE.stage = bundle.profile.stage; STATE.xp = bundle.profile.xp; STATE.skin = bundle.profile.skin;
+        try { STATE.traits = JSON.parse(bundle.profile.traits_json); } catch (_) {}
+        STATE.facts = (bundle.facts || []).map(f => ({ id: f.id, text: f.fact_text, weight: f.weight }));
+        STATE.summaries = (bundle.summaries || []).map(s => ({ id: s.id, text: s.summary_text }));
+        STATE.lessons = (bundle.lessons || []).map(l => ({ id: l.id, mistake: l.mistake_note, rule: l.rule_text }));
+        STATE.chat = (bundle.chat || []).map(c => ({ id: c.id, role: c.role, provider: c.provider, model: c.model, mood: c.mood, text: c.content }));
+      }
+    }
+    applyThemeAndMode(); renderGameStage();
+    await playModuleInstallAnim('memory', 'Cloudflare D1', 'Клик! Модуль общей памяти Cloudflare D1 прищёлкнулся к моему ядру! Теперь я помню тебя одинаково на компьютере, телефоне и ESP32! (+25 XP)');
+  } catch (err) {
+    STATE.d1Online = false; syncModuleBadges(); setPetVisual('awake', 'shock');
+    alert('Не удалось подключить D1: ' + err.message);
+  }
+}
+
 function buildUnifiedSystemPrompt(extraRole = '') {
   const t = STATE.traits;
   const factsText = STATE.facts.slice(0, 10).map(f => '- ' + f.text).join(NL) || '- Пока нет фактов о хозяине.';
   const sumText = STATE.summaries.slice(0, 2).map(s => '- ' + s.text).join(NL) || '- Снов ещё не было.';
   const rulesText = STATE.lessons.slice(0, 5).map(l => '- ' + l.rule).join(NL) || '- Ошибок пока не отмечено.';
   return [
-    'ТЫ — цифровой живой питомец по имени ' + STATE.name + ' (форма: ' + STATE.skin + ', уровень XP: ' + STATE.xp + ').',
+    'ТЫ — живой цифровой питомец по имени ' + STATE.name + ' (форма: ' + STATE.skin + ', XP: ' + STATE.xp + ').',
     'ХАРАКТЕР (0..10): Юмор=' + t.humor + ', Дерзость=' + t.sass + ', Забота=' + t.care + ', Краткость=' + t.concise + '.',
     'ПРАВИЛО МИМИКИ: В самом начале ответа ставь ровно один тег: [MOOD:normal], [MOOD:smug], [MOOD:focus] или [MOOD:shock].',
     'Никогда не пиши, что ты языковая модель. Отвечай живо, по-русски и по характеру.',
     'ПАМЯТЬ О ХОЗЯИНЕ:' + NL + factsText,
     'СЖАТЫЕ СНЫ:' + NL + sumText,
-    'УРОКИ (НЕ ПОВТОРЯТЬ ОШИБКИ):' + NL + rulesText,
-    extraRole ? ('ДОП. РОЛЬ МОДУЛЯ: ' + extraRole) : ''
+    'УРОКИ (НЕ ПОВТОРЯТЬ):' + NL + rulesText,
+    extraRole ? ('ДОП. РОЛЬ: ' + extraRole) : ''
   ].filter(Boolean).join(NL + NL);
 }
 
@@ -754,99 +848,72 @@ async function callGeminiDirect(apiKey, model, sysPrompt, userText, imageObj = n
   const tryCall = async m => {
     const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(m) + ':generateContent?key=' + encodeURIComponent(apiKey);
     const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: sysPrompt }] },
-        contents: [{ role: 'user', parts }],
-        generationConfig: { temperature: 0.55, maxOutputTokens: 500 }
-      })
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ systemInstruction: { parts: [{ text: sysPrompt }] }, contents: [{ role: 'user', parts }], generationConfig: { temperature: 0.55, maxOutputTokens: 500 } })
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    return data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const data = await res.json(); return data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
   };
-  try {
-    return await tryCall(model);
-  } catch (e) {
-    if (String(e.message).includes('404') && model !== 'gemini-flash-lite-latest') {
-      return await tryCall('gemini-flash-lite-latest');
-    }
-    throw e;
-  }
+  try { return await tryCall(model); }
+  catch (e) { if (String(e.message).includes('404') && model !== 'gemini-flash-lite-latest') return await tryCall('gemini-flash-lite-latest'); throw e; }
 }
 
 async function callOpenAICompat(endpoint, key, model, sysPrompt, userText) {
-  const res = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
-    body: JSON.stringify({ model, messages: [{ role: 'system', content: sysPrompt }, { role: 'user', content: userText }], max_tokens: 450 })
-  });
+  const hdrs = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key };
+  if (endpoint.includes('openrouter')) { hdrs['HTTP-Referer'] = 'https://kniajevich.github.io/ai-os-companion/'; hdrs['X-Title'] = 'AI OS Companion'; }
+  const res = await fetch(endpoint, { method: 'POST', headers: hdrs, body: JSON.stringify({ model, messages: [{ role: 'system', content: sysPrompt }, { role: 'user', content: userText }], max_tokens: 450 }) });
   if (!res.ok) throw new Error('HTTP ' + res.status);
-  const data = await res.json();
-  return data?.choices?.[0]?.message?.content || '';
+  const data = await res.json(); return data?.choices?.[0]?.message?.content || '';
 }
 
 function parseMoodAndClean(rawText) {
   const rx = /^\[MOOD:(normal|smug|focus|shock)\]\s*/i;
-  const m = rawText.match(rx);
-  const mood = m ? m[1].toLowerCase() : 'normal';
+  const m = rawText.match(rx); const mood = m ? m[1].toLowerCase() : 'normal';
   return { mood, cleanText: rawText.replace(rx, '').trim() };
 }
 
-async function askPetBrain(userText, imageObj = null) {
+async function askPetBrain(userText, imageObj = null, mode = 'game') {
   setPetVisual('booting', 'focus');
   const sys = buildUnifiedSystemPrompt();
-  const history = STATE.chat.slice(-6).map(c => (c.role === 'user' ? 'Хозяин: ' : STATE.name + ': ') + c.text).join(NL);
-  const fullUser = history ? ('Недавний диалог:' + NL + history + NL + NL + 'Новое сообщение: ' + userText) : userText;
+  const shortHist = STATE.chat.slice(-4).map(c => (c.role === 'user' ? 'Хозяин: ' : STATE.name + ': ') + c.text).join(NL);
+  const fullHist = STATE.chat.slice(-8).map(c => (c.role === 'user' ? 'Хозяин: ' : STATE.name + ': ') + c.text).join(NL);
+  let rawReply = '', usedModel = 'demo-sim';
 
-  let rawReply = '';
-  let usedModel = 'demo-sim';
-
-  if (STATE.workerUrl) {
+  if (STATE.workerUrl && STATE.d1Online) {
     try {
-      const res = await fetch(STATE.workerUrl.replace(/\/+$/, '') + '/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: userText, systemPrompt: sys })
-      });
-      if (res.ok) {
-        const d = await res.json();
-        rawReply = d.reply || '';
-        usedModel = d.model || 'cloudflare-worker';
-      }
-    } catch (err) {
-      addLog('Worker недоступен, пробую прямой ключ: ' + err.message, 'ERR');
-    }
+      const res = await fetch(STATE.workerUrl + '/api/chat', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ text: userText, mode, image: imageObj }) });
+      if (res.ok) { const d = await res.json(); rawReply = '[MOOD:' + (d.mood || 'normal') + '] ' + (d.reply || ''); usedModel = (d.provider || 'd1') + ' / ' + (d.model || 'brain'); if (Number.isFinite(d.xp)) STATE.xp = d.xp; }
+    } catch (err) { addLog('Worker error: ' + err.message, 'ERR'); }
   }
 
-  if (!rawReply && isRealKey(STATE.apiKey)) {
-    try {
-      rawReply = await callGeminiDirect(STATE.apiKey, STATE.geminiModel, sys, fullUser, imageObj);
-      usedModel = STATE.geminiModel;
-    } catch (err) {
-      addLog('Gemini ошибка: ' + err.message, 'ERR');
-      rawReply = '[MOOD:shock] Ой! Канал к Google AI Studio споткнулся (' + err.message + '). Проверь ключ в ⚙.';
+  if (!rawReply) {
+    const isShort = !imageObj && mode !== 'duel' && userText.length < 90;
+    if (isShort && isRealKey(STATE.groqKey)) {
+      try { rawReply = await callOpenAICompat('https://api.groq.com/openai/v1/chat/completions', STATE.groqKey, 'openai/gpt-oss-20b', sys, (shortHist ? shortHist + NL + NL : '') + userText); usedModel = 'groq / gpt-oss-20b'; } catch (_) {}
+    }
+    if (!rawReply && isRealKey(STATE.apiKey)) {
+      try { rawReply = await callGeminiDirect(STATE.apiKey, STATE.geminiModel, sys, (fullHist ? fullHist + NL + NL : '') + userText, imageObj); usedModel = STATE.geminiModel; }
+      catch (err) {
+        if (isRealKey(STATE.orKey)) { try { rawReply = await callOpenAICompat('https://openrouter.ai/api/v1/chat/completions', STATE.orKey, 'openrouter/free', sys, userText); usedModel = 'openrouter/free'; } catch (_) {} }
+        if (!rawReply) rawReply = '[MOOD:shock] Ой! Ошибка API (' + err.message + ').';
+      }
     }
   }
 
   if (!rawReply) {
-    await new Promise(r => setTimeout(r, 380));
-    const sass = STATE.traits.sass > 6 ? ' (и не спорь, я прав!)' : '';
-    const memHint = STATE.facts.length > 0 ? ' Кстати, я помню: «' + STATE.facts[0].text + '».' : '';
-    rawReply = '[MOOD:smug] Принял, хозяин! Я ' + STATE.name + ' (демо-мозг).' + memHint + ' На сообщение «' + userText.slice(0, 45) + '» отвечаю бодро' + sass + '!';
+    await new Promise(r => setTimeout(r, 340));
+    const memHint = STATE.facts.length > 0 ? ' Помню про тебя: «' + STATE.facts[0].text + '».' : '';
+    rawReply = '[MOOD:smug] Принял, хозяин! Я ' + STATE.name + ' (демо).' + memHint + ' На «' + userText.slice(0, 40) + '» отвечаю бодро!';
   }
 
   const { mood, cleanText } = parseMoodAndClean(rawReply);
   setPetVisual('awake', mood);
-  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'gemini', model: usedModel, mood, text: cleanText });
+  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'brain', model: usedModel, mood, text: cleanText });
   if (STATE.chat.length > 30) STATE.chat.shift();
-  addXP(5);
-  renderGameChat();
-  saveState();
+  addXP(STATE.workerUrl && STATE.d1Online ? 0 : 5);
+  renderGameChat(); saveState();
 }
 
-/* ================= GAME MODE FLOW ================= */
 function renderGameStage() {
   $('gameEggBox').style.display = STATE.stage === 'egg' ? 'flex' : 'none';
   $('gameAvatarSlot').style.display = STATE.stage !== 'egg' ? 'flex' : 'none';
@@ -854,44 +921,30 @@ function renderGameStage() {
   $('gameSparkBox').style.display = STATE.stage === 'spark' ? 'flex' : 'none';
   $('gamePlayBox').style.display = STATE.stage === 'active' ? 'flex' : 'none';
   $('hudPetName').textContent = STATE.stage === 'egg' ? '🥚 Яйцо' : ('✨ ' + STATE.name);
-
   if (STATE.stage === 'naming') setPetVisual('awake', 'smug');
   else if (STATE.stage === 'spark') setPetVisual('booting', 'focus');
   else if (STATE.stage === 'active') setPetVisual('awake', STATE.mood);
   else setPetVisual('off', 'normal');
-  addXP(0);
-  renderGameChat();
-  renderMemoryDrawer();
+  addXP(0); renderGameChat(); renderMemoryDrawer(); syncModuleBadges();
 }
 
 function renderGameChat() {
-  const box = $('gameChatList');
-  box.innerHTML = '';
+  const box = $('gameChatList'); box.innerHTML = '';
   STATE.chat.slice(-14).forEach(msg => {
-    const div = document.createElement('div');
-    div.className = 'msg-bubble ' + (msg.role === 'user' ? 'msg-user' : 'msg-ai');
-    const txt = document.createElement('div');
-    txt.textContent = msg.text;
-    div.appendChild(txt);
+    const div = document.createElement('div'); div.className = 'msg-bubble ' + (msg.role === 'user' ? 'msg-user' : 'msg-ai');
+    const txt = document.createElement('div'); txt.textContent = msg.text; div.appendChild(txt);
     if (msg.role === 'ai') {
-      const meta = document.createElement('div');
-      meta.className = 'msg-meta';
-      meta.innerHTML = '<span>' + msg.model + ' • ' + msg.mood + '</span>';
-      const bad = document.createElement('button');
-      bad.className = 'msg-bad-btn';
-      bad.textContent = '👎 Ошибка';
+      const meta = document.createElement('div'); meta.className = 'msg-meta'; meta.innerHTML = '<span>' + msg.model + ' • ' + msg.mood + '</span>';
+      const bad = document.createElement('button'); bad.className = 'msg-bad-btn'; bad.textContent = '👎 Ошибка';
       bad.onclick = () => {
-        const rule = prompt('Чему научить ' + STATE.name + ', чтобы больше так не ошибался?', 'Не выдумывать факты, отвечать точнее');
+        const rule = prompt('Чему научить ' + STATE.name + ', чтобы больше так не ошибался?', 'Быть точнее');
         if (rule) {
           STATE.lessons.unshift({ id: Date.now(), mistake: msg.text.slice(0, 60), rule });
-          setPetVisual('awake', 'shock');
-          renderMemoryDrawer();
-          saveState();
-          alert('Записано в общую память уроков!');
+          if (STATE.workerUrl && STATE.d1Online) fetch(STATE.workerUrl + '/api/lesson', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ mistake: msg.text.slice(0, 60), rule }) }).catch(() => {});
+          setPetVisual('awake', 'shock'); renderMemoryDrawer(); saveState();
         }
       };
-      meta.appendChild(bad);
-      div.appendChild(meta);
+      meta.appendChild(bad); div.appendChild(meta);
     }
     box.appendChild(div);
   });
@@ -899,178 +952,152 @@ function renderGameChat() {
 }
 
 function renderMemoryDrawer() {
-  const box = $('gameMemoryList');
-  box.innerHTML = '';
+  const box = $('gameMemoryList'); box.innerHTML = '';
   const all = [
     ...STATE.facts.map(f => ({ type: 'Факт', text: f.text, list: 'facts', id: f.id })),
     ...STATE.summaries.map(s => ({ type: 'Сон', text: s.text, list: 'summaries', id: s.id })),
     ...STATE.lessons.map(l => ({ type: 'Урок', text: l.rule, list: 'lessons', id: l.id }))
   ];
-  if (all.length === 0) {
-    box.innerHTML = '<div style="color:var(--muted);font-size:11.5px;">Память пока пуста. Покорми питомца фактом!</div>';
-    return;
-  }
+  if (all.length === 0) { box.innerHTML = '<div style="color:var(--muted);font-size:11.5px;">Память пока пуста. Покорми питомца фактом!</div>'; return; }
   all.forEach(item => {
-    const row = document.createElement('div');
-    row.className = 'mem-item';
+    const row = document.createElement('div'); row.className = 'mem-item';
     row.innerHTML = '<span><strong>[' + item.type + ']</strong> ' + item.text + '</span>';
-    const del = document.createElement('button');
-    del.className = 'msg-bad-btn';
-    del.textContent = '✕';
+    const del = document.createElement('button'); del.className = 'msg-bad-btn'; del.textContent = '✕';
     del.onclick = () => {
       STATE[item.list] = STATE[item.list].filter(x => x.id !== item.id);
+      if (item.list === 'facts' && STATE.workerUrl && STATE.d1Online) fetch(STATE.workerUrl + '/api/fact/' + item.id, { method: 'DELETE', headers: workerHeaders() }).catch(() => {});
       renderMemoryDrawer(); saveState();
     };
-    row.appendChild(del);
-    box.appendChild(row);
+    row.appendChild(del); box.appendChild(row);
   });
 }
 
+function openGameDrawer(name) {
+  const target = 'drawer' + name[0].toUpperCase() + name.slice(1);
+  const el = $(target); if (!el) return;
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.game-drawer').forEach(d => d.classList.remove('open'));
+  document.querySelectorAll('.g-act-btn').forEach(b => b.classList.remove('active'));
+  if (!wasOpen) { el.classList.add('open'); const btn = document.querySelector('.g-act-btn[data-drawer="' + name + '"]'); if (btn) btn.classList.add('active'); }
+}
+
+document.querySelectorAll('.mod-pill').forEach(p => {
+  p.addEventListener('click', () => {
+    if (STATE.stage !== 'active') return;
+    openGameDrawer('modules');
+    const map = { gemini: 'wizCardGemini', memory: 'wizCardMemory', groq: 'wizCardGroq', critic: 'wizCardCritic' };
+    const card = $(map[p.dataset.openMod]); if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+});
+
+$('btnConnectMemory').onclick = () => connectD1Memory($('modWorkerInput').value);
+$('btnConnectGroq').onclick = async () => {
+  const k = $('modGroqInput').value.trim(); if (!isRealKey(k)) { alert('Вставь корректный ключ Groq (gsk_...)'); return; }
+  STATE.groqKey = k; applyThemeAndMode();
+  await playModuleInstallAnim('groq', 'Groq LPU', 'Вжух! Турбина Groq подключена! Теперь болтаю за 0.3 секунды и могу слушать голос через Whisper! (+25 XP)');
+};
+$('btnConnectOr').onclick = async () => {
+  const k = $('modOrInput').value.trim(); if (!isRealKey(k)) { alert('Вставь корректный ключ OpenRouter (sk-or-...)'); return; }
+  STATE.orKey = k; applyThemeAndMode();
+  await playModuleInstallAnim('critic', 'OpenRouter Critic', 'Щит поднят! Модуль Критика и Резерва OpenRouter пристёгнут. Теперь на сложные вопросы у нас есть второе мнение! (+25 XP)');
+};
+$('btnConnectGemini').onclick = async () => {
+  const k = $('modGeminiInput').value.trim(); if (!isRealKey(k)) { alert('Вставь ключ Google AI Studio (AIza...)'); return; }
+  STATE.apiKey = k; applyThemeAndMode();
+  await playModuleInstallAnim('gemini', 'Gemini Flash-Lite', 'Связь с ядром Google AI Studio обновлена! Готов думать и смотреть через камеру! (+25 XP)');
+};
+
 $('gameEggBox').addEventListener('click', () => {
   STATE.eggTaps += 1;
-  const egg = $('eggSvg');
-  egg.classList.remove('egg-shake');
-  void egg.offsetWidth;
-  egg.classList.add('egg-shake');
-  egg.classList.toggle('egg-cracks-1', STATE.eggTaps >= 1);
-  egg.classList.toggle('egg-cracks-2', STATE.eggTaps >= 2);
+  const egg = $('eggSvg'); egg.classList.remove('egg-shake'); void egg.offsetWidth; egg.classList.add('egg-shake');
+  egg.classList.toggle('egg-cracks-1', STATE.eggTaps >= 1); egg.classList.toggle('egg-cracks-2', STATE.eggTaps >= 2);
   $('eggTapHint').textContent = 'Нажатий: ' + STATE.eggTaps + ' / 3';
-  if (STATE.eggTaps >= 3) {
-    STATE.stage = 'naming';
-    addXP(10);
-    renderGameStage();
-  }
+  if (STATE.eggTaps >= 3) { STATE.stage = 'naming'; addXP(10); renderGameStage(); }
   saveState();
 });
 
 document.querySelectorAll('[data-gskin]').forEach(btn => {
   btn.addEventListener('click', () => {
-    STATE.skin = btn.dataset.gskin;
-    document.querySelectorAll('[data-gskin]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyThemeAndMode();
-    setPetVisual('awake', 'smug');
-    saveState();
+    STATE.skin = btn.dataset.gskin; document.querySelectorAll('[data-gskin]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); applyThemeAndMode(); setPetVisual('awake', 'smug'); saveState();
   });
 });
 
 $('btnConfirmName').addEventListener('click', () => {
   STATE.name = $('gameNameInput').value.trim() || 'Спарки';
   STATE.stage = isRealKey(STATE.apiKey) ? 'active' : 'spark';
-  addXP(15);
-  renderGameStage();
-  if (STATE.stage === 'active') askPetBrain('Привет! Меня только что назвали ' + STATE.name + '. Поздоровайся!');
+  addXP(15); renderGameStage();
+  if (STATE.stage === 'active') askPetBrain('Меня только что назвали ' + STATE.name + '. Поздоровайся!');
   saveState();
 });
 
 $('btnOpenAiStudio').addEventListener('click', () => window.open('https://aistudio.google.com/apikey', '_blank', 'noopener'));
-
 $('btnIgniteSpark').addEventListener('click', () => {
-  const k = $('gameKeyInput').value.trim();
-  if (!k) { alert('Вставь API-ключ AIza... или нажми Демо-режим ниже'); return; }
-  STATE.apiKey = k;
-  STATE.stage = 'active';
-  applyThemeAndMode();
-  renderGameStage();
-  askPetBrain('Искра зажжена! Поздоровайся со мной как ' + STATE.name + ' и спроси, как меня зовут.');
+  const k = $('gameKeyInput').value.trim(); if (!k) { alert('Вставь API-ключ AIza... или нажми Демо-режим ниже'); return; }
+  STATE.apiKey = k; STATE.stage = 'active'; applyThemeAndMode(); renderGameStage();
+  askPetBrain('Искра зажжена! Поздоровайся как ' + STATE.name + ' и предложи открыть вкладку Модули, чтобы пристегнуть Память D1 и Скорость Groq!');
   saveState();
 });
-
 $('btnDemoSpark').addEventListener('click', () => {
   STATE.stage = 'active';
-  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'demo', model: 'demo-sim', mood: 'smug', text: 'Привет! Я ' + STATE.name + '! Пока работаю в Демо-режиме. Можешь покормить меня фактами или подключить ключ Google AI Studio в ⚙!' });
-  renderGameStage();
-  saveState();
+  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'demo', model: 'demo-sim', mood: 'smug', text: 'Привет! Я ' + STATE.name + '! Загляни в «🧩 Модули» — там в 2 тапа можно подключить Память D1, Groq и Gemini!' });
+  renderGameStage(); saveState();
 });
 
 async function sendGameMessage(text, img = null) {
   if (!text && !img) return;
   STATE.chat.push({ id: Date.now(), role: 'user', text: text || '[Фото с камеры]' });
-  renderGameChat();
-  await askPetBrain(text || 'Что изображено на этом фото? Ответь в своём характере.', img);
+  renderGameChat(); await askPetBrain(text || 'Что изображено на этом фото?', img);
 }
+$('btnGameSend').addEventListener('click', () => { const v = $('gameChatInput').value.trim(); if (!v) return; $('gameChatInput').value = ''; sendGameMessage(v); });
+$('gameChatInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('btnGameSend').click(); });
 
-$('btnGameSend').addEventListener('click', () => {
-  const v = $('gameChatInput').value.trim();
-  if (!v) return;
-  $('gameChatInput').value = '';
-  sendGameMessage(v);
-});
-$('gameChatInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') $('btnGameSend').click();
-});
-
-/* 5 ИГРОВЫХ ИНТЕРАКТИВОВ */
-document.querySelectorAll('.g-act-btn[data-drawer]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = 'drawer' + btn.dataset.drawer[0].toUpperCase() + btn.dataset.drawer.slice(1);
-    const el = $(target);
-    const wasOpen = el.classList.contains('open');
-    document.querySelectorAll('.game-drawer').forEach(d => d.classList.remove('open'));
-    document.querySelectorAll('.g-act-btn').forEach(b => b.classList.remove('active'));
-    if (!wasOpen) { el.classList.add('open'); btn.classList.add('active'); }
-  });
-});
+document.querySelectorAll('.g-act-btn[data-drawer]').forEach(btn => btn.addEventListener('click', () => openGameDrawer(btn.dataset.drawer)));
 
 $('btnSaveFact').addEventListener('click', () => {
-  const txt = $('feedFactInput').value.trim();
-  if (!txt) return;
-  STATE.facts.unshift({ id: Date.now(), text: txt, weight: 8 });
-  $('feedFactInput').value = '';
-  addXP(15);
-  setPetVisual('awake', 'smug');
-  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'memory', model: 'D1-Memory', mood: 'smug', text: 'Ням! Запомнил навсегда: «' + txt + '» (+15 XP)' });
+  const txt = $('feedFactInput').value.trim(); if (!txt) return;
+  STATE.facts.unshift({ id: Date.now(), text: txt, weight: 8 }); $('feedFactInput').value = '';
+  if (STATE.workerUrl && STATE.d1Online) fetch(STATE.workerUrl + '/api/fact', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ text: txt }) }).catch(() => {});
+  addXP(15); setPetVisual('awake', 'smug');
+  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'memory', model: STATE.d1Online ? 'Cloudflare D1' : 'Local Mem', mood: 'smug', text: 'Ням! Запомнил навсегда: «' + txt + '» (+15 XP)' });
   renderGameChat(); renderMemoryDrawer(); saveState();
 });
 
 document.querySelectorAll('input[type=range][data-trait]').forEach(sl => {
-  sl.value = STATE.traits[sl.dataset.trait];
-  $('val-' + sl.dataset.trait).textContent = sl.value;
+  sl.value = STATE.traits[sl.dataset.trait]; $('val-' + sl.dataset.trait).textContent = sl.value;
   sl.addEventListener('input', () => {
-    STATE.traits[sl.dataset.trait] = Number(sl.value);
-    $('val-' + sl.dataset.trait).textContent = sl.value;
-    saveState();
+    STATE.traits[sl.dataset.trait] = Number(sl.value); $('val-' + sl.dataset.trait).textContent = sl.value; saveState();
+    if (STATE.workerUrl && STATE.d1Online) fetch(STATE.workerUrl + '/api/profile', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ traits: STATE.traits }) }).catch(() => {});
   });
 });
 
 $('btnGameSleep').addEventListener('click', async () => {
-  if (STATE.chat.length < 2) {
-    alert('Сначала пообщайтесь немного, чтобы было что сжимать во сне!');
-    return;
-  }
+  if (STATE.chat.length < 2) { alert('Сначала пообщайтесь немного!'); return; }
   setPetVisual('off', 'normal');
-  const snippet = STATE.chat.slice(-8).map(c => c.text).join(' | ').slice(0, 180);
-  let summaryText = 'Сон: обсуждали «' + snippet + '...»';
-  if (isRealKey(STATE.apiKey)) {
-    try {
-      summaryText = await callGeminiDirect(STATE.apiKey, STATE.geminiModel, 'Сожми переписку в 1-2 коротких факта памяти на русском без тегов.', STATE.chat.map(c => c.role + ': ' + c.text).join(NL));
-    } catch (_) {}
+  let summaryText = 'Сон: обсуждали «' + STATE.chat.slice(-4).map(c => c.text).join(' | ').slice(0, 150) + '...»';
+  if (STATE.workerUrl && STATE.d1Online) {
+    try { const r = await fetch(STATE.workerUrl + '/api/sleep', { method: 'POST', headers: workerHeaders() }); if (r.ok) { const d = await r.json(); if (d.summary) summaryText = d.summary; } } catch (_) {}
+  } else if (isRealKey(STATE.apiKey)) {
+    try { summaryText = await callGeminiDirect(STATE.apiKey, STATE.geminiModel, 'Сожми переписку в 1-2 коротких факта памяти на русском.', STATE.chat.map(c => c.role + ': ' + c.text).join(NL)); } catch (_) {}
   }
   STATE.summaries.unshift({ id: Date.now(), text: summaryText.trim() });
-  STATE.chat = [{ id: Date.now(), role: 'ai', provider: 'sleep', model: 'Flash-Lite', mood: 'smug', text: '💤 Выспался! Сжал прошлый диалог в сон-память и очистил тяжёлый кэш (+20 XP).' }];
-  addXP(20);
-  setPetVisual('awake', 'smug');
-  renderGameChat(); renderMemoryDrawer(); saveState();
+  STATE.chat = [{ id: Date.now(), role: 'ai', provider: 'sleep', model: 'Flash-Lite', mood: 'smug', text: '💤 Выспался! Сжал прошлый диалог в сон-память (+20 XP).' }];
+  addXP(20); setPetVisual('awake', 'smug'); renderGameChat(); renderMemoryDrawer(); saveState();
 });
 
 $('btnGameDuel').addEventListener('click', async () => {
-  const q = prompt('О чём спросить сразу двух мудрецов (Cross-Audit)?', 'Как лучше организовать проект?');
+  const q = prompt('О чём спросить сразу нескольких мудрецов (Cross-Audit)?', 'Как улучшить наш проект?');
   if (!q) return;
-  STATE.chat.push({ id: Date.now(), role: 'user', text: '⚔️ Спор мудрецов: ' + q });
-  renderGameChat();
-  setPetVisual('booting', 'focus');
-  await askPetBrain('Дай взвешенный совет и критически проверь возможные риски по вопросу: ' + q);
-  addXP(20);
+  STATE.chat.push({ id: Date.now(), role: 'user', text: '⚔️ Спор ИИ: ' + q }); renderGameChat();
+  await askPetBrain(q, null, 'duel'); addXP(20);
 });
 
 $('btnGamePhoto').addEventListener('click', () => $('gamePhotoInput').click());
 $('gamePhotoInput').addEventListener('change', e => {
-  const file = e.target.files?.[0];
-  if (!file) return;
+  const file = e.target.files?.[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = () => {
-    const dataUrl = String(reader.result || '');
-    const base64 = dataUrl.replace(/^data:[^;]+;base64,/, '');
+    const base64 = String(reader.result || '').replace(/^data:[^;]+;base64,/, '');
     sendGameMessage('Посмотри на это фото и скажи, что видишь!', { mime: file.type || 'image/jpeg', base64 });
   };
   reader.readAsDataURL(file);
@@ -1078,39 +1105,31 @@ $('gamePhotoInput').addEventListener('change', e => {
 
 $('btnGameVoice').addEventListener('click', () => {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { alert('Голосовой ввод в этом браузере не поддерживается — используй клавиатурный микрофон телефона.'); return; }
+  if (!SR) { alert('Используй голосовой ввод на клавиатуре смартфона.'); return; }
   if (RT.rec) { RT.rec.stop(); return; }
-  RT.rec = new SR();
-  RT.rec.lang = 'ru-RU';
-  $('btnGameVoice').classList.add('rec');
-  RT.rec.onresult = e => {
-    const txt = e.results[0][0].transcript;
-    sendGameMessage(txt);
-  };
+  RT.rec = new SR(); RT.rec.lang = 'ru-RU'; $('btnGameVoice').classList.add('rec');
+  RT.rec.onresult = e => sendGameMessage(e.results[0][0].transcript);
   RT.rec.onend = () => { $('btnGameVoice').classList.remove('rec'); RT.rec = null; };
   RT.rec.start();
 });
 
-/* ================= PRO MODE DAG ENGINE ================= */
 function loadPreset(name) {
   document.querySelectorAll('.preset-chip').forEach(c => c.classList.toggle('active', c.dataset.preset === name));
   if (name === 'chain') {
     STATE.modNodes = [
       { id: 'm1', provider: 'groq', title: '1. Быстрый Groq', model: 'openai/gpt-oss-20b', key: '', prompt: 'Быстрый черновик.', lastOutput: '', x: 16, y: 100, ms: '130 ms', status: 'idle' },
       { id: 'm2', provider: 'critic', title: '2. Критик', model: 'gemini-3.1-flash-lite', key: '', prompt: 'Найди слабые места.', lastOutput: '', x: 215, y: 100, ms: '180 ms', status: 'idle' },
-      { id: 'm3', provider: 'openai', title: '3. Финал OpenRouter', model: 'openrouter/free', key: '', prompt: 'Собери идеальный ответ.', lastOutput: '', x: 415, y: 100, ms: '420 ms', status: 'idle' }
+      { id: 'm3', provider: 'openai', title: '3. Финал OpenRouter', model: 'openrouter/free', key: '', prompt: 'Итоговый ответ.', lastOutput: '', x: 415, y: 100, ms: '420 ms', status: 'idle' }
     ];
     STATE.modEdges = [{ from: 'm1', to: 'm2', state: 'idle' }, { from: 'm2', to: 'm3', state: 'idle' }];
   } else if (name === 'fast') {
-    STATE.modNodes = [
-      { id: 'm1', provider: 'aistudio', title: 'Gemini Flash-Lite', model: STATE.geminiModel, key: '', prompt: 'Ответь точно и кратко.', lastOutput: '', x: 190, y: 100, ms: '210 ms', status: 'idle' }
-    ];
+    STATE.modNodes = [{ id: 'm1', provider: 'aistudio', title: 'Gemini Flash-Lite', model: STATE.geminiModel, key: '', prompt: 'Ответь точно.', lastOutput: '', x: 190, y: 100, ms: '210 ms', status: 'idle' }];
     STATE.modEdges = [];
   } else {
     STATE.modNodes = [
-      { id: 'm1', provider: 'groq', title: 'Groq LPU', model: 'openai/gpt-oss-20b', key: '', prompt: 'Быстрый практический разбор.', lastOutput: '', x: 16, y: 35, ms: '120 ms', status: 'idle' },
+      { id: 'm1', provider: 'groq', title: 'Groq LPU', model: 'openai/gpt-oss-20b', key: '', prompt: 'Быстрый разбор.', lastOutput: '', x: 16, y: 35, ms: '120 ms', status: 'idle' },
       { id: 'm2', provider: 'aistudio', title: 'Gemini 3.1 Lite', model: STATE.geminiModel, key: '', prompt: 'Системный взгляд.', lastOutput: '', x: 16, y: 165, ms: '210 ms', status: 'idle' },
-      { id: 'm3', provider: 'critic', title: 'Cross-Audit Критик', model: 'gemini-3.1-flash-lite', key: '', prompt: 'Сверь два черновика выше.', lastOutput: '', x: 220, y: 100, ms: '190 ms', status: 'idle' }
+      { id: 'm3', provider: 'critic', title: 'Cross-Audit Критик', model: 'gemini-3.1-flash-lite', key: '', prompt: 'Сверь два черновика.', lastOutput: '', x: 220, y: 100, ms: '190 ms', status: 'idle' }
     ];
     STATE.modEdges = [{ from: 'm1', to: 'm3', state: 'idle' }, { from: 'm2', to: 'm3', state: 'idle' }];
   }
@@ -1122,8 +1141,7 @@ function wouldCreateCycle(fromId, toId) {
   if (fromId === toId) return true;
   const seen = new Set([toId]); const q = [toId];
   while (q.length) {
-    const c = q.shift();
-    if (c === fromId) return true;
+    const c = q.shift(); if (c === fromId) return true;
     STATE.modEdges.forEach(e => { if (e.from === c && !seen.has(e.to)) { seen.add(e.to); q.push(e.to); } });
   }
   return false;
@@ -1145,30 +1163,24 @@ function getWaves() {
 }
 
 function renderModGraph() {
-  const c = $('graphCanvas');
-  c.querySelectorAll('.ai-node').forEach(el => el.remove());
-  RT.nodeEls.clear();
+  const c = $('graphCanvas'); c.querySelectorAll('.ai-node').forEach(el => el.remove()); RT.nodeEls.clear();
   STATE.modNodes.forEach(node => {
     const card = document.createElement('div');
     card.className = 'ai-node' + (node.id === STATE.selectedModId ? ' selected' : '') + (node.status === 'running' ? ' running' : '') + (node.status === 'done' ? ' done' : '') + (node.status === 'error' ? ' error' : '');
-    card.style.left = node.x + 'px';
-    card.style.top = node.y + 'px';
+    card.style.left = node.x + 'px'; card.style.top = node.y + 'px';
     card.innerHTML = '<div class="node-port port-in" data-node="' + node.id + '"></div><div class="ai-node-head"><span class="ai-node-provider prov-' + node.provider + '">' + node.provider.toUpperCase() + '</span><span>' + node.ms + '</span></div><div class="ai-node-title">' + node.title + '</div><div class="ai-node-model">' + node.model + '</div><div class="node-port port-out" data-node="' + node.id + '"></div>';
     card.addEventListener('pointerdown', e => {
       if (e.target.classList.contains('node-port')) return;
-      e.preventDefault();
-      STATE.selectedModId = node.id; RT.dragModId = node.id; RT.dragEl = card;
+      e.preventDefault(); STATE.selectedModId = node.id; RT.dragModId = node.id; RT.dragEl = card;
       const r = c.getBoundingClientRect();
       RT.dragOffset = { x: e.clientX - r.left - node.x, y: e.clientY - r.top - node.y };
-      c.querySelectorAll('.ai-node').forEach(el => el.classList.remove('selected'));
-      card.classList.add('selected'); syncInspector();
+      c.querySelectorAll('.ai-node').forEach(el => el.classList.remove('selected')); card.classList.add('selected'); syncInspector();
     });
     card.querySelector('.port-out').addEventListener('pointerdown', e => {
       e.stopPropagation(); e.preventDefault(); RT.wiringFromId = node.id;
       const r = c.getBoundingClientRect(); RT.tempPos = { x: e.clientX - r.left, y: e.clientY - r.top };
     });
-    RT.nodeEls.set(node.id, card);
-    c.appendChild(card);
+    RT.nodeEls.set(node.id, card); c.appendChild(card);
   });
   renderWires();
 }
@@ -1198,16 +1210,10 @@ function renderWires() {
 
 window.addEventListener('pointermove', e => {
   if (RT.dragModId && RT.dragEl) {
-    const n = STATE.modNodes.find(x => x.id === RT.dragModId);
-    const r = $('graphCanvas').getBoundingClientRect();
-    if (n) {
-      n.x = Math.max(4, Math.min(r.width - 165, e.clientX - r.left - RT.dragOffset.x));
-      n.y = Math.max(4, Math.min(r.height - 68, e.clientY - r.top - RT.dragOffset.y));
-      RT.dragEl.style.left = n.x + 'px'; RT.dragEl.style.top = n.y + 'px'; renderWires();
-    }
+    const n = STATE.modNodes.find(x => x.id === RT.dragModId); const r = $('graphCanvas').getBoundingClientRect();
+    if (n) { n.x = Math.max(4, Math.min(r.width - 165, e.clientX - r.left - RT.dragOffset.x)); n.y = Math.max(4, Math.min(r.height - 68, e.clientY - r.top - RT.dragOffset.y)); RT.dragEl.style.left = n.x + 'px'; RT.dragEl.style.top = n.y + 'px'; renderWires(); }
   } else if (RT.wiringFromId) {
-    const r = $('graphCanvas').getBoundingClientRect();
-    RT.tempPos = { x: e.clientX - r.left, y: e.clientY - r.top }; renderWires();
+    const r = $('graphCanvas').getBoundingClientRect(); RT.tempPos = { x: e.clientX - r.left, y: e.clientY - r.top }; renderWires();
   }
 });
 
@@ -1218,13 +1224,10 @@ window.addEventListener('pointerup', e => {
     if (target) {
       const toId = target.dataset.node, fromId = RT.wiringFromId;
       if (wouldCreateCycle(fromId, toId)) {
-        $('graphCanvas').classList.add('cycle-warn');
-        setTimeout(() => $('graphCanvas').classList.remove('cycle-warn'), 600);
-        setPetVisual('awake', 'shock');
-        addLog('Цикл заблокирован: ' + fromId + ' -> ' + toId, 'ERR');
+        $('graphCanvas').classList.add('cycle-warn'); setTimeout(() => $('graphCanvas').classList.remove('cycle-warn'), 600);
+        setPetVisual('awake', 'shock'); addLog('Цикл заблокирован: ' + fromId + ' -> ' + toId, 'ERR');
       } else if (!STATE.modEdges.some(x => x.from === fromId && x.to === toId)) {
-        STATE.modEdges.push({ from: fromId, to: toId, state: 'idle' });
-        saveState();
+        STATE.modEdges.push({ from: fromId, to: toId, state: 'idle' }); saveState();
       }
     }
     RT.wiringFromId = null; RT.tempPos = null; renderWires();
@@ -1232,16 +1235,12 @@ window.addEventListener('pointerup', e => {
 });
 
 function syncInspector() {
-  const n = STATE.modNodes.find(x => x.id === STATE.selectedModId);
-  if (!n) return;
+  const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (!n) return;
   $('inspProviderTag').textContent = n.provider.toUpperCase();
-  $('inspTitle').value = n.title;
-  $('inspProvider').value = n.provider;
+  $('inspTitle').value = n.title; $('inspProvider').value = n.provider;
   const ms = MODELS[n.provider] || [n.model];
   $('inspModel').innerHTML = ms.map(m => '<option value="' + m + '" ' + (m === n.model ? 'selected' : '') + '>' + m + '</option>').join('');
-  $('inspKey').value = n.key || '';
-  $('inspPrompt').value = n.prompt || '';
-  $('inspOutput').textContent = n.lastOutput || 'Нет вывода.';
+  $('inspKey').value = n.key || ''; $('inspPrompt').value = n.prompt || ''; $('inspOutput').textContent = n.lastOutput || 'Нет вывода.';
 }
 
 $('inspTitle').oninput = () => { const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (n) { n.title = $('inspTitle').value; renderModGraph(); saveState(); } };
@@ -1251,45 +1250,32 @@ $('inspKey').oninput = () => { const n = STATE.modNodes.find(x => x.id === STATE
 $('inspPrompt').oninput = () => { const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (n) { n.prompt = $('inspPrompt').value; saveState(); } };
 $('btnDeleteModNode').onclick = () => {
   if (STATE.modNodes.length <= 1) return;
-  const id = STATE.selectedModId;
-  STATE.modNodes = STATE.modNodes.filter(n => n.id !== id);
+  const id = STATE.selectedModId; STATE.modNodes = STATE.modNodes.filter(n => n.id !== id);
   STATE.modEdges = STATE.modEdges.filter(e => e.from !== id && e.to !== id);
-  STATE.selectedModId = STATE.modNodes[0]?.id;
-  renderModGraph(); syncInspector(); saveState();
+  STATE.selectedModId = STATE.modNodes[0]?.id; renderModGraph(); syncInspector(); saveState();
 };
 
 document.querySelectorAll('.preset-chip').forEach(b => b.onclick = () => loadPreset(b.dataset.preset));
 document.querySelectorAll('.add-node-btn').forEach(b => b.onclick = () => {
-  const p = b.dataset.addType;
-  const id = 'm' + Math.floor(100 + Math.random() * 900);
+  const p = b.dataset.addType; const id = 'm' + Math.floor(100 + Math.random() * 900);
   STATE.modNodes.push({ id, provider: p, title: p.toUpperCase() + ' Блок', model: MODELS[p][0], key: '', prompt: 'Обработай контекст.', lastOutput: '', x: 35, y: 40, ms: '200 ms', status: 'idle' });
   STATE.selectedModId = id; renderModGraph(); syncInspector(); saveState();
 });
 
 async function runProDag(query) {
   if (RT.busy) return;
-  RT.busy = true;
-  setPetVisual('booting', 'focus');
-  $('proRouteLabel').textContent = 'RUNNING';
-  const waves = getWaves();
-  STATE.modNodes.forEach(n => n.status = 'idle');
-  STATE.modEdges.forEach(e => e.state = 'idle');
-  renderModGraph();
-
+  RT.busy = true; setPetVisual('booting', 'focus'); $('proRouteLabel').textContent = 'RUNNING';
+  const waves = getWaves(); STATE.modNodes.forEach(n => n.status = 'idle'); STATE.modEdges.forEach(e => e.state = 'idle'); renderModGraph();
   let finalTxt = '';
   for (let w = 0; w < waves.length; w++) {
-    const wave = waves[w];
-    const ids = new Set(wave.map(n => n.id));
-    wave.forEach(n => n.status = 'running');
-    STATE.modEdges.forEach(e => { if (ids.has(e.to)) e.state = 'active'; });
-    renderModGraph();
-
+    const wave = waves[w]; const ids = new Set(wave.map(n => n.id));
+    wave.forEach(n => n.status = 'running'); STATE.modEdges.forEach(e => { if (ids.has(e.to)) e.state = 'active'; }); renderModGraph();
     await Promise.all(wave.map(async node => {
       const parents = STATE.modEdges.filter(e => e.to === node.id).map(e => STATE.modNodes.find(x => x.id === e.from)).filter(Boolean);
       const ctx = parents.map(p => '[' + p.title + ']: ' + p.lastOutput).join(NL + NL);
       const prompt = ctx ? ('Запрос: ' + query + NL + NL + 'Входы:' + NL + ctx) : query;
       const sys = buildUnifiedSystemPrompt(node.prompt);
-      const k = isRealKey(node.key) ? node.key : (node.provider !== 'groq' && node.provider !== 'openai' ? STATE.apiKey : '');
+      const k = isRealKey(node.key) ? node.key : (node.provider === 'groq' ? STATE.groqKey : (node.provider === 'openai' ? STATE.orKey : STATE.apiKey));
       const t0 = performance.now();
       try {
         if (isRealKey(k)) {
@@ -1297,39 +1283,27 @@ async function runProDag(query) {
           else if (node.provider === 'openai') node.lastOutput = await callOpenAICompat(node.model.includes('/') ? 'https://openrouter.ai/api/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions', k, node.model, sys, prompt);
           else node.lastOutput = await callGeminiDirect(k, node.model, sys, prompt);
         } else {
-          await new Promise(r => setTimeout(r, 380));
+          await new Promise(r => setTimeout(r, 360));
           node.lastOutput = '[' + node.title + ' SIM]: Обработано (' + parents.length + ' входов) для «' + query + '».';
         }
-        node.ms = Math.round(performance.now() - t0) + ' ms';
-        node.status = 'done';
-        finalTxt = node.lastOutput;
-      } catch (err) {
-        node.status = 'error'; node.lastOutput = 'ERR: ' + err.message;
-      }
+        node.ms = Math.round(performance.now() - t0) + ' ms'; node.status = 'done'; finalTxt = node.lastOutput;
+      } catch (err) { node.status = 'error'; node.lastOutput = 'ERR: ' + err.message; }
     }));
-    STATE.modEdges.forEach(e => { if (ids.has(e.to)) e.state = 'done'; });
-    renderModGraph(); syncInspector();
+    STATE.modEdges.forEach(e => { if (ids.has(e.to)) e.state = 'done'; }); renderModGraph(); syncInspector();
   }
-  RT.busy = false;
-  $('proRouteLabel').textContent = 'DONE';
+  RT.busy = false; $('proRouteLabel').textContent = 'DONE';
   const { mood, cleanText } = parseMoodAndClean(finalTxt || '[MOOD:smug] Конвейер завершён.');
-  setPetVisual('awake', mood);
-  $('proSpeechBox').textContent = cleanText;
+  setPetVisual('awake', mood); $('proSpeechBox').textContent = cleanText;
   addLog('DAG завершён (' + waves.length + ' волн).', 'PIPE');
 }
 
-$('btnProRunGraph').onclick = () => {
-  const v = $('proCmdInput').value.trim() || 'Оцени текущую архитектуру';
-  $('proCmdInput').value = '';
-  runProDag(v);
-};
+$('btnProRunGraph').onclick = () => { const v = $('proCmdInput').value.trim() || 'Оцени текущую архитектуру'; $('proCmdInput').value = ''; runProDag(v); };
 
-/* ================= PRO CONTROLS, DISCOVERY & SETTINGS ================= */
 function renderNodesList() {
   const nodes = [
     { id: 'dietpi-01', name: 'Orange Pi DietPi', role: STATE.swappedHosts ? 'PET' : 'LEADER', ip: '192.168.1.42' },
     { id: 'esp32-c5', name: 'ESP32-C5 Bridge', role: STATE.swappedHosts ? 'LEADER' : 'PET', ip: '192.168.1.88' },
-    { id: 'cf-d1', name: 'Cloudflare D1 Vault', role: 'MEMORY', ip: STATE.workerUrl ? 'ONLINE' : 'LOCAL-SYNC' }
+    { id: 'cf-d1', name: 'Cloudflare D1 Vault', role: 'MEMORY', ip: STATE.d1Online ? 'ONLINE ✓' : 'LOCAL' }
   ];
   $('nodeList').innerHTML = nodes.map(n => '<div class="node-item"><strong>' + n.name + '</strong> <span style="color:var(--accent);">[' + n.role + ']</span><div style="color:var(--muted);font-size:9.5px;">' + n.ip + '</div></div>').join('');
   $('leaderHostLabel').textContent = STATE.swappedHosts ? 'ESP32-P4' : 'Linux DietPi';
@@ -1337,38 +1311,28 @@ function renderNodesList() {
 }
 
 $('btnSwapHosts').onclick = () => { STATE.swappedHosts = !STATE.swappedHosts; renderNodesList(); saveState(); };
-document.querySelectorAll('.ui-btn').forEach(b => b.onclick = () => {
-  STATE.ui = b.dataset.ui;
-  document.querySelectorAll('.ui-btn').forEach(x => x.classList.remove('active')); b.classList.add('active');
-  applyThemeAndMode(); saveState();
-});
-document.querySelectorAll('.skin-btn').forEach(b => b.onclick = () => {
-  STATE.skin = b.dataset.skin;
-  document.querySelectorAll('.skin-btn').forEach(x => x.classList.remove('active')); b.classList.add('active');
-  applyThemeAndMode(); setPetVisual('awake', STATE.mood); saveState();
-});
-document.querySelectorAll('.view-mode-btn').forEach(b => b.onclick = () => {
-  STATE.viewMode = b.dataset.view;
-  document.querySelectorAll('.view-mode-btn').forEach(x => x.classList.remove('active')); b.classList.add('active');
-  $('stageArena').className = 'stage-arena mode-' + STATE.viewMode;
-  setTimeout(renderWires, 25);
-});
+document.querySelectorAll('.ui-btn').forEach(b => b.onclick = () => { STATE.ui = b.dataset.ui; document.querySelectorAll('.ui-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); applyThemeAndMode(); saveState(); });
+document.querySelectorAll('.skin-btn').forEach(b => b.onclick = () => { STATE.skin = b.dataset.skin; document.querySelectorAll('.skin-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); applyThemeAndMode(); setPetVisual('awake', STATE.mood); saveState(); });
+document.querySelectorAll('.view-mode-btn').forEach(b => b.onclick = () => { STATE.viewMode = b.dataset.view; document.querySelectorAll('.view-mode-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); $('stageArena').className = 'stage-arena mode-' + STATE.viewMode; setTimeout(renderWires, 25); });
 
 $('btnModeGame').onclick = () => { STATE.appMode = 'game'; applyThemeAndMode(); renderGameStage(); saveState(); };
 $('btnModePro').onclick = () => { STATE.appMode = 'pro'; applyThemeAndMode(); renderModGraph(); syncInspector(); saveState(); };
 
 $('btnOpenSettings').onclick = () => {
   $('setGeminiKey').value = STATE.apiKey;
-  $('setGeminiModel').value = STATE.geminiModel;
+  $('setGroqKey').value = STATE.groqKey;
+  $('setOrKey').value = STATE.orKey;
   $('setWorkerUrl').value = STATE.workerUrl;
   $('settingsModal').classList.add('open');
 };
 $('btnCloseSettings').onclick = () => $('settingsModal').classList.remove('open');
 $('btnSaveSettings').onclick = () => {
   STATE.apiKey = $('setGeminiKey').value.trim();
-  STATE.geminiModel = $('setGeminiModel').value.trim() || 'gemini-3.1-flash-lite';
-  STATE.workerUrl = $('setWorkerUrl').value.trim();
+  STATE.groqKey = $('setGroqKey').value.trim();
+  STATE.orKey = $('setOrKey').value.trim();
+  const newW = $('setWorkerUrl').value.trim().replace(/\/+$/, '');
   $('settingsModal').classList.remove('open');
+  if (newW && newW !== STATE.workerUrl) { connectD1Memory(newW); return; }
   applyThemeAndMode(); saveState();
 };
 $('btnResetAll').onclick = () => {
@@ -1377,11 +1341,9 @@ $('btnResetAll').onclick = () => {
   location.reload();
 };
 
-/* EYE TRACKING & BLINK */
 window.addEventListener('pointermove', e => {
   if (STATE.mood !== 'normal' || STATE.stage === 'egg') return;
-  const r = $('pet').getBoundingClientRect();
-  if (!r.width) return;
+  const r = $('pet').getBoundingClientRect(); if (!r.width) return;
   const dx = Math.max(-5, Math.min(5, ((e.clientX - r.left) / r.width - 0.5) * 14));
   const dy = Math.max(-5, Math.min(5, ((e.clientY - r.top) / r.height - 0.42) * 14));
   $('pupilLeft').setAttribute('transform', 'translate(' + dx.toFixed(1) + ',' + dy.toFixed(1) + ')');
@@ -1393,14 +1355,13 @@ setInterval(() => {
   setTimeout(() => $('pet').classList.remove('is-blinking'), 130);
 }, 3500);
 
-/* INIT */
 loadState();
 if (!STATE.modNodes || STATE.modNodes.length === 0) loadPreset('ensemble');
 else { renderModGraph(); syncInspector(); }
-renderNodesList();
 applyThemeAndMode();
 renderGameStage();
-addLog('AI OS Companion v10 загружен. Режим: ' + STATE.appMode.toUpperCase(), 'SYS');
+if (STATE.workerUrl) { connectD1Memory(STATE.workerUrl).catch(() => {}); }
+addLog('AI OS Companion v10.5 готов.', 'SYS');
 </script>
 </body>
 </html>
