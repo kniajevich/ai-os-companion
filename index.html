@@ -79,13 +79,15 @@ body.app-mode-pro .game-only { display: none !important; }
 .msg-meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 9.5px; color: var(--muted); margin-top: 4px; }
 .msg-bad-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 5px; font-size: 10px; padding: 1px 5px; cursor: pointer; }
 
-.game-actions-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+.game-actions-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
 @media (max-width: 480px) { .game-actions-grid { grid-template-columns: repeat(3, 1fr); } }
 .g-act-btn { background: var(--panel-alt); border: 1px solid var(--border); border-radius: 12px; padding: 8px 4px; color: var(--text); font-size: 11px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; }
 .g-act-btn:hover, .g-act-btn.active { border-color: var(--accent); color: var(--accent); }
 
 .game-drawer { background: var(--panel-alt); border: 1px solid var(--accent-2); border-radius: 14px; padding: 11px; display: none; flex-direction: column; gap: 9px; }
 .game-drawer.open { display: flex; }
+.mod-wizard-card { background: rgba(5, 8, 14, 0.85); border: 1px solid var(--border); border-radius: 11px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+.mod-wizard-head { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; font-family: var(--font-mono); }
 .slider-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; }
 .slider-row input[type=range] { flex: 1; accent-color: var(--accent); }
 .mem-list { max-height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; }
@@ -219,7 +221,7 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
 
 .modal-bg { position: fixed; inset: 0; background: rgba(2,5,10,0.86); display: none; align-items: center; justify-content: center; z-index: 100; padding: 14px; }
 .modal-bg.open { display: flex; }
-.modal-card { width: 100%; max-width: 440px; background: var(--panel); border: 1.5px solid var(--accent); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.modal-card { width: 100%; max-width: 460px; background: var(--panel); border: 1.5px solid var(--accent); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 9px; max-height: 92vh; overflow-y: auto; }
 </style>
 </head>
 <body class="ui-cyber theme-robot app-mode-game">
@@ -227,17 +229,24 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
 
 <div id="settingsModal" class="modal-bg">
   <div class="modal-card">
-    <strong style="font-family:var(--font-mono);color:var(--accent);font-size:13px;">⚙ КЛЮЧИ И НАСТРОЙКИ</strong>
-    <label style="font-size:11.5px;color:var(--muted);">Google AI Studio Key:</label>
-    <input id="setGeminiKey" class="game-input" type="password" placeholder="AIzaSy..." />
-    <label style="font-size:11.5px;color:var(--muted);">Groq API Key:</label>
-    <input id="setGroqKey" class="game-input" type="password" placeholder="gsk_..." />
-    <label style="font-size:11.5px;color:var(--muted);">OpenRouter Key:</label>
-    <input id="setOrKey" class="game-input" type="password" placeholder="sk-or-..." />
-    <label style="font-size:11.5px;color:var(--muted);">Cloudflare Worker URL (D1):</label>
-    <input id="setWorkerUrl" class="game-input" type="text" placeholder="https://ai-os-brain....workers.dev" />
-    <label style="font-size:11.5px;color:var(--muted);">APP PIN (если задан в секретах Worker):</label>
-    <input id="setAppPin" class="game-input" type="password" placeholder="Опционально" />
+    <strong style="font-family:var(--font-mono);color:var(--accent);font-size:13px;">⚙ КЛЮЧИ, РЕГИСТРАЦИЯ И ПАМЯТЬ</strong>
+    <div class="pro-mod-row">
+      <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Google Ключ</a>
+      <input id="setGeminiKey" class="game-input" type="password" placeholder="AIzaSy..." style="padding:7px 9px;font-size:12px;" />
+    </div>
+    <div class="pro-mod-row">
+      <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Groq Ключ</a>
+      <input id="setGroqKey" class="game-input" type="password" placeholder="gsk_..." style="padding:7px 9px;font-size:12px;" />
+    </div>
+    <div class="pro-mod-row">
+      <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ OR Ключ</a>
+      <input id="setOrKey" class="game-input" type="password" placeholder="sk-or-..." style="padding:7px 9px;font-size:12px;" />
+    </div>
+    <div class="pro-mod-row">
+      <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ 1-клик D1</a>
+      <input id="setWorkerUrl" class="game-input" type="text" placeholder="https://ai-os-brain....workers.dev" style="padding:7px 9px;font-size:12px;" />
+    </div>
+    <input id="setAppPin" class="game-input" type="password" placeholder="APP PIN (опционально)" style="padding:7px 9px;font-size:12px;" />
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px;">
       <button id="btnResetAll" class="secondary-btn" style="color:var(--danger);">↺ Сброс</button>
       <button id="btnCloseSettings" class="secondary-btn">Отмена</button>
@@ -266,7 +275,7 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
     </div>
   </div>
 
-  <!-- ===================== GAME MODE (SIMPLE) ===================== -->
+  <!-- ===================== GAME MODE ===================== -->
   <div id="gameView" class="game-shell game-only">
     <div class="game-hud">
       <div style="font-weight:800;font-size:14px;" id="hudPetName">🥚 Яйцо</div>
@@ -406,7 +415,7 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
       <div id="gameSparkBox" class="game-card" style="display:none;">
         <strong style="color:var(--accent);">⚡ Зажги искру разума (Google AI Studio)</strong>
         <div style="font-size:12.5px;color:var(--muted);line-height:1.4;">Вставь бесплатный ключ — я сам найду самую свежую бесплатную модель Flash-Lite.</div>
-        <button id="btnOpenAiStudio" class="secondary-btn">↗ Взять бесплатный ключ в AI Studio</button>
+        <button id="btnOpenAiStudio" class="secondary-btn">↗ Получить бесплатный ключ в AI Studio</button>
         <input id="gameKeyInput" class="game-input" type="password" placeholder="Вставь ключ AIzaSy..." />
         <button id="btnIgniteSpark" class="primary-btn">🔥 Найти свежий Flash-Lite и начать</button>
         <button id="btnDemoSpark" class="secondary-btn" style="font-size:11.5px;color:var(--muted);">🧪 Пока пропустить (Демо)</button>
@@ -419,9 +428,35 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
       <div class="game-actions-grid">
         <button class="g-act-btn" data-drawer="feed"><span>🍖</span><span>Факт</span></button>
         <button class="g-act-btn" data-drawer="traits"><span>🧪</span><span>Характер</span></button>
+        <button class="g-act-btn" data-drawer="modules"><span>🧩</span><span>Модули</span></button>
         <button class="g-act-btn" id="btnGameSleep"><span>💤</span><span>Сон</span></button>
         <button class="g-act-btn" id="btnGameDuel"><span>⚔️</span><span>Спор ИИ</span></button>
         <button class="g-act-btn" data-drawer="memory"><span>🧠</span><span>Память</span></button>
+      </div>
+
+      <!-- ДУБЛИРОВАННАЯ ПРОСТАЯ РЕГИСТРАЦИЯ КЛЮЧЕЙ И ПАМЯТИ В GAME MODE -->
+      <div id="drawerModules" class="game-drawer">
+        <strong style="font-size:13px;color:var(--accent);">🧩 Подключение API и Памяти (в 1 клик)</strong>
+        <div class="mod-wizard-card">
+          <div class="mod-wizard-head"><span>🤖 Google AI Studio</span><span id="gmStGemini" style="color:var(--accent);">OFF</span></div>
+          <a class="secondary-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ 1. Получить бесплатный ключ Google</a>
+          <div style="display:flex;gap:6px;"><input id="gmInGemini" class="game-input" type="password" placeholder="AIzaSy..." style="padding:7px 9px;font-size:12px;" /><button id="gmBtnGemini" class="primary-btn">Вкл</button></div>
+        </div>
+        <div class="mod-wizard-card">
+          <div class="mod-wizard-head"><span>⚡ Groq LPU (Скорость + Голос)</span><span id="gmStGroq" style="color:var(--warn);">OFF</span></div>
+          <a class="secondary-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ 1. Получить бесплатный ключ Groq</a>
+          <div style="display:flex;gap:6px;"><input id="gmInGroq" class="game-input" type="password" placeholder="gsk_..." style="padding:7px 9px;font-size:12px;" /><button id="gmBtnGroq" class="primary-btn">Вкл</button></div>
+        </div>
+        <div class="mod-wizard-card">
+          <div class="mod-wizard-head"><span>🛡 OpenRouter (Критик / Резерв)</span><span id="gmStOr" style="color:var(--purple);">OFF</span></div>
+          <a class="secondary-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ 1. Получить бесплатный ключ OpenRouter</a>
+          <div style="display:flex;gap:6px;"><input id="gmInOr" class="game-input" type="password" placeholder="sk-or-..." style="padding:7px 9px;font-size:12px;" /><button id="gmBtnOr" class="primary-btn">Вкл</button></div>
+        </div>
+        <div class="mod-wizard-card">
+          <div class="mod-wizard-head"><span>💾 Облачная Память D1</span><span id="gmStD1" style="color:var(--accent-2);">LOCAL</span></div>
+          <a class="secondary-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ 1. Поднять Память D1 в 1 клик (Cloudflare)</a>
+          <div style="display:flex;gap:6px;"><input id="gmInD1" class="game-input" type="text" placeholder="https://ai-os-brain....workers.dev" style="padding:7px 9px;font-size:12px;" /><input id="gmInPin" class="game-input" type="password" placeholder="PIN" style="max-width:64px;padding:7px 9px;font-size:12px;" /><button id="gmBtnD1" class="primary-btn">Вкл</button></div>
+        </div>
       </div>
 
       <div id="drawerFeed" class="game-drawer">
@@ -455,12 +490,11 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
 
   <!-- ===================== PRO MODE (CLEAN & MODULAR) ===================== -->
   <div id="proView" class="pro-only">
-    <!-- БЫСТРОЕ ПОДКЛЮЧЕНИЕ ВСЕХ МОДУЛЕЙ БЕЗ ВОДЫ -->
     <div class="pro-connect-grid">
       <div class="pro-mod-card" id="proCardGemini">
         <div class="pro-mod-head"><span>🤖 AI Studio (Auto Lite)</span><span id="proStGemini" style="color:var(--accent);">OFF</span></div>
         <div class="pro-mod-row">
-          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Ключ</a>
+          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Получить</a>
           <input id="proInGemini" class="pro-mini-in" type="password" placeholder="AIzaSy..." />
           <button id="proBtnGemini" class="pro-mini-btn go">Вкл</button>
         </div>
@@ -468,7 +502,7 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
       <div class="pro-mod-card" id="proCardGroq">
         <div class="pro-mod-head"><span>⚡ Groq (Flash-Lite подбор)</span><span id="proStGroq" style="color:var(--warn);">OFF</span></div>
         <div class="pro-mod-row">
-          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Ключ</a>
+          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Получить</a>
           <input id="proInGroq" class="pro-mini-in" type="password" placeholder="gsk_..." />
           <button id="proBtnGroq" class="pro-mini-btn go">Вкл</button>
         </div>
@@ -476,7 +510,7 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
       <div class="pro-mod-card" id="proCardOr">
         <div class="pro-mod-head"><span>🛡 OpenRouter (Free)</span><span id="proStOr" style="color:var(--purple);">OFF</span></div>
         <div class="pro-mod-row">
-          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ Ключ</a>
+          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ Получить</a>
           <input id="proInOr" class="pro-mini-in" type="password" placeholder="sk-or-..." />
           <button id="proBtnOr" class="pro-mini-btn go">Вкл</button>
         </div>
@@ -484,9 +518,9 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
       <div class="pro-mod-card" id="proCardD1">
         <div class="pro-mod-head"><span>💾 Память D1 + PIN</span><span id="proStD1" style="color:var(--accent-2);">LOCAL</span></div>
         <div class="pro-mod-row">
-          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend" title="1-клик деплой Worker + D1">☁️ 1-клик</a>
+          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend" title="1-клик деплой Worker + D1">☁️ Создать D1</a>
           <input id="proInD1" class="pro-mini-in" type="text" placeholder="https://...workers.dev" />
-          <input id="proInPin" class="pro-mini-in" type="password" placeholder="PIN" style="max-width:52px;" />
+          <input id="proInPin" class="pro-mini-in" type="password" placeholder="PIN" style="max-width:48px;" />
           <button id="proBtnD1" class="pro-mini-btn go">Вкл</button>
         </div>
       </div>
@@ -661,7 +695,6 @@ function setPetVisual(powerState, mood) {
   $('proEmotionBadge').textContent = 'GRIMACE: ' + STATE.mood.toUpperCase();
 }
 
-/* ================= ADAPTIVE MODEL DISCOVERY (GEMINI + GROQ VIA FLASH-LITE + OPENROUTER) ================= */
 function versionScore(id) {
   const m = id.match(/(\d+(?:\.\d+)?)/);
   let s = m ? parseFloat(m[1]) * 100 : 200;
@@ -675,10 +708,7 @@ async function discoverGeminiClient(key) {
   const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models?key=' + encodeURIComponent(key));
   if (!res.ok) throw new Error('AI Studio HTTP ' + res.status);
   const data = await res.json();
-  const raw = (data.models || [])
-    .filter(m => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes('generateContent'))
-    .map(m => m.name.replace('models/', ''))
-    .filter(id => id.includes('gemini') && !id.includes('embedding') && !id.includes('tts') && !id.includes('image') && !id.includes('robotics') && !id.includes('aqa'));
+  const raw = (data.models || []).filter(m => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes('generateContent')).map(m => m.name.replace('models/', '')).filter(id => id.includes('gemini') && !id.includes('embedding') && !id.includes('tts') && !id.includes('image') && !id.includes('robotics') && !id.includes('aqa'));
   const lites = raw.filter(id => id.includes('flash-lite') || id.includes('flash_lite')).sort((a, b) => versionScore(b) - versionScore(a));
   const flashes = raw.filter(id => id.includes('flash') && !id.includes('lite')).sort((a, b) => versionScore(b) - versionScore(a));
   const fast = lites[0] || flashes[0] || 'gemini-flash-lite-latest';
@@ -686,7 +716,7 @@ async function discoverGeminiClient(key) {
   const list = [...new Set([...lites.slice(0, 4), ...flashes.slice(0, 4), ...raw.slice(0, 4)])];
   STATE.catalog.aistudio = { fast, smart, list: list.length ? list : [fast], reason: 'auto-scan' };
   STATE.catalog.critic = { fast, smart, list: [fast, 'cross-audit-diff'], reason: 'auto-scan' };
-  addLog('AI Studio авто-выбор: Lite=' + fast + ', Flash=' + smart + ' (из ' + raw.length + ' моделей)', 'PIPE');
+  addLog('AI Studio авто-выбор: Lite=' + fast + ', Flash=' + smart, 'PIPE');
   return STATE.catalog.aistudio;
 }
 
@@ -699,15 +729,12 @@ async function discoverGroqClient(groqKey) {
   const whispers = active.filter(m => m.id.includes('whisper')).map(m => m.id);
   const chatIds = active.map(m => m.id).filter(id => !id.includes('whisper') && !id.includes('guard') && !id.includes('tts') && !id.includes('orpheus'));
   const whisper = whispers.find(w => w.includes('turbo')) || whispers[0] || 'whisper-large-v3-turbo';
-
   let fast = chatIds.find(id => id.includes('20b') || id.includes('8b')) || chatIds[0] || 'openai/gpt-oss-20b';
   let smart = chatIds.find(id => id.includes('120b') || id.includes('70b') || id.includes('qwen')) || chatIds[0] || 'openai/gpt-oss-120b';
   let reason = 'heuristic';
-
-  // Если подключен Flash-Lite, просим его самого оценить и выбрать лучшие модели Groq
   if (isRealKey(STATE.apiKey) && chatIds.length > 0) {
     try {
-      const evalPrompt = 'Живой список доступных моделей Groq: ' + chatIds.join(', ') + '. Выбери 1 быструю лёгкую (fast) и 1 самую мощную бесплатную (smart, например 120b/70b/qwen). Ответь СТРОГО JSON с полями fast, smart, reason (кратко).';
+      const evalPrompt = 'Живой список Groq: ' + chatIds.join(', ') + '. Выбери 1 быструю (fast) и 1 мощную бесплатную (smart, например 120b/70b/qwen). Ответь СТРОГО JSON с полями fast, smart, reason.';
       const raw = await callGeminiDirect(STATE.apiKey, STATE.catalog.aistudio.fast, 'Отвечай только JSON без markdown.', evalPrompt);
       const m = raw.match(/\{[\s\S]*\}/);
       if (m) {
@@ -719,7 +746,7 @@ async function discoverGroqClient(groqKey) {
     } catch (_) {}
   }
   STATE.catalog.groq = { fast, smart, whisper, list: chatIds.length ? chatIds : [fast, smart], reason };
-  addLog('Groq авто-подбор (' + reason + '): fast=' + fast + ', smart=' + smart, 'PIPE');
+  addLog('Groq подбор (' + reason + '): fast=' + fast + ', smart=' + smart, 'PIPE');
   return STATE.catalog.groq;
 }
 
@@ -733,7 +760,6 @@ async function discoverOpenRouterClient(orKey) {
     const list = [...new Set(['openrouter/free', ...freeIds.filter(id => id !== 'openrouter/free').slice(0, 12)])];
     const smart = freeIds.find(id => id.includes('gemma') || id.includes('qwen') || id.includes('llama')) || 'openrouter/free';
     STATE.catalog.openai = { fast: 'openrouter/free', smart, list, reason: 'zero-pricing' };
-    addLog('OpenRouter скан: найдено ' + freeIds.length + ' бесплатных моделей.', 'PIPE');
   } catch (_) {}
   return STATE.catalog.openai;
 }
@@ -743,24 +769,13 @@ async function refreshAllAdaptiveModels() {
   if (STATE.workerUrl && STATE.d1Online) {
     try {
       const r = await fetch(STATE.workerUrl + '/api/models/refresh', { method: 'POST', headers: workerHeaders() });
-      if (r.ok) {
-        const d = await r.json();
-        if (d.catalog) {
-          if (d.catalog.aistudio) STATE.catalog.aistudio = d.catalog.aistudio;
-          if (d.catalog.groq) STATE.catalog.groq = d.catalog.groq;
-          if (d.catalog.openrouter) STATE.catalog.openai = d.catalog.openrouter;
-        }
-      }
+      if (r.ok) { const d = await r.json(); if (d.catalog) { if (d.catalog.aistudio) STATE.catalog.aistudio = d.catalog.aistudio; if (d.catalog.groq) STATE.catalog.groq = d.catalog.groq; if (d.catalog.openrouter) STATE.catalog.openai = d.catalog.openrouter; } }
     } catch (_) {}
   }
   try { await discoverGeminiClient(STATE.apiKey); } catch (_) {}
   try { await discoverGroqClient(STATE.groqKey); } catch (_) {}
   await discoverOpenRouterClient(STATE.orKey);
-  syncNodesToFreshCatalog();
-  syncProDeckStatus();
-  syncInspector();
-  renderModGraph();
-  saveState();
+  syncNodesToFreshCatalog(); syncProDeckStatus(); syncInspector(); renderModGraph(); saveState();
   $('proRouteLabel').textContent = 'READY';
 }
 
@@ -780,8 +795,16 @@ function syncProDeckStatus() {
   $('proCardOr').classList.toggle('active', cOn); $('proStOr').textContent = cOn ? STATE.catalog.openai.smart : 'OFF';
   $('proCardD1').classList.toggle('active', mOn); $('proStD1').textContent = mOn ? 'ONLINE ✓' : 'LOCAL';
   $('vaultStatusLabel').textContent = mOn ? 'CLOUD D1 ✓' : 'LOCAL';
-  $('proInGemini').value = STATE.apiKey; $('proInGroq').value = STATE.groqKey; $('proInOr').value = STATE.orKey;
-  $('proInD1').value = STATE.workerUrl; $('proInPin').value = STATE.appPin;
+  $('gmStGemini').textContent = gOn ? STATE.catalog.aistudio.fast : 'OFF';
+  $('gmStGroq').textContent = qOn ? STATE.catalog.groq.fast : 'OFF';
+  $('gmStOr').textContent = cOn ? 'ON ✓' : 'OFF';
+  $('gmStD1').textContent = mOn ? 'CLOUD D1 ✓' : 'LOCAL';
+
+  ['proInGemini', 'gmInGemini'].forEach(id => { if ($(id).value !== STATE.apiKey) $(id).value = STATE.apiKey; });
+  ['proInGroq', 'gmInGroq'].forEach(id => { if ($(id).value !== STATE.groqKey) $(id).value = STATE.groqKey; });
+  ['proInOr', 'gmInOr'].forEach(id => { if ($(id).value !== STATE.orKey) $(id).value = STATE.orKey; });
+  ['proInD1', 'gmInD1'].forEach(id => { if ($(id).value !== STATE.workerUrl) $(id).value = STATE.workerUrl; });
+  ['proInPin', 'gmInPin'].forEach(id => { if ($(id).value !== STATE.appPin) $(id).value = STATE.appPin; });
   $('catalogSummary').textContent = 'Lite: ' + STATE.catalog.aistudio.fast + NL + 'Groq Fast/Smart: ' + STATE.catalog.groq.fast + ' / ' + STATE.catalog.groq.smart + NL + 'OR Free: ' + STATE.catalog.openai.smart;
 }
 
@@ -810,11 +833,33 @@ async function playModuleInstallAnim(title, commentText) {
   setTimeout(() => pet.classList.remove('anim-burst'), 400);
 }
 
+async function activateGeminiKey(k) {
+  const clean = k.trim(); if (!isRealKey(clean)) { alert('Вставь корректный ключ AIza...'); return; }
+  STATE.apiKey = clean;
+  await discoverGeminiClient(clean).catch(e => alert(e.message));
+  if (isRealKey(STATE.groqKey)) await discoverGroqClient(STATE.groqKey).catch(() => {});
+  syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector();
+  await playModuleInstallAnim('AI Studio', 'Подключен свежий ' + STATE.catalog.aistudio.fast + '! (+25 XP)');
+}
+
+async function activateGroqKey(k) {
+  const clean = k.trim(); if (!isRealKey(clean)) { alert('Вставь корректный ключ gsk_...'); return; }
+  STATE.groqKey = clean;
+  const res = await discoverGroqClient(clean).catch(e => { alert(e.message); return null; });
+  if (res) { syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector(); await playModuleInstallAnim('Groq LPU', 'Турбина Groq подключена! Выбрано (' + res.reason + '): быстрая ' + res.fast + ' и умная ' + res.smart + '! (+25 XP)'); }
+}
+
+async function activateOrKey(k) {
+  const clean = k.trim(); if (!isRealKey(clean)) { alert('Вставь корректный ключ sk-or-...'); return; }
+  STATE.orKey = clean; await discoverOpenRouterClient(clean); syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector();
+  await playModuleInstallAnim('OpenRouter Free', 'Критик OpenRouter пристёгнут! Бесплатных моделей: ' + STATE.catalog.openai.list.length + '. (+25 XP)');
+}
+
 async function connectD1Memory(url, pin = '') {
   const clean = url.trim().replace(/\/+$/, '');
   if (!clean.startsWith('http')) { alert('Вставь URL Worker (https://...)'); return; }
   if (pin !== undefined) STATE.appPin = pin.trim();
-  $('proStD1').textContent = 'ПРОВЕРКА...';
+  $('proStD1').textContent = 'ПРОВЕРКА...'; $('gmStD1').textContent = 'ПРОВЕРКА...';
   try {
     const hRes = await fetch(clean + '/api/health', { headers: workerHeaders() });
     if (hRes.status === 401) throw new Error('Неверный PIN-код (401)');
@@ -828,11 +873,7 @@ async function connectD1Memory(url, pin = '') {
     });
     if (syncRes.ok) {
       const bundle = await syncRes.json();
-      if (bundle.catalog) {
-        if (bundle.catalog.aistudio) STATE.catalog.aistudio = bundle.catalog.aistudio;
-        if (bundle.catalog.groq) STATE.catalog.groq = bundle.catalog.groq;
-        if (bundle.catalog.openrouter) STATE.catalog.openai = bundle.catalog.openrouter;
-      }
+      if (bundle.catalog) { if (bundle.catalog.aistudio) STATE.catalog.aistudio = bundle.catalog.aistudio; if (bundle.catalog.groq) STATE.catalog.groq = bundle.catalog.groq; if (bundle.catalog.openrouter) STATE.catalog.openai = bundle.catalog.openrouter; }
       if (bundle.profile && !bundle.adoptedClient) {
         STATE.name = bundle.profile.name; STATE.stage = bundle.profile.stage; STATE.xp = bundle.profile.xp; STATE.skin = bundle.profile.skin;
         try { STATE.traits = JSON.parse(bundle.profile.traits_json); } catch (_) {}
@@ -843,39 +884,27 @@ async function connectD1Memory(url, pin = '') {
       }
     }
     applyThemeAndMode(); renderGameStage(); renderModGraph(); syncInspector();
-    await playModuleInstallAnim('Cloudflare D1', 'Клик! Общая память Cloudflare D1 прищёлкнулась, а каталог свежих моделей синхронизирован!');
+    await playModuleInstallAnim('Cloudflare D1', 'Клик! Общая память Cloudflare D1 прищёлкнулась, а каталог свежих моделей синхронизирован! (+25 XP)');
   } catch (err) {
     STATE.d1Online = false; syncProDeckStatus(); setPetVisual('awake', 'shock');
     alert('Ошибка D1: ' + err.message);
   }
 }
 
-/* PRO MODULE BUTTONS */
-$('proBtnGemini').onclick = async () => {
-  const k = $('proInGemini').value.trim(); if (!isRealKey(k)) { alert('Вставь ключ AIza...'); return; }
-  STATE.apiKey = k; await discoverGeminiClient(k).catch(e => alert(e.message));
-  if (isRealKey(STATE.groqKey)) await discoverGroqClient(STATE.groqKey).catch(() => {});
-  syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector();
-  await playModuleInstallAnim('AI Studio', 'Подключен свежий ' + STATE.catalog.aistudio.fast + '!');
-};
-$('proBtnGroq').onclick = async () => {
-  const k = $('proInGroq').value.trim(); if (!isRealKey(k)) { alert('Вставь ключ gsk_...'); return; }
-  STATE.groqKey = k;
-  const res = await discoverGroqClient(k).catch(e => { alert(e.message); return null; });
-  if (res) { syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector(); await playModuleInstallAnim('Groq LPU', 'Турбина Groq подключена! Выбрано (' + res.reason + '): быстрая ' + res.fast + ' и умная ' + res.smart + '!'); }
-};
-$('proBtnOr').onclick = async () => {
-  const k = $('proInOr').value.trim(); if (!isRealKey(k)) { alert('Вставь ключ sk-or-...'); return; }
-  STATE.orKey = k; await discoverOpenRouterClient(k); syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector();
-  await playModuleInstallAnim('OpenRouter Free', 'Критик OpenRouter пристёгнут! Найдено бесплатных моделей: ' + STATE.catalog.openai.list.length + '.');
-};
+$('proBtnGemini').onclick = () => activateGeminiKey($('proInGemini').value);
+$('gmBtnGemini').onclick = () => activateGeminiKey($('gmInGemini').value);
+$('proBtnGroq').onclick = () => activateGroqKey($('proInGroq').value);
+$('gmBtnGroq').onclick = () => activateGroqKey($('gmInGroq').value);
+$('proBtnOr').onclick = () => activateOrKey($('proInOr').value);
+$('gmBtnOr').onclick = () => activateOrKey($('gmInOr').value);
 $('proBtnD1').onclick = () => connectD1Memory($('proInD1').value, $('proInPin').value);
+$('gmBtnD1').onclick = () => connectD1Memory($('gmInD1').value, $('gmInPin').value);
+
 $('btnRefreshCatalog').onclick = async () => {
   await refreshAllAdaptiveModels();
   await playModuleInstallAnim('Auto-Scan', 'Обновил живые модели: Gemini=' + STATE.catalog.aistudio.fast + ', Groq=' + STATE.catalog.groq.fast + '/' + STATE.catalog.groq.smart + '.');
 };
 
-/* PERSONA & API CALLS */
 function buildUnifiedSystemPrompt(extraRole = '') {
   const t = STATE.traits;
   const factsText = STATE.facts.slice(0, 10).map(f => '- ' + f.text).join(NL) || '- Пока нет фактов.';
@@ -957,7 +986,6 @@ async function askPetBrain(userText, imageObj = null, mode = 'game') {
   renderGameChat(); saveState();
 }
 
-/* GAME MODE */
 function renderGameStage() {
   $('gameEggBox').style.display = STATE.stage === 'egg' ? 'flex' : 'none';
   $('gameAvatarSlot').style.display = STATE.stage !== 'egg' ? 'flex' : 'none';
@@ -969,7 +997,7 @@ function renderGameStage() {
   else if (STATE.stage === 'spark') setPetVisual('booting', 'focus');
   else if (STATE.stage === 'active') setPetVisual('awake', STATE.mood);
   else setPetVisual('off', 'normal');
-  addXP(0); renderGameChat(); renderMemoryDrawer();
+  addXP(0); renderGameChat(); renderMemoryDrawer(); syncProDeckStatus();
 }
 
 function renderGameChat() {
@@ -1046,7 +1074,7 @@ $('btnIgniteSpark').addEventListener('click', async () => {
 });
 $('btnDemoSpark').addEventListener('click', () => {
   STATE.stage = 'active';
-  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'demo', model: 'demo-sim', mood: 'smug', text: 'Привет! Я ' + STATE.name + '! Пока работаю в Демо, но можешь покормить меня фактами!' });
+  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'demo', model: 'demo-sim', mood: 'smug', text: 'Привет! Я ' + STATE.name + '! Нажми «🧩 Модули» чтобы в 1 клик пристегнуть Google, Groq или Память D1!' });
   renderGameStage(); saveState();
 });
 
@@ -1123,7 +1151,6 @@ $('btnGameVoice').addEventListener('click', () => {
   RT.rec.start();
 });
 
-/* PRO DAG ENGINE */
 function loadPreset(name) {
   document.querySelectorAll('.preset-chip').forEach(c => c.classList.toggle('active', c.dataset.preset === name));
   if (name === 'chain') {
@@ -1371,7 +1398,7 @@ applyThemeAndMode();
 renderGameStage();
 if (STATE.workerUrl) { connectD1Memory(STATE.workerUrl, STATE.appPin).catch(() => {}); }
 else if (isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey)) { refreshAllAdaptiveModels().catch(() => {}); }
-addLog('AI OS Companion v11 (Adaptive Auto-Discovery) готов.', 'SYS');
+addLog('AI OS Companion v11.1 (Adaptive Auto-Discovery) готов.', 'SYS');
 </script>
 </body>
 </html>
