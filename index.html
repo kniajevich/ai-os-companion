@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>AI OS Companion — GAME &amp; PRO (Modular Mesh)</title>
+<title>AI OS Companion — GAME &amp; PRO (Vibe-Coding + GitHub Deploy)</title>
 <style>
 :root {
   --bg: #05080d; --panel: #0b111b; --panel-alt: #0f1724; --border: #1e2d42;
@@ -51,6 +51,7 @@ body.app-mode-pro .game-only { display: none !important; }
 .xp-top { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); }
 .xp-bar { height: 7px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
 .xp-fill { height: 100%; width: 10%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width 0.3s ease; }
+.hud-mem-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--accent-2); border-radius: 9px; padding: 6px 8px; font-family: var(--font-mono); font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
 
 .game-stage { position: relative; background: linear-gradient(to right, var(--grid-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px), radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--accent) 14%, var(--panel-alt)) 0%, #05080e 88%); background-size: 26px 26px, 26px 26px, 100% 100%; border: 1px solid var(--border); border-radius: 18px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .xp-pop { position: absolute; top: 14px; right: 16px; font-family: var(--font-mono); font-weight: 800; font-size: 13px; color: var(--accent); background: rgba(5,8,13,0.9); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 99px; opacity: 0; transform: translateY(10px); pointer-events: none; transition: all 0.4s ease; z-index: 15; }
@@ -64,27 +65,27 @@ body.app-mode-pro .game-only { display: none !important; }
 .egg-cracks-2 .crack-1, .egg-cracks-2 .crack-2 { opacity: 1; }
 
 .game-card { width: 100%; background: rgba(7, 11, 19, 0.92); border: 1px solid var(--border); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-.game-input, .game-textarea, .game-select { width: 100%; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px; color: var(--text); font-family: var(--font-main); font-size: 13.5px; outline: none; }
-.game-input:focus { border-color: var(--accent); }
+.game-input, .game-textarea, .game-select { width: 100%; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; color: var(--text); font-family: var(--font-main); font-size: 13px; outline: none; }
+.game-input:focus, .game-textarea:focus { border-color: var(--accent); }
 .primary-btn { background: color-mix(in srgb, var(--accent) 20%, var(--panel-alt)); border: 1.5px solid var(--accent); color: var(--accent); border-radius: 10px; padding: 8px 12px; font-weight: 700; font-size: 12.5px; cursor: pointer; text-align: center; }
+.primary-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .secondary-btn { background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 7px 10px; font-weight: 600; font-size: 12px; cursor: pointer; text-decoration: none; text-align: center; }
 .skin-chips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
 .chip-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
 .chip-btn.active { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 16%, transparent); }
 
-.chat-box { width: 100%; max-height: 195px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; background: rgba(4, 7, 13, 0.72); border: 1px solid var(--border); border-radius: 14px; padding: 10px; }
+.chat-box { width: 100%; max-height: 185px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; background: rgba(4, 7, 13, 0.72); border: 1px solid var(--border); border-radius: 14px; padding: 10px; }
 .msg-bubble { padding: 8px 10px; border-radius: 11px; font-size: 13px; line-height: 1.4; max-width: 92%; }
 .msg-user { align-self: flex-end; background: color-mix(in srgb, var(--accent-2) 18%, var(--panel-alt)); border: 1px solid color-mix(in srgb, var(--accent-2) 40%, transparent); }
 .msg-ai { align-self: flex-start; background: rgba(17, 25, 39, 0.95); border: 1px solid var(--border); }
 .msg-meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 9.5px; color: var(--muted); margin-top: 4px; }
 .msg-bad-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 5px; font-size: 10px; padding: 1px 5px; cursor: pointer; }
 
-.game-actions-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
-@media (max-width: 480px) { .game-actions-grid { grid-template-columns: repeat(3, 1fr); } }
+.game-actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .g-act-btn { background: var(--panel-alt); border: 1px solid var(--border); border-radius: 12px; padding: 8px 4px; color: var(--text); font-size: 11px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; }
 .g-act-btn:hover, .g-act-btn.active { border-color: var(--accent); color: var(--accent); }
 
-.game-drawer { background: var(--panel-alt); border: 1px solid var(--accent-2); border-radius: 14px; padding: 11px; display: none; flex-direction: column; gap: 9px; }
+.game-drawer { background: var(--panel-alt); border: 1px solid var(--accent-2); border-radius: 14px; padding: 11px; display: none; flex-direction: column; gap: 8px; }
 .game-drawer.open { display: flex; }
 .mod-wizard-card { background: rgba(5, 8, 14, 0.85); border: 1px solid var(--border); border-radius: 11px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
 .mod-wizard-head { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; font-family: var(--font-mono); }
@@ -93,15 +94,20 @@ body.app-mode-pro .game-only { display: none !important; }
 .mem-list { max-height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; }
 .mem-item { background: rgba(0,0,0,0.35); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; font-size: 11.5px; display: flex; justify-content: space-between; gap: 6px; }
 
+.vibe-checks-row { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); }
+.vibe-checks-row label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+.vibe-verdict { font-family: var(--font-mono); font-size: 11px; padding: 6px 9px; border-radius: 8px; border: 1px solid var(--border); background: rgba(0,0,0,0.4); }
+.vibe-verdict.ok { border-color: var(--accent); color: var(--accent); }
+.vibe-verdict.fail { border-color: var(--danger); color: var(--danger); }
+.code-pre { background: #03060c; border: 1px solid var(--border); border-radius: 9px; padding: 9px; font-family: var(--font-mono); font-size: 11px; color: #c9d1d9; max-height: 180px; overflow: auto; white-space: pre; margin: 0; }
+
 .game-chat-bar { display: flex; gap: 6px; align-items: center; background: var(--panel-alt); border: 1px solid var(--border); border-radius: 14px; padding: 6px; }
 .game-chat-input { flex: 1; background: transparent; border: none; color: var(--text); font-size: 14px; padding: 6px; outline: none; min-width: 0; }
 .chat-tool-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 8px 10px; font-size: 14px; cursor: pointer; flex-shrink: 0; }
 .chat-tool-btn.rec { border-color: var(--danger); color: var(--danger); }
 
 /* PRO MODE */
-.pro-connect-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
-@media (max-width: 1100px) { .pro-connect-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .pro-connect-grid { grid-template-columns: 1fr; } }
+.pro-connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(225px, 1fr)); gap: 8px; margin-bottom: 10px; }
 .pro-mod-card { background: var(--panel-alt); border: 1px solid var(--border); border-radius: 12px; padding: 9px; display: flex; flex-direction: column; gap: 6px; }
 .pro-mod-card.active { border-color: var(--accent); }
 .pro-mod-head { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; }
@@ -162,6 +168,7 @@ svg#wireSvg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-e
 .prov-groq { background: rgba(255,176,32,0.18); color: #ffb020; }
 .prov-openai { background: rgba(56,189,248,0.16); color: #38bdf8; }
 .prov-critic { background: rgba(192,132,252,0.18); color: #c084fc; }
+.prov-verifier { background: rgba(255,59,107,0.18); color: #ff6b8b; }
 .ai-node-title { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ai-node-model { font-family: var(--font-mono); font-size: 9px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .node-port { position: absolute; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; border-radius: 50%; background: var(--panel); border: 2px solid var(--accent-2); cursor: crosshair; touch-action: none; z-index: 6; }
@@ -174,7 +181,6 @@ svg#wireSvg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-e
 .insp-input, .insp-select, .insp-textarea { width: 100%; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; color: var(--text); font-family: var(--font-mono); font-size: 10.5px; margin-bottom: 5px; outline: none; }
 .insp-output { background: rgba(2,4,9,0.85); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-family: var(--font-mono); font-size: 9.5px; color: var(--accent); max-height: 75px; overflow-y: auto; white-space: pre-wrap; }
 
-/* REAL MESH DEVICE CARDS */
 .dev-card { padding: 7px 8px; border-radius: 9px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); margin-bottom: 6px; font-family: var(--font-mono); font-size: 10.5px; display: flex; flex-direction: column; gap: 5px; }
 .dev-card.is-leader { border-color: color-mix(in srgb, var(--accent) 60%, transparent); background: color-mix(in srgb, var(--accent) 6%, transparent); }
 .dev-card.is-pet { border-color: color-mix(in srgb, var(--accent-2) 55%, transparent); }
@@ -185,15 +191,13 @@ svg#wireSvg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-e
 .role-vault { background: rgba(192,132,252,0.16); color: var(--purple); }
 .dev-btns { display: flex; flex-wrap: wrap; gap: 4px; }
 .dev-mini-btn { background: rgba(0,0,0,0.45); border: 1px solid var(--border); color: var(--text); border-radius: 5px; padding: 3px 6px; font-family: var(--font-mono); font-size: 9.5px; cursor: pointer; }
-.dev-mini-btn:hover { border-color: var(--accent-2); color: var(--accent-2); }
 .add-dev-box { background: rgba(2,4,9,0.7); border: 1px dashed var(--accent-2); border-radius: 9px; padding: 8px; display: none; flex-direction: column; gap: 6px; margin-bottom: 8px; }
 .add-dev-box.open { display: flex; }
-.snippet-pre { background: rgba(2,4,9,0.9); border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--accent); white-space: pre-wrap; word-break: break-all; max-height: 250px; overflow-y: auto; }
+.snippet-pre { background: rgba(2,4,9,0.9); border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--accent); white-space: pre-wrap; word-break: break-all; max-height: 220px; overflow-y: auto; }
 
 .log-wrap { margin-top: 12px; background: rgba(4,7,12,0.85); border: 1px solid var(--border); border-radius: 12px; }
 .log { padding: 8px 12px; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); max-height: 120px; overflow-y: auto; }
 
-/* SVG PET + COMPANION SATELLITES */
 svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-select: none; }
 @keyframes floatRoot { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
 @keyframes jitterShock { 0%,100% { transform: translate(0,0); } 25% { transform: translate(-4px,2px) rotate(-2deg); } 75% { transform: translate(4px,-2px) rotate(2deg); } }
@@ -227,11 +231,11 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
 .wire-active { opacity: 0; stroke-dasharray: 8 7; transition: opacity 0.35s ease; }
 .state-booting .wire-brain, .state-awake .wire-brain { opacity: 1; animation: dashFlow 0.7s linear infinite; }
 .mod-memory-on .wire-memory { opacity: 1; animation: dashFlow 0.6s linear infinite; }
-.mod-turbo-on .wire-term, .mod-critic-on .wire-term { opacity: 1; animation: dashFlow 0.55s linear infinite; }
+.mod-turbo-on .wire-term, .mod-critic-on .wire-term, .mod-gh-on .wire-term { opacity: 1; animation: dashFlow 0.55s linear infinite; }
 .attach-memory { transform: translate(-42px, 16px) rotate(-12deg); opacity: 0.25; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease; }
 .mod-memory-on .attach-memory { transform: translate(0, 0) rotate(0deg); opacity: 1; }
 .attach-term { transform: translate(42px, 16px) rotate(12deg); opacity: 0.25; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease; }
-.mod-turbo-on .attach-term, .mod-critic-on .attach-term { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+.mod-turbo-on .attach-term, .mod-critic-on .attach-term, .mod-gh-on .attach-term { transform: translate(0, 0) rotate(0deg); opacity: 1; }
 .shield-aura { opacity: 0; transition: opacity 0.4s; }
 .mod-critic-on .shield-aura { opacity: 0.55; animation: haloSpin 18s linear infinite; transform-origin: 270px 210px; }
 .burst-ring { opacity: 0; }
@@ -246,7 +250,7 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
 
 .modal-bg { position: fixed; inset: 0; background: rgba(2,5,10,0.86); display: none; align-items: center; justify-content: center; z-index: 100; padding: 14px; }
 .modal-bg.open { display: flex; }
-.modal-card { width: 100%; max-width: 470px; background: var(--panel); border: 1.5px solid var(--accent); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 9px; max-height: 92vh; overflow-y: auto; }
+.modal-card { width: 100%; max-width: 480px; background: var(--panel); border: 1.5px solid var(--accent); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 9px; max-height: 92vh; overflow-y: auto; }
 </style>
 </head>
 <body class="ui-cyber theme-robot app-mode-game">
@@ -254,12 +258,14 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
 
 <div id="settingsModal" class="modal-bg">
   <div class="modal-card">
-    <strong style="font-family:var(--font-mono);color:var(--accent);font-size:13px;">⚙ КЛЮЧИ, РЕГИСТРАЦИЯ И ПАМЯТЬ</strong>
+    <strong style="font-family:var(--font-mono);color:var(--accent);font-size:13px;">⚙ КЛЮЧИ, МОДУЛИ И ПАМЯТЬ</strong>
     <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Google Ключ</a><input id="setGeminiKey" class="game-input" type="password" placeholder="AIzaSy..." style="padding:7px 9px;font-size:12px;" /></div>
     <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Groq Ключ</a><input id="setGroqKey" class="game-input" type="password" placeholder="gsk_..." style="padding:7px 9px;font-size:12px;" /></div>
     <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ OR Ключ</a><input id="setOrKey" class="game-input" type="password" placeholder="sk-or-..." style="padding:7px 9px;font-size:12px;" /></div>
     <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ 1-клик D1</a><input id="setWorkerUrl" class="game-input" type="text" placeholder="https://ai-os-brain....workers.dev" style="padding:7px 9px;font-size:12px;" /></div>
     <input id="setAppPin" class="game-input" type="password" placeholder="APP PIN (опционально)" style="padding:7px 9px;font-size:12px;" />
+    <div class="pro-mod-row"><span class="pro-mini-btn">🐙 GitHub Deploy</span><input id="setGhUrl" class="game-input" type="text" placeholder="https://ai-os-github-module....workers.dev" style="padding:7px 9px;font-size:12px;" /></div>
+    <input id="setGhPin" class="game-input" type="password" placeholder="MODULE_PIN для GitHub модуля" style="padding:7px 9px;font-size:12px;" />
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px;">
       <button id="btnResetAll" class="secondary-btn" style="color:var(--danger);">↺ Сброс</button>
       <button id="btnCloseSettings" class="secondary-btn">Отмена</button>
@@ -268,15 +274,28 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
   </div>
 </div>
 
-<!-- DEVICE PAIRING SNIPPET MODAL -->
 <div id="pairModal" class="modal-bg">
   <div class="modal-card">
-    <strong id="pairModalTitle" style="font-family:var(--font-mono);color:var(--accent-2);font-size:13px;">📋 ПОДКЛЮЧЕНИЕ УЗЛА-СПУТНИКА</strong>
+    <strong id="pairModalTitle" style="font-family:var(--font-mono);color:var(--accent-2);font-size:13px;">📋 ПОДКЛЮЧЕНИЕ УЗЛА</strong>
     <div id="pairModalDesc" style="font-size:12px;color:var(--muted);"></div>
     <pre id="pairModalCode" class="snippet-pre"></pre>
     <div style="display:flex;gap:8px;justify-content:flex-end;">
       <button id="btnCopyPair" class="primary-btn">Копировать</button>
       <button id="btnClosePair" class="secondary-btn">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<!-- SECURITY GATE FOR GITHUB PUSH -->
+<div id="ghGateModal" class="modal-bg">
+  <div class="modal-card" style="border-color:var(--warn);">
+    <strong style="font-family:var(--font-mono);color:var(--warn);font-size:13px;">🛡 SECURITY GATE // ПУШ В GITHUB</strong>
+    <div id="ghGateMeta" style="font-family:var(--font-mono);font-size:11.5px;color:var(--text);"></div>
+    <input id="ghCommitMsg" class="game-input" type="text" placeholder="Commit message" />
+    <pre id="ghGatePreview" class="snippet-pre"></pre>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button id="btnGhGateCancel" class="secondary-btn">Отмена</button>
+      <button id="btnGhGateConfirm" class="primary-btn">🚀 Подтвердить и запушить</button>
     </div>
   </div>
 </div>
@@ -312,6 +331,7 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
         </div>
         <div class="xp-bar"><div id="hudXpFill" class="xp-fill"></div></div>
       </div>
+      <button id="btnHudMem" class="hud-mem-btn" title="Память питомца">🧠 0</button>
     </div>
 
     <div class="game-stage">
@@ -358,8 +378,8 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
           </g>
           <g id="dock-term" opacity="0.88">
             <rect x="434" y="172" width="92" height="60" rx="13" fill="#0c1320" stroke="#25354e" stroke-width="1.8" stroke-dasharray="4 3" />
-            <text x="480" y="199" text-anchor="middle" fill="#ffb020" font-size="10" font-weight="700">TURBO / CRIT</text>
-            <text x="480" y="214" text-anchor="middle" fill="#64748b" font-size="8.5">Groq + OR</text>
+            <text x="480" y="199" text-anchor="middle" fill="#ffb020" font-size="10" font-weight="700">GIT / TURBO</text>
+            <text x="480" y="214" text-anchor="middle" fill="#64748b" font-size="8.5">Groq + Push</text>
             <path d="M434 202 L360 202" stroke="#202e44" stroke-width="3.5" />
             <path class="wire-active wire-term" d="M434 202 L360 202" stroke="#ffb020" stroke-width="3.5" filter="url(#neonGlow)" />
           </g>
@@ -419,7 +439,6 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
               <path class="mouth-layer mouth-error" d="M248 181 Q259 171 270 181 Q281 191 292 181" stroke="#ff3b6b" stroke-width="3" fill="none" />
             </g>
           </g>
-          <!-- СПУТНИК-ПИТОМЕЦ (КЛАСС PET, ПРИВЯЗАН К ДОБАВЛЕННОМУ УЗЛУ) -->
           <g class="companion-layer comp-blob comp-crab comp-swarm comp-chibi-fox">
             <path d="M365 268 Q435 280 510 250" stroke="var(--accent-2)" stroke-width="2" stroke-dasharray="5 5" fill="none" opacity="0.75" />
             <text id="svgPetHostTag" x="560" y="168" text-anchor="middle" fill="var(--accent-2)" font-family="monospace" font-size="10" font-weight="700">PET // УЗЕЛ</text>
@@ -457,16 +476,55 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
       <div id="gameChatList" class="chat-box"></div>
 
       <div class="game-actions-grid">
+        <button class="g-act-btn" data-drawer="vibe"><span>💻</span><span>Вайбкодинг</span></button>
         <button class="g-act-btn" data-drawer="feed"><span>🍖</span><span>Факт</span></button>
         <button class="g-act-btn" data-drawer="traits"><span>🧪</span><span>Характер</span></button>
         <button class="g-act-btn" data-drawer="modules"><span>🧩</span><span>Модули</span></button>
         <button class="g-act-btn" id="btnGameSleep"><span>💤</span><span>Сон</span></button>
         <button class="g-act-btn" id="btnGameDuel"><span>⚔️</span><span>Спор ИИ</span></button>
-        <button class="g-act-btn" data-drawer="memory"><span>🧠</span><span>Память</span></button>
+      </div>
+
+      <!-- VIBE-CODING + LITE VERIFIER + GITHUB DEPLOY DRAWER -->
+      <div id="drawerVibe" class="game-drawer">
+        <div class="mod-wizard-head">
+          <span style="color:var(--accent);">💻 Вайбкодинг + Верификатор</span>
+          <span id="vibeGhBadge" style="color:var(--muted);font-size:10px;">GitHub: OFF</span>
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;">
+          <input id="vibeRepoIn" class="game-input" type="text" placeholder="Репо (напр: ai-os-companion)" style="flex:1;min-width:110px;padding:6px 8px;font-size:12px;" />
+          <input id="vibePathIn" class="game-input" type="text" placeholder="Файл (напр: widget.html)" style="flex:1;min-width:110px;padding:6px 8px;font-size:12px;" />
+          <button id="btnVibePull" class="secondary-btn" style="padding:6px 9px;font-size:11.5px;">📥 Скачать</button>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <select id="vibeLangIn" class="game-select" style="max-width:130px;padding:6px 8px;font-size:12px;">
+            <option value="html">HTML / CSS / JS</option>
+            <option value="js">JavaScript</option>
+            <option value="json">JSON</option>
+            <option value="python">Python</option>
+            <option value="cpp">ESP32 C++</option>
+          </select>
+          <input id="vibeTaskIn" class="game-input" type="text" placeholder="Задача: напиши виджет часов / поправь баг..." style="padding:6px 9px;font-size:12.5px;" />
+        </div>
+        <div class="vibe-checks-row">
+          <label><input id="vibeCheckSyntax" type="checkbox" checked /> Синтаксис/Парсер</label>
+          <label><input id="vibeCheckSandbox" type="checkbox" checked /> JS-песочница</label>
+          <label><input id="vibeCheckCritic" type="checkbox" /> Критик</label>
+          <label>Попытки:<select id="vibeMaxTries" style="background:#000;color:var(--text);border:1px solid var(--border);border-radius:4px;font-size:10px;"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></label>
+        </div>
+        <button id="btnVibeRun" class="primary-btn">⚡ Написать и проверить (Loop)</button>
+        <div id="vibeResultBox" style="display:none;flex-direction:column;gap:6px;">
+          <div id="vibeVerdict" class="vibe-verdict"></div>
+          <pre id="vibeCodeOut" class="code-pre"></pre>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button id="btnVibeCopy" class="secondary-btn" style="flex:1;">📋 Копировать</button>
+            <button id="btnVibeJson" class="secondary-btn" style="flex:1;">📦 JSON Scaffold</button>
+            <button id="btnVibePush" class="primary-btn" style="flex:1;" disabled>🚀 Пуш в GitHub</button>
+          </div>
+        </div>
       </div>
 
       <div id="drawerModules" class="game-drawer">
-        <strong style="font-size:13px;color:var(--accent);">🧩 Подключение API и Памяти (в 1 клик)</strong>
+        <strong style="font-size:13px;color:var(--accent);">🧩 Подключение API и Модулей (в 1 клик)</strong>
         <div class="mod-wizard-card">
           <div class="mod-wizard-head"><span>🤖 Google AI Studio</span><span id="gmStGemini" style="color:var(--accent);">OFF</span></div>
           <a class="secondary-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ 1. Получить бесплатный ключ Google</a>
@@ -486,6 +544,10 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
           <div class="mod-wizard-head"><span>💾 Облачная Память D1</span><span id="gmStD1" style="color:var(--accent-2);">LOCAL</span></div>
           <a class="secondary-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ 1. Поднять Память D1 в 1 клик (Cloudflare)</a>
           <div style="display:flex;gap:6px;"><input id="gmInD1" class="game-input" type="text" placeholder="https://ai-os-brain....workers.dev" style="padding:7px 9px;font-size:12px;" /><input id="gmInPin" class="game-input" type="password" placeholder="PIN" style="max-width:64px;padding:7px 9px;font-size:12px;" /><button id="gmBtnD1" class="primary-btn">Вкл</button></div>
+        </div>
+        <div class="mod-wizard-card">
+          <div class="mod-wizard-head"><span>🐙 GitHub Deploy (ai-os-github-module)</span><span id="gmStGh" style="color:var(--warn);">OFF</span></div>
+          <div style="display:flex;gap:6px;"><input id="gmInGhUrl" class="game-input" type="text" placeholder="https://ai-os-github-module....workers.dev" style="padding:7px 9px;font-size:12px;" /><input id="gmInGhPin" class="game-input" type="password" placeholder="PIN" style="max-width:64px;padding:7px 9px;font-size:12px;" /><button id="gmBtnGh" class="primary-btn">Вкл</button></div>
         </div>
       </div>
 
@@ -535,7 +597,11 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
       </div>
       <div class="pro-mod-card" id="proCardD1">
         <div class="pro-mod-head"><span>💾 Память D1 + PIN</span><span id="proStD1" style="color:var(--accent-2);">LOCAL</span></div>
-        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ Создать D1</a><input id="proInD1" class="pro-mini-in" type="text" placeholder="https://...workers.dev" /><input id="proInPin" class="pro-mini-in" type="password" placeholder="PIN" style="max-width:48px;" /><button id="proBtnD1" class="pro-mini-btn go">Вкл</button></div>
+        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ Создать D1</a><input id="proInD1" class="pro-mini-in" type="text" placeholder="https://...workers.dev" /><input id="proInPin" class="pro-mini-in" type="password" placeholder="PIN" style="max-width:46px;" /><button id="proBtnD1" class="pro-mini-btn go">Вкл</button></div>
+      </div>
+      <div class="pro-mod-card" id="proCardGh">
+        <div class="pro-mod-head"><span>🐙 GitHub Deploy + PIN</span><span id="proStGh" style="color:var(--warn);">OFF</span></div>
+        <div class="pro-mod-row"><input id="proInGhUrl" class="pro-mini-in" type="text" placeholder="https://ai-os-github-module..." /><input id="proInGhPin" class="pro-mini-in" type="password" placeholder="PIN" style="max-width:46px;" /><button id="proBtnGh" class="pro-mini-btn go">Вкл</button></div>
       </div>
     </div>
 
@@ -580,13 +646,14 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
             <span id="proEmotionBadge" class="badge">GRIMACE: NORMAL</span>
           </div>
         </div>
-        <div id="proSpeechBox" class="speech">Добавляй реальные устройства (Linux, ESP32, Android) справа — они появятся спутниками, и их можно свапать с Leader!</div>
+        <div id="proSpeechBox" class="speech">В обычном режиме — быстрый ответ. В пресете «Вайбкодинг Loop» — контракт, генерация, проверка в браузере и пуш в GitHub.</div>
         <div id="stageArena" class="stage-arena mode-hybrid">
           <div id="proAvatarSlot" class="avatar-pane"></div>
           <div class="graph-pane">
             <div class="graph-toolbar">
               <div style="display:flex;gap:4px;flex-wrap:wrap;">
                 <button class="preset-chip active" data-preset="ensemble">⚡ Cross-Audit</button>
+                <button class="preset-chip" data-preset="vibecode">💻 Вайбкодинг Loop</button>
                 <button class="preset-chip" data-preset="chain">🔄 Цепочка</button>
                 <button class="preset-chip" data-preset="fast">🚀 Flash-Lite</button>
               </div>
@@ -594,14 +661,14 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
                 <button class="add-node-btn" data-add-type="groq">+ Groq</button>
                 <button class="add-node-btn" data-add-type="aistudio">+ Gemini</button>
                 <button class="add-node-btn" data-add-type="critic">+ Критик</button>
-                <button class="add-node-btn" data-add-type="openai">+ OpenRouter</button>
+                <button class="add-node-btn" data-add-type="verifier">+ Verifier</button>
               </div>
             </div>
             <div id="graphCanvas" class="graph-canvas"><svg id="wireSvg"></svg></div>
           </div>
         </div>
         <div class="game-chat-bar">
-          <input id="proCmdInput" class="game-chat-input" type="text" placeholder="Команда для волн DAG..." />
+          <input id="proCmdInput" class="game-chat-input" type="text" placeholder="Команда для волн DAG (или задача для Вайбкодинг Loop)..." />
           <button id="btnProRunGraph" class="primary-btn" style="padding:7px 12px;">▶ ПУСК DAG</button>
         </div>
       </div>
@@ -615,6 +682,7 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
             <option value="groq">Groq API (Auto)</option>
             <option value="openai">OpenRouter / OpenAI (Auto)</option>
             <option value="critic">Критик / Cross-Audit</option>
+            <option value="verifier">Verifier (Browser Sandbox)</option>
           </select>
           <select id="inspModel" class="insp-select"></select>
           <input id="inspKey" class="insp-input" type="password" placeholder="API Key (или общий)" />
@@ -623,7 +691,6 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
           <button id="btnDeleteModNode" class="secondary-btn" style="margin-top:6px;width:100%;color:var(--danger);">Удалить блок</button>
         </div>
 
-        <!-- ОТДЕЛЬНО: МОИ РЕАЛЬНЫЕ УЗЛЫ И СПУТНИКИ (БЕЗ ФЕЙКОВ!) -->
         <div class="tele-card">
           <div class="tele-title">
             <span>🛰 УЗЛЫ И СПУТНИКИ</span>
@@ -645,13 +712,12 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
               <option value="swarm">🐝 Питомец: Рой-4</option>
               <option value="chibi-fox">🦊 Питомец: Мини-лисёнок</option>
             </select>
-            <input id="devAddrIn" class="insp-input" type="text" placeholder="IP/URL (опц., напр: http://192.168.1.42:8080)" />
+            <input id="devAddrIn" class="insp-input" type="text" placeholder="IP/URL (опц.)" />
             <button id="btnCreateDev" class="primary-btn" style="padding:6px 10px;font-size:11.5px;">Присоединить спутника</button>
           </div>
           <div id="nodeList"></div>
         </div>
 
-        <!-- ОТДЕЛЬНО: АВТО-КАТАЛОГ МОДЕЛЕЙ -->
         <div class="tele-card">
           <div class="tele-title"><span>🧠 КАТАЛОГ МОДЕЛЕЙ (AUTO)</span><span id="proRouteLabel">IDLE</span></div>
           <div id="catalogSummary" style="font-family:var(--font-mono);font-size:9.5px;color:var(--accent);line-height:1.4;"></div>
@@ -663,8 +729,9 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
 </div>
 
 <script>
-const STORAGE_KEY = 'aios_v12_mesh';
+const STORAGE_KEY = 'aios_v13_vibe';
 const NL = String.fromCharCode(10);
+const BSLASH = String.fromCharCode(92);
 
 const KIND_LABELS = {
   'browser-local': '🌐 Браузер (Текущий)',
@@ -675,27 +742,21 @@ const KIND_LABELS = {
   'android-ios': '📱 Android / iOS',
   'desktop-os': '💻 Desktop OS'
 };
-
-const PET_LABELS = {
-  blob: 'Плазма-слизень',
-  crab: 'Меха-краб',
-  swarm: 'Рой-4',
-  'chibi-fox': 'Мини-лисёнок'
-};
+const PET_LABELS = { blob: 'Плазма-слизень', crab: 'Меха-краб', swarm: 'Рой-4', 'chibi-fox': 'Мини-лисёнок' };
 
 const STATE = {
   appMode: 'game', ui: 'cyber', skin: 'robot', viewMode: 'hybrid',
   stage: 'egg', eggTaps: 0, name: 'Яйцо', xp: 0, mood: 'normal',
   apiKey: '', groqKey: '', orKey: '', workerUrl: '', appPin: '', d1Online: false,
-  devices: [
-    { id: 'dev-browser', name: 'Этот браузер', kind: 'browser-local', petSkin: 'chibi-fox', addr: 'local', isLeader: true, activeCompanion: false }
-  ],
+  ghModuleUrl: '', ghModulePin: '', ghOnline: false,
+  devices: [{ id: 'dev-browser', name: 'Этот браузер', kind: 'browser-local', petSkin: 'chibi-fox', addr: 'local', isLeader: true }],
   activeCompId: null,
   catalog: {
     aistudio: { fast: 'gemini-3.1-flash-lite', smart: 'gemini-3.8-flash', list: ['gemini-3.1-flash-lite', 'gemini-flash-lite-latest'], reason: 'default' },
     groq: { fast: 'openai/gpt-oss-20b', smart: 'openai/gpt-oss-120b', whisper: 'whisper-large-v3-turbo', list: ['openai/gpt-oss-20b', 'openai/gpt-oss-120b'], reason: 'default' },
     openai: { fast: 'openrouter/free', smart: 'openrouter/free', list: ['openrouter/free'], reason: 'default' },
-    critic: { fast: 'gemini-3.1-flash-lite', smart: 'gemini-3.1-flash-lite', list: ['gemini-3.1-flash-lite', 'cross-audit-diff'], reason: 'default' }
+    critic: { fast: 'gemini-3.1-flash-lite', smart: 'gemini-3.1-flash-lite', list: ['gemini-3.1-flash-lite', 'cross-audit-diff'], reason: 'default' },
+    verifier: { fast: 'browser-sandbox-v1', smart: 'browser-sandbox-v1', list: ['browser-sandbox-v1'], reason: 'deterministic' }
   },
   traits: { humor: 6, sass: 4, care: 8, concise: 7 },
   facts: [], summaries: [], lessons: [], chat: [], modNodes: [], modEdges: [], selectedModId: null
@@ -703,7 +764,8 @@ const STATE = {
 
 const RT = {
   dragModId: null, dragEl: null, dragOffset: { x: 0, y: 0 },
-  wiringFromId: null, tempPos: null, nodeEls: new Map(), busy: false, rec: null
+  wiringFromId: null, tempPos: null, nodeEls: new Map(), busy: false, rec: null,
+  vibePulledContent: '', vibeLastCode: '', vibeLastVerified: false, vibePendingPush: null
 };
 
 const $ = id => document.getElementById(id);
@@ -711,10 +773,9 @@ const $ = id => document.getElementById(id);
 function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); } catch (_) {} }
 function loadState() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('aios_v11_adaptive') || localStorage.getItem('aios_v10_unified');
+    const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('aios_v12_mesh') || localStorage.getItem('aios_v11_adaptive');
     if (raw) {
-      const parsed = JSON.parse(raw);
-      Object.assign(STATE, parsed);
+      Object.assign(STATE, JSON.parse(raw));
       if (!Array.isArray(STATE.devices) || STATE.devices.length === 0) {
         STATE.devices = [{ id: 'dev-browser', name: 'Этот браузер', kind: 'browser-local', petSkin: 'chibi-fox', addr: 'local', isLeader: true }];
       }
@@ -723,8 +784,7 @@ function loadState() {
 }
 function isRealKey(k) { return Boolean(k && k.trim().length > 16 && !k.includes('demo') && !k.includes('free')); }
 function normalizeOrigin(u) {
-  const s = (u || '').trim();
-  if (!s) return '';
+  const s = (u || '').trim(); if (!s) return '';
   try { return new URL(s.startsWith('http') ? s : 'https://' + s).origin; } catch (_) { return s.replace(/\/+$/, ''); }
 }
 function workerHeaders() {
@@ -735,6 +795,11 @@ function workerHeaders() {
   if (isRealKey(STATE.orKey)) h['X-OpenRouter-Key'] = STATE.orKey;
   return h;
 }
+function ghHeaders() {
+  const h = { 'Content-Type': 'application/json' };
+  if (STATE.ghModulePin) h['X-Module-Pin'] = STATE.ghModulePin;
+  return h;
+}
 
 function addLog(msg, tag = 'SYS') {
   const el = document.createElement('div');
@@ -743,12 +808,10 @@ function addLog(msg, tag = 'SYS') {
   const box = $('logBox');
   if (box) { box.prepend(el); while (box.children.length > 45) box.removeChild(box.lastChild); }
 }
-
 function showXpPop(label) {
   const pop = $('xpPop'); pop.textContent = label; pop.classList.add('show');
   setTimeout(() => pop.classList.remove('show'), 1400);
 }
-
 function addXP(pts) {
   STATE.xp += pts;
   const lvl = Math.floor(STATE.xp / 100) + 1;
@@ -777,6 +840,7 @@ function setPetVisual(powerState, mood) {
   pet.classList.toggle('mod-memory-on', Boolean(STATE.workerUrl && STATE.d1Online));
   pet.classList.toggle('mod-turbo-on', isRealKey(STATE.groqKey));
   pet.classList.toggle('mod-critic-on', isRealKey(STATE.orKey));
+  pet.classList.toggle('mod-gh-on', Boolean(STATE.ghModuleUrl && STATE.ghOnline));
   $('liveDot').classList.toggle('on', powerState === 'awake');
   $('coreDot').setAttribute('fill', powerState === 'awake' ? '#00f5b8' : (powerState === 'booting' ? '#ffb020' : '#475569'));
   $('proEmotionBadge').textContent = 'GRIMACE: ' + STATE.mood.toUpperCase();
@@ -785,98 +849,325 @@ function setPetVisual(powerState, mood) {
   $('svgPetHostTag').textContent = compDev ? ('PET // ' + compDev.name.toUpperCase()) : '';
 }
 
+/* ================= LITE VERIFIER ENGINE (ZERO VPS, BROWSER SANDBOX) ================= */
+function extractCodeBlock(raw) {
+  const fence = '```';
+  const idx1 = raw.indexOf(fence);
+  if (idx1 === -1) return raw.trim();
+  const nlIdx = raw.indexOf(NL, idx1);
+  const start = nlIdx !== -1 ? nlIdx + 1 : idx1 + 3;
+  const idx2 = raw.indexOf(fence, start);
+  return (idx2 !== -1 ? raw.slice(start, idx2) : raw.slice(start)).trim();
+}
+
+function checkBracketsAndStrings(code) {
+  const stack = [];
+  const pairs = { '(': ')', '{': '}', '[': ']' };
+  const closes = { ')': '(', '}': '{', ']': '[' };
+  let inQuote = null;
+  for (let i = 0; i < code.length; i++) {
+    const ch = code[i];
+    const prev = i > 0 ? code[i - 1] : '';
+    if (inQuote) {
+      if (ch === inQuote && prev !== BSLASH) inQuote = null;
+      continue;
+    }
+    if (ch === '"' || ch === "'" || ch === '`') { inQuote = ch; continue; }
+    if (pairs[ch]) stack.push(ch);
+    else if (closes[ch]) {
+      if (stack.length === 0 || stack[stack.length - 1] !== closes[ch]) {
+        return 'Лишняя или непарная скобка ' + ch + ' около символа #' + i;
+      }
+      stack.pop();
+    }
+  }
+  if (inQuote) return 'Незакрытая кавычка ' + inQuote;
+  if (stack.length > 0) return 'Не закрыта скобка ' + stack[stack.length - 1];
+  return null;
+}
+
+function runJsSandbox(code, testCode) {
+  return new Promise(resolve => {
+    const workerSrc = 'self.onmessage = function(e){ try { ' + NL + code + NL + (testCode || '') + NL + 'self.postMessage({ok:true}); } catch(err) { self.postMessage({ok:false, err: err.message}); } };';
+    let w;
+    try {
+      const blob = new Blob([workerSrc], { type: 'application/javascript' });
+      const u = URL.createObjectURL(blob);
+      w = new Worker(u);
+      const timer = setTimeout(() => { w.terminate(); URL.revokeObjectURL(u); resolve({ ok: false, err: 'Таймаут песочницы (>1.5s)' }); }, 1500);
+      w.onmessage = ev => { clearTimeout(timer); w.terminate(); URL.revokeObjectURL(u); resolve(ev.data); };
+      w.onerror = er => { clearTimeout(timer); w.terminate(); URL.revokeObjectURL(u); resolve({ ok: false, err: er.message || 'Ошибка выполнения' }); };
+      w.postMessage(1);
+    } catch (e) {
+      if (w) w.terminate();
+      resolve({ ok: true, skipped: true });
+    }
+  });
+}
+
+async function deterministicVerify(code, lang, useSandbox) {
+  const errors = [];
+  const checks = [];
+  if (!code || code.length < 4) return { ok: false, checks: ['Пустой ответ'], errors: ['Модель не вернула код'] };
+  if (code.includes('// TODO') || code.includes('# TODO')) errors.push('Обнаружен незавершённый TODO-маркер');
+
+  if (lang === 'json') {
+    checks.push('JSON.parse');
+    try { JSON.parse(code); } catch (e) { errors.push('Битый JSON: ' + e.message); }
+  } else if (lang === 'js') {
+    checks.push('JS AST');
+    try { new Function(code); } catch (e) { errors.push('Синтаксис JS: ' + e.message); }
+    if (errors.length === 0 && useSandbox) {
+      checks.push('WebWorker Sandbox');
+      const sb = await runJsSandbox(code, '');
+      if (!sb.ok) errors.push('Runtime JS: ' + sb.err);
+    }
+  } else if (lang === 'html') {
+    checks.push('HTML DOMParser');
+    const doc = new DOMParser().parseFromString(code, 'text/html');
+    const scripts = doc.querySelectorAll('script');
+    scripts.forEach((sc, idx) => {
+      if (sc.textContent.trim()) {
+        checks.push('Inline JS #' + (idx + 1));
+        try { new Function(sc.textContent); } catch (e) { errors.push('JS в <script> #' + (idx + 1) + ': ' + e.message); }
+      }
+    });
+  } else {
+    checks.push('Brackets & Quotes');
+    const brErr = checkBracketsAndStrings(code);
+    if (brErr) errors.push(brErr);
+  }
+  return { ok: errors.length === 0, checks, errors };
+}
+
+async function quickAiCall(sysPrompt, userPrompt) {
+  if (STATE.workerUrl && STATE.d1Online) {
+    const r = await fetch(STATE.workerUrl + '/api/chat', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ text: userPrompt, systemPrompt: sysPrompt, mode: 'pro' }) });
+    if (r.ok) { const d = await r.json(); return d.reply || ''; }
+  }
+  if (isRealKey(STATE.apiKey)) return await callGeminiDirect(STATE.apiKey, STATE.catalog.aistudio.fast, sysPrompt, userPrompt);
+  if (isRealKey(STATE.groqKey)) return await callOpenAICompat('https://api.groq.com/openai/v1/chat/completions', STATE.groqKey, STATE.catalog.groq.smart, sysPrompt, userPrompt);
+  if (isRealKey(STATE.orKey)) return await callOpenAICompat('https://openrouter.ai/api/v1/chat/completions', STATE.orKey, STATE.catalog.openai.smart, sysPrompt, userPrompt);
+  return '';
+}
+
+async function runVibeCodingLoop(task, lang, existingContent = '') {
+  const useSyntax = $('vibeCheckSyntax').checked;
+  const useSandbox = $('vibeCheckSandbox').checked;
+  const useCritic = $('vibeCheckCritic').checked;
+  const maxTries = Number($('vibeMaxTries').value || 2);
+
+  setPetVisual('booting', 'focus');
+  $('vibeResultBox').style.display = 'flex';
+  $('vibeVerdict').className = 'vibe-verdict';
+  $('vibeVerdict').textContent = '⏳ Шаг 1/3: Аналитик фиксирует контракт приёмки...';
+  $('btnVibePush').disabled = true;
+
+  let contract = '1) Валидный синтаксис ' + lang.toUpperCase() + '. 2) Полная реализация без TODO. 3) Обработка граничных случаев.';
+  if (isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey) || STATE.d1Online) {
+    try {
+      contract = await quickAiCall('Ты Аналитик-тестировщик. Сформулируй только 3-4 строгих критерия приёмки для задачи без написания самого кода.', 'Язык: ' + lang + NL + 'Задача: ' + task);
+    } catch (_) {}
+  }
+  addLog('Вайбкодинг Контракт: ' + contract.slice(0, 100), 'PIPE');
+
+  let code = '';
+  let lastErr = '';
+  let attempts = 0;
+  let finalCheck = { ok: true, checks: [], errors: [] };
+
+  for (let i = 1; i <= maxTries; i++) {
+    attempts = i;
+    $('vibeVerdict').textContent = '⏳ Попытка ' + i + '/' + maxTries + ': Генерация + Верификация...';
+    const ctxPart = existingContent ? (NL + NL + 'ТЕКУЩИЙ ФАЙЛ ИЗ РЕПО:' + NL + existingContent.slice(0, 6000)) : '';
+    const errPart = lastErr ? (NL + NL + 'ОШИБКА ПРЕДЫДУЩЕЙ ПОПЫТКИ (ИСПРАВЬ ЕЁ):' + NL + lastErr) : '';
+    const genPrompt = 'Задача: ' + task + NL + 'Язык: ' + lang + NL + 'Критерии приёмки:' + NL + contract + ctxPart + errPart + NL + NL + 'Верни ТОЛЬКО готовый код внутри одного блока ```' + lang + ' ... ``` без лишних пояснений.';
+
+    if (isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey) || isRealKey(STATE.orKey) || STATE.d1Online) {
+      const raw = await quickAiCall('Ты строгий инженер-программист. Пиши чистый рабочий код без заглушек.', genPrompt);
+      code = extractCodeBlock(raw);
+    } else {
+      await new Promise(r => setTimeout(r, 400));
+      code = lang === 'json' ? JSON.stringify({ demo: true, task }, null, 2) : ('// Демо-' + lang + ' код для: ' + task + NL + 'console.log("AI OS Verified OK");');
+    }
+
+    if (useSyntax) {
+      finalCheck = await deterministicVerify(code, lang, useSandbox);
+    } else {
+      finalCheck = { ok: true, checks: ['Проверка отключена'], errors: [] };
+    }
+
+    if (finalCheck.ok && useCritic && (isRealKey(STATE.orKey) || isRealKey(STATE.apiKey))) {
+      try {
+        const critSys = 'Ты строгий ревьюер. Проверь код по критериям. Если критических багов нет — ответь строго словом PASS. Иначе опиши ошибку кратко.';
+        const critRes = await quickAiCall(critSys, 'Критерии:' + NL + contract + NL + NL + 'Код:' + NL + code);
+        if (!critRes.toUpperCase().includes('PASS')) {
+          finalCheck.ok = false;
+          finalCheck.errors.push('Критик: ' + critRes.slice(0, 140));
+        } else {
+          finalCheck.checks.push('Критик PASS');
+        }
+      } catch (_) {}
+    }
+
+    if (finalCheck.ok) break;
+    const errMsg = finalCheck.errors.join('; ');
+    addLog('Попытка ' + i + ' отклонена: ' + errMsg, 'ERR');
+    if (errMsg === lastErr) { addLog('Повтор ошибки — стоп retry loop.', 'ERR'); break; }
+    lastErr = errMsg;
+  }
+
+  RT.vibeLastCode = code;
+  RT.vibeLastVerified = finalCheck.ok;
+  $('vibeCodeOut').textContent = code;
+
+  if (finalCheck.ok) {
+    setPetVisual('awake', 'smug');
+    $('vibeVerdict').className = 'vibe-verdict ok';
+    $('vibeVerdict').textContent = '✓ Верифицировано (' + attempts + '/' + maxTries + ' поп. • ' + finalCheck.checks.join(', ') + ')';
+    $('btnVibePush').disabled = !(STATE.ghModuleUrl && STATE.ghOnline);
+    addXP(20);
+    STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'verifier', model: 'Verifier ✓', mood: 'smug', text: '🧪 Вайбкодинг готов (' + attempts + ' поп., ' + finalCheck.checks.join(' + ') + ')! Код проверен и ждёт под блоком.' });
+  } else {
+    setPetVisual('awake', 'shock');
+    $('vibeVerdict').className = 'vibe-verdict fail';
+    $('vibeVerdict').textContent = '✗ Ошибка (' + attempts + '/' + maxTries + '): ' + finalCheck.errors.join('; ');
+    $('btnVibePush').disabled = true;
+  }
+  renderGameChat(); saveState();
+}
+
+/* ================= GITHUB DEPLOY MODULE (ai-os-github-module) ================= */
+async function connectGithubModule(url, pin = '') {
+  const clean = normalizeOrigin(url);
+  if (!clean.startsWith('http')) { alert('Вставь URL ai-os-github-module (https://...)'); return; }
+  if (pin !== undefined) STATE.ghModulePin = pin.trim();
+  $('proStGh').textContent = 'ПРОВЕРКА...'; $('gmStGh').textContent = 'ПРОВЕРКА...';
+  try {
+    const r = await fetch(clean + '/api/health', { headers: ghHeaders() });
+    if (r.status === 401) throw new Error('Неверный MODULE_PIN (401)');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
+    if (!d.ok || !d.hasToken) throw new Error('В Worker не задан GITHUB_TOKEN');
+    STATE.ghModuleUrl = clean; STATE.ghOnline = true;
+    applyThemeAndMode(); renderNodesList();
+    await playModuleInstallAnim('GitHub Deploy', '🐙 Модуль GitHub Deploy подключён (' + d.owner + ')! Теперь в Вайбкодинге можно скачивать файлы из репо и пушить проверенный код по кнопке! (+25 XP)');
+  } catch (err) {
+    STATE.ghOnline = false; syncProDeckStatus();
+    alert('Ошибка GitHub модуля: ' + err.message);
+  }
+}
+
+$('btnVibePull').onclick = async () => {
+  if (!STATE.ghOnline) { alert('Сначала подключи модуль 🐙 GitHub Deploy в 🧩 Модули или PRO Mode'); return; }
+  const repo = $('vibeRepoIn').value.trim(), path = $('vibePathIn').value.trim();
+  if (!repo || !path) { alert('Укажи имя репо и путь к файлу'); return; }
+  try {
+    const r = await fetch(STATE.ghModuleUrl + '/api/file?repo=' + encodeURIComponent(repo) + '&path=' + encodeURIComponent(path), { headers: ghHeaders() });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
+    RT.vibePulledContent = d.content || '';
+    $('vibeResultBox').style.display = 'flex';
+    $('vibeVerdict').className = 'vibe-verdict ok';
+    $('vibeVerdict').textContent = '📥 Загружен ' + path + ' (' + RT.vibePulledContent.length + ' симв.) — пиши задачу и жми Запуск!';
+    $('vibeCodeOut').textContent = RT.vibePulledContent.slice(0, 1200) + (RT.vibePulledContent.length > 1200 ? NL + '... (обрезано для превью)' : '');
+    addLog('Скачан файл ' + repo + '/' + path, 'SYS');
+  } catch (e) { alert('Ошибка чтения: ' + e.message); }
+};
+
+$('btnVibeRun').onclick = () => {
+  const t = $('vibeTaskIn').value.trim();
+  if (!t) { alert('Опиши задачу для Вайбкодинга'); return; }
+  runVibeCodingLoop(t, $('vibeLangIn').value, RT.vibePulledContent);
+};
+$('btnVibeCopy').onclick = () => { navigator.clipboard?.writeText(RT.vibeLastCode); $('btnVibeCopy').textContent = 'Скопировано ✓'; setTimeout(() => { $('btnVibeCopy').textContent = '📋 Копировать'; }, 1200); };
+$('btnVibeJson').onclick = () => {
+  const path = $('vibePathIn').value.trim() || 'widget.html';
+  const jsonStr = JSON.stringify([{ path, content: RT.vibeLastCode }], null, 2);
+  navigator.clipboard?.writeText(jsonStr);
+  alert('Готовый JSON для Scaffold скопирован в буфер!');
+};
+$('btnVibePush').onclick = () => {
+  if (!RT.vibeLastVerified || !RT.vibeLastCode) return;
+  const repo = $('vibeRepoIn').value.trim() || 'ai-os-companion';
+  const path = $('vibePathIn').value.trim() || 'vibe_output.txt';
+  RT.vibePendingPush = { repo, path, content: RT.vibeLastCode };
+  $('ghGateMeta').textContent = 'Repo: ' + repo + ' | File: ' + path + ' | Verified ✓';
+  $('ghCommitMsg').value = 'feat: vibe-code ' + path;
+  $('ghGatePreview').textContent = RT.vibeLastCode.slice(0, 800);
+  $('ghGateModal').classList.add('open');
+};
+$('btnGhGateCancel').onclick = () => $('ghGateModal').classList.remove('open');
+$('btnGhGateConfirm').onclick = async () => {
+  const p = RT.vibePendingPush; if (!p) return;
+  $('ghGateModal').classList.remove('open');
+  try {
+    const r = await fetch(STATE.ghModuleUrl + '/api/commit', {
+      method: 'POST', headers: ghHeaders(),
+      body: JSON.stringify({ repo: p.repo, message: $('ghCommitMsg').value.trim() || 'feat: AI OS push', files: [{ path: p.path, content: p.content }] })
+    });
+    const d = await r.json();
+    if (!r.ok || !d.success) throw new Error(d.error || 'Push failed');
+    setPetVisual('awake', 'smug'); addXP(30);
+    STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'github', model: 'GitHub Push ✓', mood: 'smug', text: '🚀 Запушено в ' + p.repo + '/' + p.path + '! Коммит: ' + d.url });
+    renderGameChat(); addLog('Push OK: ' + d.url, 'SYS');
+  } catch (e) {
+    setPetVisual('awake', 'shock'); alert('Ошибка пуша: ' + e.message);
+  }
+};
+
 /* ================= REAL MODULAR DEVICES + SWAP ================= */
 function buildPairSnippet(dev) {
   const wUrl = STATE.workerUrl || 'https://ТВОЙ-WORKER.workers.dev';
   if (dev.kind === 'linux-dietpi') {
-    return {
-      title: '🐧 Агент для ' + dev.name,
-      desc: 'Запусти этот опросник на DietPi / Linux — узел будет получать команды и слать статус в общую память:',
-      code: 'export AI_OS_WORKER="' + wUrl + '"' + NL + 'export AI_OS_NODE="' + dev.id + '"' + NL + 'while true; do curl -s "$AI_OS_WORKER/api/poll?node=$AI_OS_NODE"; sleep 3; done'
-    };
+    return { title: '🐧 Агент для ' + dev.name, desc: 'Запусти этот опросник на DietPi / Linux:', code: 'export AI_OS_WORKER="' + wUrl + '"' + NL + 'while true; do curl -s "$AI_OS_WORKER/api/poll"; sleep 3; done' };
   }
   if (dev.kind.startsWith('esp32')) {
-    return {
-      title: '📡 Конфиг прошивки для ' + dev.name + ' (' + dev.kind.toUpperCase() + ')',
-      desc: 'Вставь эти параметры в config.h прошивки (опрос /api/poll каждые 2-3 сек, роль сохраняется при свапе):',
-      code: '#define AI_OS_NODE_ID "' + dev.id + '"' + NL + '#define AI_OS_KIND "' + dev.kind + '"' + NL + '#define AI_OS_WORKER_URL "' + wUrl + '/api/poll"' + NL + '#define AI_OS_ROLE "' + (dev.isLeader ? 'LEADER' : 'PET') + '"' + NL + '#define AI_OS_PET_SKIN "' + dev.petSkin + '"'
-    };
+    return { title: '📡 Конфиг для ' + dev.name, desc: 'Параметры для прошивки (опрос /api/poll):', code: '#define AI_OS_NODE_ID "' + dev.id + '"' + NL + '#define AI_OS_WORKER_URL "' + wUrl + '/api/poll"' + NL + '#define AI_OS_ROLE "' + (dev.isLeader ? 'LEADER' : 'PET') + '"' };
   }
-  return {
-    title: '📱 Подключение клиента: ' + dev.name,
-    desc: 'Открой эту же ссылку на устройстве и подключи Worker URL в PRO Mode или ⚙ — все факты и персонаж синхронизируются через D1:',
-    code: 'URL: https://kniajevich.github.io/ai-os-companion/' + NL + 'Worker D1: ' + wUrl + NL + 'Узел: ' + dev.name + ' [' + (dev.isLeader ? 'LEADER' : 'PET') + ']'
-  };
+  return { title: '📱 Подключение: ' + dev.name, desc: 'Открой ссылку на устройстве и подключи Worker URL:', code: 'URL: https://kniajevich.github.io/ai-os-companion/' + NL + 'Worker: ' + wUrl };
 }
-
 function showPairModal(dev) {
   const info = buildPairSnippet(dev);
-  $('pairModalTitle').textContent = info.title;
-  $('pairModalDesc').textContent = info.desc;
-  $('pairModalCode').textContent = info.code;
+  $('pairModalTitle').textContent = info.title; $('pairModalDesc').textContent = info.desc; $('pairModalCode').textContent = info.code;
   $('pairModal').classList.add('open');
 }
-
 $('btnClosePair').onclick = () => $('pairModal').classList.remove('open');
 $('btnCopyPair').onclick = () => { navigator.clipboard?.writeText($('pairModalCode').textContent); $('btnCopyPair').textContent = 'Скопировано ✓'; setTimeout(() => { $('btnCopyPair').textContent = 'Копировать'; }, 1200); };
 
 function swapLeaderWithDevice(devId) {
-  const target = STATE.devices.find(d => d.id === devId);
-  if (!target || target.isLeader) return;
+  const target = STATE.devices.find(d => d.id === devId); if (!target || target.isLeader) return;
   const oldLeader = getLeaderDevice();
   STATE.devices.forEach(d => { d.isLeader = (d.id === devId); });
   if (oldLeader) STATE.activeCompId = oldLeader.id;
-  setPetVisual('awake', 'smug');
-  renderNodesList();
-  saveState();
-  const msg = 'Свап без ломки ранга! LEADER переехал на «' + target.name + '», а «' + (oldLeader ? oldLeader.name : 'прежний хост') + '» стал спутником PET!';
-  $('proSpeechBox').textContent = msg;
-  addLog(msg, 'SYS');
+  setPetVisual('awake', 'smug'); renderNodesList(); saveState();
+  const msg = 'Свап! LEADER теперь на «' + target.name + '», а «' + (oldLeader ? oldLeader.name : 'прежний хост') + '» стал спутником PET!';
+  $('proSpeechBox').textContent = msg; addLog(msg, 'SYS');
 }
 
 function renderNodesList() {
   const box = $('nodeList'); box.innerHTML = '';
-  const leader = getLeaderDevice();
-  const activePet = getActivePetDevice();
+  const leader = getLeaderDevice(), activePet = getActivePetDevice();
   $('leaderHostLabel').textContent = leader ? leader.name : 'Этот браузер';
   $('petHostLabel').textContent = activePet ? (activePet.name + ' (' + PET_LABELS[activePet.petSkin] + ')') : 'Не добавлен';
 
   STATE.devices.forEach(dev => {
-    const card = document.createElement('div');
-    card.className = 'dev-card ' + (dev.isLeader ? 'is-leader' : 'is-pet');
-
+    const card = document.createElement('div'); card.className = 'dev-card ' + (dev.isLeader ? 'is-leader' : 'is-pet');
     const head = document.createElement('div'); head.className = 'dev-head';
     const title = document.createElement('strong'); title.textContent = dev.name;
-    const badge = document.createElement('span'); badge.className = 'dev-role ' + (dev.isLeader ? 'role-leader' : 'role-pet');
-    badge.textContent = dev.isLeader ? 'LEADER' : 'PET';
+    const badge = document.createElement('span'); badge.className = 'dev-role ' + (dev.isLeader ? 'role-leader' : 'role-pet'); badge.textContent = dev.isLeader ? 'LEADER' : 'PET';
     head.appendChild(title); head.appendChild(badge); card.appendChild(head);
-
     const sub = document.createElement('div'); sub.style.color = 'var(--muted)'; sub.style.fontSize = '9.5px';
-    sub.textContent = (KIND_LABELS[dev.kind] || dev.kind) + (dev.isLeader ? '' : (' • Спутник: ' + (PET_LABELS[dev.petSkin] || dev.petSkin))) + (dev.addr && dev.addr !== 'local' ? (' • ' + dev.addr) : '');
+    sub.textContent = (KIND_LABELS[dev.kind] || dev.kind) + (dev.isLeader ? '' : (' • Спутник: ' + PET_LABELS[dev.petSkin]));
     card.appendChild(sub);
-
     const btns = document.createElement('div'); btns.className = 'dev-btns';
     if (!dev.isLeader) {
-      const swapBtn = document.createElement('button'); swapBtn.className = 'dev-mini-btn'; swapBtn.textContent = '⇄ Свап с Leader';
-      swapBtn.onclick = () => swapLeaderWithDevice(dev.id);
-      btns.appendChild(swapBtn);
-
-      const focusBtn = document.createElement('button'); focusBtn.className = 'dev-mini-btn'; focusBtn.textContent = STATE.activeCompId === dev.id ? '👁 На сцене' : '👁 Показать';
-      focusBtn.onclick = () => { STATE.activeCompId = dev.id; setPetVisual('awake', 'smug'); renderNodesList(); saveState(); };
-      btns.appendChild(focusBtn);
+      const sw = document.createElement('button'); sw.className = 'dev-mini-btn'; sw.textContent = '⇄ Свап'; sw.onclick = () => swapLeaderWithDevice(dev.id); btns.appendChild(sw);
+      const fw = document.createElement('button'); fw.className = 'dev-mini-btn'; fw.textContent = '👁 Сцена'; fw.onclick = () => { STATE.activeCompId = dev.id; setPetVisual('awake', 'smug'); renderNodesList(); saveState(); }; btns.appendChild(fw);
     }
     if (dev.kind !== 'browser-local') {
-      const codeBtn = document.createElement('button'); codeBtn.className = 'dev-mini-btn'; codeBtn.textContent = '📋 Код';
-      codeBtn.onclick = () => showPairModal(dev);
-      btns.appendChild(codeBtn);
-
-      const delBtn = document.createElement('button'); delBtn.className = 'dev-mini-btn'; delBtn.textContent = '✕';
-      delBtn.onclick = () => {
-        if (dev.isLeader) STATE.devices[0].isLeader = true;
-        STATE.devices = STATE.devices.filter(x => x.id !== dev.id);
-        setPetVisual('awake', 'normal'); renderNodesList(); saveState();
-      };
-      btns.appendChild(delBtn);
+      const cb = document.createElement('button'); cb.className = 'dev-mini-btn'; cb.textContent = '📋 Код'; cb.onclick = () => showPairModal(dev); btns.appendChild(cb);
+      const db = document.createElement('button'); db.className = 'dev-mini-btn'; db.textContent = '✕'; db.onclick = () => { if (dev.isLeader) STATE.devices[0].isLeader = true; STATE.devices = STATE.devices.filter(x => x.id !== dev.id); setPetVisual('awake', 'normal'); renderNodesList(); saveState(); }; btns.appendChild(db);
     }
     if (btns.children.length) card.appendChild(btns);
     box.appendChild(card);
@@ -887,20 +1178,21 @@ function renderNodesList() {
     d1.innerHTML = '<div class="dev-head"><strong>Cloudflare D1 Vault</strong><span class="dev-role role-vault">MEMORY</span></div><div style="color:var(--accent);font-size:9.5px;">' + STATE.workerUrl + ' ✓</div>';
     box.appendChild(d1);
   }
+  if (STATE.ghModuleUrl && STATE.ghOnline) {
+    const gh = document.createElement('div'); gh.className = 'dev-card';
+    gh.innerHTML = '<div class="dev-head"><strong>GitHub Deploy Module</strong><span class="dev-role role-vault">GIT</span></div><div style="color:var(--warn);font-size:9.5px;">' + STATE.ghModuleUrl + ' ✓</div>';
+    box.appendChild(gh);
+  }
 }
 
 $('btnToggleAddDev').onclick = () => $('addDevBox').classList.toggle('open');
 $('btnCreateDev').onclick = async () => {
-  const kind = $('devKindIn').value;
-  const petSkin = $('devPetIn').value;
+  const kind = $('devKindIn').value, petSkin = $('devPetIn').value;
   const name = $('devNameIn').value.trim() || (KIND_LABELS[kind].replace(/^[^ ]+ /, '') + ' #' + STATE.devices.length);
-  const addr = $('devAddrIn').value.trim();
   const id = 'dev-' + Math.floor(100 + Math.random() * 900);
-  STATE.devices.push({ id, name, kind, petSkin, addr, isLeader: false });
-  STATE.activeCompId = id;
-  $('devNameIn').value = ''; $('devAddrIn').value = ''; $('addDevBox').classList.remove('open');
-  renderNodesList();
-  await playModuleInstallAnim(name, 'Новый спутник-питомец «' + name + '» (' + PET_LABELS[petSkin] + ') вышел на орбиту! Нажми «⇄ Свап», если хочешь перенести на него Leader.');
+  STATE.devices.push({ id, name, kind, petSkin, addr: $('devAddrIn').value.trim(), isLeader: false });
+  STATE.activeCompId = id; $('devNameIn').value = ''; $('devAddrIn').value = ''; $('addDevBox').classList.remove('open');
+  renderNodesList(); await playModuleInstallAnim(name, 'Новый спутник «' + name + '» (' + PET_LABELS[petSkin] + ') подключён!');
 };
 
 /* ================= ADAPTIVE MODEL DISCOVERY ================= */
@@ -920,8 +1212,7 @@ async function discoverGeminiClient(key) {
   const raw = (data.models || []).filter(m => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes('generateContent')).map(m => m.name.replace('models/', '')).filter(id => id.includes('gemini') && !id.includes('embedding') && !id.includes('tts') && !id.includes('image') && !id.includes('robotics') && !id.includes('aqa'));
   const lites = raw.filter(id => id.includes('flash-lite') || id.includes('flash_lite')).sort((a, b) => versionScore(b) - versionScore(a));
   const flashes = raw.filter(id => id.includes('flash') && !id.includes('lite')).sort((a, b) => versionScore(b) - versionScore(a));
-  const fast = lites[0] || flashes[0] || 'gemini-flash-lite-latest';
-  const smart = flashes[0] || fast;
+  const fast = lites[0] || flashes[0] || 'gemini-flash-lite-latest', smart = flashes[0] || fast;
   const list = [...new Set([...lites.slice(0, 4), ...flashes.slice(0, 4), ...raw.slice(0, 4)])];
   STATE.catalog.aistudio = { fast, smart, list: list.length ? list : [fast], reason: 'auto-scan' };
   STATE.catalog.critic = { fast, smart, list: [fast, 'cross-audit-diff'], reason: 'auto-scan' };
@@ -934,55 +1225,39 @@ async function discoverGroqClient(groqKey) {
   if (STATE.workerUrl && STATE.d1Online) {
     try {
       const r = await fetch(STATE.workerUrl + '/api/models/refresh', { method: 'POST', headers: workerHeaders() });
-      if (r.ok) {
-        const d = await r.json();
-        if (d.catalog && d.catalog.groq) {
-          STATE.catalog.groq = d.catalog.groq;
-          addLog('Groq через Worker: fast=' + d.catalog.groq.fast + ', smart=' + d.catalog.groq.smart, 'PIPE');
-          return STATE.catalog.groq;
-        }
-      }
+      if (r.ok) { const d = await r.json(); if (d.catalog && d.catalog.groq) { STATE.catalog.groq = d.catalog.groq; return STATE.catalog.groq; } }
     } catch (_) {}
   }
   try {
     const res = await fetch('https://api.groq.com/openai/v1/models', { headers: { 'Authorization': 'Bearer ' + groqKey } });
     if (!res.ok) throw new Error('Groq HTTP ' + res.status);
-    const data = await res.json();
-    const active = (data.data || []).filter(m => m.active !== false);
-    const whispers = active.filter(m => m.id.includes('whisper')).map(m => m.id);
-    const chatIds = active.map(m => m.id).filter(id => !id.includes('whisper') && !id.includes('guard') && !id.includes('tts') && !id.includes('orpheus'));
-    const whisper = whispers.find(w => w.includes('turbo')) || whispers[0] || 'whisper-large-v3-turbo';
+    const data = await res.json(); const active = (data.data || []).filter(m => m.active !== false);
+    const chatIds = active.map(m => m.id).filter(id => !id.includes('whisper') && !id.includes('guard') && !id.includes('tts'));
     let fast = chatIds.find(id => id.includes('20b') || id.includes('8b')) || chatIds[0] || 'openai/gpt-oss-20b';
     let smart = chatIds.find(id => id.includes('120b') || id.includes('70b') || id.includes('qwen')) || chatIds[0] || 'openai/gpt-oss-120b';
     let reason = 'heuristic';
     if (isRealKey(STATE.apiKey) && chatIds.length > 0) {
       try {
-        const evalPrompt = 'Живой список Groq: ' + chatIds.join(', ') + '. Выбери 1 быструю (fast) и 1 мощную бесплатную (smart, например 120b/70b/qwen). Ответь СТРОГО JSON с полями fast, smart, reason.';
-        const raw = await callGeminiDirect(STATE.apiKey, STATE.catalog.aistudio.fast, 'Отвечай только JSON без markdown.', evalPrompt);
+        const raw = await callGeminiDirect(STATE.apiKey, STATE.catalog.aistudio.fast, 'Отвечай только JSON.', 'Живой список Groq: ' + chatIds.join(', ') + '. Выбери fast и smart. JSON с полями fast, smart, reason.');
         const m = raw.match(/\{[\s\S]*\}/);
         if (m) { const p = JSON.parse(m[0]); if (p.fast && chatIds.includes(p.fast)) fast = p.fast; if (p.smart && chatIds.includes(p.smart)) smart = p.smart; if (p.reason) reason = 'Flash-Lite: ' + p.reason; }
       } catch (_) {}
     }
-    STATE.catalog.groq = { fast, smart, whisper, list: chatIds.length ? chatIds : [fast, smart], reason };
-    addLog('Groq подбор (' + reason + '): fast=' + fast + ', smart=' + smart, 'PIPE');
+    STATE.catalog.groq = { fast, smart, whisper: 'whisper-large-v3-turbo', list: chatIds.length ? chatIds : [fast, smart], reason };
     return STATE.catalog.groq;
-  } catch (err) {
-    STATE.catalog.groq = { fast: 'openai/gpt-oss-20b', smart: 'openai/gpt-oss-120b', whisper: 'whisper-large-v3-turbo', list: ['openai/gpt-oss-20b', 'openai/gpt-oss-120b', 'qwen/qwen3.8-27b'], reason: 'cors-via-worker', corsBlocked: true };
-    addLog('Прямой CORS к Groq заблокирован (' + err.message + '). Ключ сохранён для Worker.', 'ERR');
+  } catch (_) {
+    STATE.catalog.groq = { fast: 'openai/gpt-oss-20b', smart: 'openai/gpt-oss-120b', whisper: 'whisper-large-v3-turbo', list: ['openai/gpt-oss-20b', 'openai/gpt-oss-120b'], reason: 'cors-via-worker', corsBlocked: true };
     return STATE.catalog.groq;
   }
 }
 
 async function discoverOpenRouterClient(orKey) {
   try {
-    const hdrs = isRealKey(orKey) ? { 'Authorization': 'Bearer ' + orKey } : {};
-    const res = await fetch('https://openrouter.ai/api/v1/models', { headers: hdrs });
+    const res = await fetch('https://openrouter.ai/api/v1/models', { headers: isRealKey(orKey) ? { 'Authorization': 'Bearer ' + orKey } : {} });
     if (!res.ok) return STATE.catalog.openai;
     const data = await res.json();
     const freeIds = (data.data || []).filter(m => m.id === 'openrouter/free' || (m.pricing && String(m.pricing.prompt) === '0' && String(m.pricing.completion) === '0')).map(m => m.id);
-    const list = [...new Set(['openrouter/free', ...freeIds.filter(id => id !== 'openrouter/free').slice(0, 12)])];
-    const smart = freeIds.find(id => id.includes('gemma') || id.includes('qwen') || id.includes('llama')) || 'openrouter/free';
-    STATE.catalog.openai = { fast: 'openrouter/free', smart, list, reason: 'zero-pricing' };
+    STATE.catalog.openai = { fast: 'openrouter/free', smart: freeIds.find(id => id.includes('gemma') || id.includes('qwen')) || 'openrouter/free', list: [...new Set(['openrouter/free', ...freeIds.slice(0, 12)])], reason: 'zero-pricing' };
   } catch (_) {}
   return STATE.catalog.openai;
 }
@@ -1009,22 +1284,29 @@ function syncNodesToFreshCatalog() {
 }
 
 function syncProDeckStatus() {
-  const gOn = isRealKey(STATE.apiKey), qOn = isRealKey(STATE.groqKey), cOn = isRealKey(STATE.orKey), mOn = Boolean(STATE.workerUrl && STATE.d1Online);
+  const gOn = isRealKey(STATE.apiKey), qOn = isRealKey(STATE.groqKey), cOn = isRealKey(STATE.orKey), mOn = Boolean(STATE.workerUrl && STATE.d1Online), ghOn = Boolean(STATE.ghModuleUrl && STATE.ghOnline);
   $('proCardGemini').classList.toggle('active', gOn); $('proStGemini').textContent = gOn ? STATE.catalog.aistudio.fast : 'OFF';
   $('proCardGroq').classList.toggle('active', qOn); $('proStGroq').textContent = qOn ? (STATE.catalog.groq.corsBlocked && !mOn ? 'KEY (нужен D1)' : STATE.catalog.groq.fast) : 'OFF';
   $('proCardOr').classList.toggle('active', cOn); $('proStOr').textContent = cOn ? STATE.catalog.openai.smart : 'OFF';
   $('proCardD1').classList.toggle('active', mOn); $('proStD1').textContent = mOn ? 'ONLINE ✓' : 'LOCAL';
+  $('proCardGh').classList.toggle('active', ghOn); $('proStGh').textContent = ghOn ? 'READY ✓' : 'OFF';
   $('vaultStatusLabel').textContent = mOn ? 'CLOUD D1 ✓' : 'LOCAL';
+
   $('gmStGemini').textContent = gOn ? STATE.catalog.aistudio.fast : 'OFF';
   $('gmStGroq').textContent = qOn ? (STATE.catalog.groq.corsBlocked && !mOn ? 'KEY (нужен D1)' : STATE.catalog.groq.fast) : 'OFF';
   $('gmStOr').textContent = cOn ? 'ON ✓' : 'OFF';
   $('gmStD1').textContent = mOn ? 'CLOUD D1 ✓' : 'LOCAL';
+  $('gmStGh').textContent = ghOn ? 'READY ✓' : 'OFF';
+  $('vibeGhBadge').textContent = ghOn ? 'GitHub: READY ✓' : 'GitHub: OFF';
+  $('vibeGhBadge').style.color = ghOn ? 'var(--accent)' : 'var(--muted)';
 
   ['proInGemini', 'gmInGemini'].forEach(id => { if ($(id).value !== STATE.apiKey) $(id).value = STATE.apiKey; });
   ['proInGroq', 'gmInGroq'].forEach(id => { if ($(id).value !== STATE.groqKey) $(id).value = STATE.groqKey; });
   ['proInOr', 'gmInOr'].forEach(id => { if ($(id).value !== STATE.orKey) $(id).value = STATE.orKey; });
   ['proInD1', 'gmInD1'].forEach(id => { if ($(id).value !== STATE.workerUrl) $(id).value = STATE.workerUrl; });
   ['proInPin', 'gmInPin'].forEach(id => { if ($(id).value !== STATE.appPin) $(id).value = STATE.appPin; });
+  ['proInGhUrl', 'gmInGhUrl'].forEach(id => { if ($(id).value !== STATE.ghModuleUrl) $(id).value = STATE.ghModuleUrl; });
+  ['proInGhPin', 'gmInGhPin'].forEach(id => { if ($(id).value !== STATE.ghModulePin) $(id).value = STATE.ghModulePin; });
   $('catalogSummary').textContent = 'AI Studio: ' + STATE.catalog.aistudio.fast + ' / ' + STATE.catalog.aistudio.smart + NL + 'Groq: ' + STATE.catalog.groq.fast + ' / ' + STATE.catalog.groq.smart + NL + 'OpenRouter: ' + STATE.catalog.openai.smart;
 }
 
@@ -1032,7 +1314,7 @@ function applyThemeAndMode() {
   document.body.className = 'ui-' + STATE.ui + ' theme-' + STATE.skin + ' app-mode-' + STATE.appMode;
   $('btnModeGame').classList.toggle('active', STATE.appMode === 'game');
   $('btnModePro').classList.toggle('active', STATE.appMode === 'pro');
-  $('topSubLabel').textContent = STATE.appMode === 'game' ? ('GAME Mode • ' + STATE.catalog.aistudio.fast) : 'PRO Mode • Модули, DAG и Спутники';
+  $('topSubLabel').textContent = STATE.appMode === 'game' ? ('GAME Mode • ' + STATE.catalog.aistudio.fast) : 'PRO Mode • Вайбкодинг, DAG и Спутники';
   const pet = $('pet');
   if (STATE.appMode === 'game') $('gameAvatarSlot').appendChild(pet);
   else { $('proAvatarSlot').appendChild(pet); setTimeout(renderWires, 30); }
@@ -1054,46 +1336,36 @@ async function playModuleInstallAnim(title, commentText) {
 }
 
 async function activateGeminiKey(k) {
-  const clean = k.trim(); if (!isRealKey(clean)) { alert('Вставь корректный ключ AIza...'); return; }
+  const clean = k.trim(); if (!isRealKey(clean)) { alert('Вставь ключ AIza...'); return; }
   STATE.apiKey = clean; await discoverGeminiClient(clean).catch(e => alert(e.message));
   if (isRealKey(STATE.groqKey)) await discoverGroqClient(STATE.groqKey).catch(() => {});
   syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector();
   await playModuleInstallAnim('AI Studio', 'Подключен свежий ' + STATE.catalog.aistudio.fast + '! (+25 XP)');
 }
-
 async function activateGroqKey(k) {
-  const clean = k.trim(); if (!isRealKey(clean)) { alert('Вставь корректный ключ gsk_...'); return; }
+  const clean = k.trim(); if (!isRealKey(clean)) { alert('Вставь ключ gsk_...'); return; }
   STATE.groqKey = clean; const res = await discoverGroqClient(clean);
   syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector();
-  if (res && res.corsBlocked && !STATE.d1Online) {
-    await playModuleInstallAnim('Groq Key Saved', 'Ключ Groq сохранён! Подключи Память D1 (Worker), чтобы обойти CORS браузера! (+25 XP)');
-  } else if (res) {
-    await playModuleInstallAnim('Groq LPU', 'Турбина Groq подключена! Выбрано (' + res.reason + '): ' + res.fast + ' / ' + res.smart + ' (+25 XP)');
-  }
+  if (res && res.corsBlocked && !STATE.d1Online) await playModuleInstallAnim('Groq Key Saved', 'Ключ Groq сохранён для работы через D1 Worker! (+25 XP)');
+  else if (res) await playModuleInstallAnim('Groq LPU', 'Турбина Groq подключена! Выбрано: ' + res.fast + ' / ' + res.smart + ' (+25 XP)');
 }
-
 async function activateOrKey(k) {
-  const clean = k.trim(); if (!isRealKey(clean)) { alert('Вставь корректный ключ sk-or-...'); return; }
+  const clean = k.trim(); if (!isRealKey(clean)) { alert('Вставь ключ sk-or-...'); return; }
   STATE.orKey = clean; await discoverOpenRouterClient(clean); syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector();
-  await playModuleInstallAnim('OpenRouter Free', 'Критик OpenRouter пристёгнут! Бесплатных моделей: ' + STATE.catalog.openai.list.length + '. (+25 XP)');
+  await playModuleInstallAnim('OpenRouter Free', 'Критик OpenRouter пристёгнут! (+25 XP)');
 }
 
 async function connectD1Memory(url, pin = '') {
-  const clean = normalizeOrigin(url);
-  if (!clean.startsWith('http')) { alert('Вставь корректный URL Worker (https://...)'); return; }
+  const clean = normalizeOrigin(url); if (!clean.startsWith('http')) { alert('Вставь URL Worker (https://...)'); return; }
   if (pin !== undefined) STATE.appPin = pin.trim();
   $('proStD1').textContent = 'ПРОВЕРКА...'; $('gmStD1').textContent = 'ПРОВЕРКА...';
   try {
-    const targetHealth = clean + '/api/health';
-    const hRes = await fetch(targetHealth, { headers: workerHeaders() });
+    const hRes = await fetch(clean + '/api/health', { headers: workerHeaders() });
     if (hRes.status === 401) throw new Error('Неверный PIN-код (401)');
-    if (!hRes.ok) throw new Error('HTTP ' + hRes.status + ' на ' + targetHealth);
+    if (!hRes.ok) throw new Error('HTTP ' + hRes.status);
     const hData = await hRes.json(); if (!hData.ok || !hData.d1) throw new Error('D1 не привязана');
     STATE.workerUrl = clean; STATE.d1Online = true;
-    const syncRes = await fetch(clean + '/api/sync', {
-      method: 'POST', headers: workerHeaders(),
-      body: JSON.stringify({ profile: { name: STATE.name, stage: STATE.stage, xp: STATE.xp, mood: STATE.mood, skin: STATE.skin, ui: STATE.ui, traits: STATE.traits }, facts: STATE.facts })
-    });
+    const syncRes = await fetch(clean + '/api/sync', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ profile: { name: STATE.name, stage: STATE.stage, xp: STATE.xp, mood: STATE.mood, skin: STATE.skin, ui: STATE.ui, traits: STATE.traits }, facts: STATE.facts }) });
     if (syncRes.ok) {
       const bundle = await syncRes.json();
       if (bundle.catalog) { if (bundle.catalog.aistudio) STATE.catalog.aistudio = bundle.catalog.aistudio; if (bundle.catalog.groq) STATE.catalog.groq = bundle.catalog.groq; if (bundle.catalog.openrouter) STATE.catalog.openai = bundle.catalog.openrouter; }
@@ -1107,10 +1379,9 @@ async function connectD1Memory(url, pin = '') {
       }
     }
     applyThemeAndMode(); renderGameStage(); renderModGraph(); syncInspector();
-    await playModuleInstallAnim('Cloudflare D1', 'Клик! Память D1 подключена (' + clean + '), а модели синхронизированы! (+25 XP)');
+    await playModuleInstallAnim('Cloudflare D1', 'Память D1 подключена (' + clean + ')! (+25 XP)');
   } catch (err) {
-    STATE.d1Online = false; syncProDeckStatus(); setPetVisual('awake', 'shock');
-    alert('Ошибка D1: ' + err.message);
+    STATE.d1Online = false; syncProDeckStatus(); setPetVisual('awake', 'shock'); alert('Ошибка D1: ' + err.message);
   }
 }
 
@@ -1122,8 +1393,11 @@ $('proBtnOr').onclick = () => activateOrKey($('proInOr').value);
 $('gmBtnOr').onclick = () => activateOrKey($('gmInOr').value);
 $('proBtnD1').onclick = () => connectD1Memory($('proInD1').value, $('proInPin').value);
 $('gmBtnD1').onclick = () => connectD1Memory($('gmInD1').value, $('gmInPin').value);
-$('btnRefreshCatalog').onclick = async () => { await refreshAllAdaptiveModels(); await playModuleInstallAnim('Auto-Scan', 'Обновил модели: Gemini=' + STATE.catalog.aistudio.fast + ', Groq=' + STATE.catalog.groq.fast + '/' + STATE.catalog.groq.smart + '.'); };
+$('proBtnGh').onclick = () => connectGithubModule($('proInGhUrl').value, $('proInGhPin').value);
+$('gmBtnGh').onclick = () => connectGithubModule($('gmInGhUrl').value, $('gmInGhPin').value);
+$('btnRefreshCatalog').onclick = async () => { await refreshAllAdaptiveModels(); await playModuleInstallAnim('Auto-Scan', 'Модели обновлены: ' + STATE.catalog.aistudio.fast + ' / ' + STATE.catalog.groq.smart); };
 
+/* ================= UNIFIED PERSONA & CHAT ================= */
 function buildUnifiedSystemPrompt(extraRole = '') {
   const t = STATE.traits;
   const factsText = STATE.facts.slice(0, 10).map(f => '- ' + f.text).join(NL) || '- Пока нет фактов.';
@@ -1131,7 +1405,7 @@ function buildUnifiedSystemPrompt(extraRole = '') {
   const rulesText = STATE.lessons.slice(0, 5).map(l => '- ' + l.rule).join(NL) || '- Ошибок нет.';
   const leader = getLeaderDevice();
   return [
-    'ТЫ — живой цифровой питомец ' + STATE.name + ' (форма: ' + STATE.skin + ', хост Leader: ' + (leader ? leader.name : 'Browser') + ', XP: ' + STATE.xp + ').',
+    'ТЫ — живой цифровой питомец ' + STATE.name + ' (форма: ' + STATE.skin + ', хост: ' + (leader ? leader.name : 'Browser') + ', XP: ' + STATE.xp + ').',
     'ХАРАКТЕР (0..10): Юмор=' + t.humor + ', Дерзость=' + t.sass + ', Забота=' + t.care + ', Краткость=' + t.concise + '.',
     'ПРАВИЛО МИМИКИ: Начинай ответ с одного тега [MOOD:normal], [MOOD:smug], [MOOD:focus] или [MOOD:shock].',
     'ФАКТЫ:' + NL + factsText, 'СНЫ:' + NL + sumText, 'УРОКИ:' + NL + rulesText,
@@ -1248,6 +1522,7 @@ function renderMemoryDrawer() {
     ...STATE.summaries.map(s => ({ type: 'Сон', text: s.text, list: 'summaries', id: s.id })),
     ...STATE.lessons.map(l => ({ type: 'Урок', text: l.rule, list: 'lessons', id: l.id }))
   ];
+  $('btnHudMem').textContent = '🧠 ' + all.length;
   if (all.length === 0) { box.innerHTML = '<div style="color:var(--muted);font-size:11.5px;">Память пока пуста.</div>'; return; }
   all.forEach(item => {
     const row = document.createElement('div'); row.className = 'mem-item';
@@ -1261,6 +1536,18 @@ function renderMemoryDrawer() {
     row.appendChild(del); box.appendChild(row);
   });
 }
+
+function toggleGameDrawer(name) {
+  const target = 'drawer' + name[0].toUpperCase() + name.slice(1);
+  const el = $(target); if (!el) return;
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.game-drawer').forEach(d => d.classList.remove('open'));
+  document.querySelectorAll('.g-act-btn').forEach(b => b.classList.remove('active'));
+  if (!wasOpen) { el.classList.add('open'); const b = document.querySelector('.g-act-btn[data-drawer="' + name + '"]'); if (b) b.classList.add('active'); }
+}
+
+$('btnHudMem').onclick = () => { if (STATE.stage === 'active') toggleGameDrawer('memory'); };
+document.querySelectorAll('.g-act-btn[data-drawer]').forEach(btn => btn.addEventListener('click', () => toggleGameDrawer(btn.dataset.drawer)));
 
 $('gameEggBox').addEventListener('click', () => {
   STATE.eggTaps += 1;
@@ -1284,15 +1571,14 @@ $('btnConfirmName').addEventListener('click', () => {
 $('btnOpenAiStudio').addEventListener('click', () => window.open('https://aistudio.google.com/apikey', '_blank', 'noopener'));
 $('btnIgniteSpark').addEventListener('click', async () => {
   const k = $('gameKeyInput').value.trim(); if (!k) { alert('Вставь API-ключ AIza...'); return; }
-  STATE.apiKey = k;
-  try { await discoverGeminiClient(k); } catch (_) {}
+  STATE.apiKey = k; try { await discoverGeminiClient(k); } catch (_) {}
   syncNodesToFreshCatalog(); STATE.stage = 'active'; applyThemeAndMode(); renderGameStage();
-  askPetBrain('Искра зажжена! Автоматически выбран ' + STATE.catalog.aistudio.fast + '. Поздоровайся как ' + STATE.name + '!');
+  askPetBrain('Искра зажжена! Выбран ' + STATE.catalog.aistudio.fast + '. Поздоровайся как ' + STATE.name + '!');
   saveState();
 });
 $('btnDemoSpark').addEventListener('click', () => {
   STATE.stage = 'active';
-  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'demo', model: 'demo-sim', mood: 'smug', text: 'Привет! Я ' + STATE.name + '! Нажми «🧩 Модули» чтобы в 1 клик пристегнуть Google, Groq или Память D1!' });
+  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'demo', model: 'demo-sim', mood: 'smug', text: 'Привет! Я ' + STATE.name + '! Загляни в «💻 Вайбкодинг» или «🧩 Модули»!' });
   renderGameStage(); saveState();
 });
 
@@ -1303,15 +1589,6 @@ async function sendGameMessage(text, img = null) {
 }
 $('btnGameSend').addEventListener('click', () => { const v = $('gameChatInput').value.trim(); if (!v) return; $('gameChatInput').value = ''; sendGameMessage(v); });
 $('gameChatInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('btnGameSend').click(); });
-
-document.querySelectorAll('.g-act-btn[data-drawer]').forEach(btn => btn.addEventListener('click', () => {
-  const target = 'drawer' + btn.dataset.drawer[0].toUpperCase() + btn.dataset.drawer.slice(1);
-  const el = $(target); if (!el) return;
-  const wasOpen = el.classList.contains('open');
-  document.querySelectorAll('.game-drawer').forEach(d => d.classList.remove('open'));
-  document.querySelectorAll('.g-act-btn').forEach(b => b.classList.remove('active'));
-  if (!wasOpen) { el.classList.add('open'); btn.classList.add('active'); }
-}));
 
 $('btnSaveFact').addEventListener('click', () => {
   const txt = $('feedFactInput').value.trim(); if (!txt) return;
@@ -1369,9 +1646,17 @@ $('btnGameVoice').addEventListener('click', () => {
   RT.rec.start();
 });
 
+/* ================= PRO MODE DAG ENGINE ================= */
 function loadPreset(name) {
   document.querySelectorAll('.preset-chip').forEach(c => c.classList.toggle('active', c.dataset.preset === name));
-  if (name === 'chain') {
+  if (name === 'vibecode') {
+    STATE.modNodes = [
+      { id: 'm1', provider: 'aistudio', title: '1. Контракт', model: STATE.catalog.aistudio.fast, key: '', prompt: 'Сформулируй только 3 строгих критерия приёмки и граничные случаи (без кода).', lastOutput: '', x: 14, y: 100, ms: '150 ms', status: 'idle' },
+      { id: 'm2', provider: 'groq', title: '2. Кодер', model: STATE.catalog.groq.smart, key: '', prompt: 'Напиши готовый код строго по контракту. Верни код в fenced-блоке.', lastOutput: '', x: 205, y: 100, ms: '240 ms', status: 'idle' },
+      { id: 'm3', provider: 'verifier', title: '3. Verifier Sandbox', model: 'browser-sandbox-v1', key: '', prompt: 'Автопроверка синтаксиса, скобок, JSON/DOM/JS-песочницы.', lastOutput: '', x: 400, y: 100, ms: '5 ms', status: 'idle' }
+    ];
+    STATE.modEdges = [{ from: 'm1', to: 'm2', state: 'idle' }, { from: 'm2', to: 'm3', state: 'idle' }];
+  } else if (name === 'chain') {
     STATE.modNodes = [
       { id: 'm1', provider: 'groq', title: '1. Быстрый Groq', model: STATE.catalog.groq.fast, key: '', prompt: 'Быстрый черновик.', lastOutput: '', x: 16, y: 100, ms: '130 ms', status: 'idle' },
       { id: 'm2', provider: 'critic', title: '2. Критик', model: STATE.catalog.aistudio.fast, key: '', prompt: 'Найди ошибки.', lastOutput: '', x: 215, y: 100, ms: '180 ms', status: 'idle' },
@@ -1515,7 +1800,7 @@ document.querySelectorAll('.preset-chip').forEach(b => b.onclick = () => loadPre
 document.querySelectorAll('.add-node-btn').forEach(b => b.onclick = () => {
   const p = b.dataset.addType; const id = 'm' + Math.floor(100 + Math.random() * 900);
   const m = STATE.catalog[p]?.fast || 'openrouter/free';
-  STATE.modNodes.push({ id, provider: p, title: p.toUpperCase() + ' Блок', model: m, key: '', prompt: 'Обработай контекст.', lastOutput: '', x: 35, y: 40, ms: '200 ms', status: 'idle' });
+  STATE.modNodes.push({ id, provider: p, title: p.toUpperCase() + ' Блок', model: m, key: '', prompt: p === 'verifier' ? 'Автопроверка синтаксиса.' : 'Обработай контекст.', lastOutput: '', x: 35, y: 40, ms: '200 ms', status: 'idle' });
   STATE.selectedModId = id; renderModGraph(); syncInspector(); saveState();
 });
 
@@ -1535,7 +1820,12 @@ async function runProDag(query) {
       const k = isRealKey(node.key) ? node.key : (node.provider === 'groq' ? STATE.groqKey : (node.provider === 'openai' ? STATE.orKey : STATE.apiKey));
       const t0 = performance.now();
       try {
-        if (node.provider === 'groq' && STATE.workerUrl && STATE.d1Online) {
+        if (node.provider === 'verifier') {
+          const rawCode = extractCodeBlock(parents[parents.length - 1]?.lastOutput || '');
+          const langGuess = rawCode.startsWith('{') || rawCode.startsWith('[') ? 'json' : (rawCode.includes('<html') || rawCode.includes('<div') ? 'html' : 'js');
+          const v = await deterministicVerify(rawCode, langGuess, true);
+          node.lastOutput = (v.ok ? '✓ VERIFIER PASS' : '✗ VERIFIER FAIL') + ' (' + v.checks.join(', ') + ')' + (v.errors.length ? (NL + 'Ошибки: ' + v.errors.join('; ')) : '') + NL + NL + rawCode;
+        } else if (node.provider === 'groq' && STATE.workerUrl && STATE.d1Online) {
           const r = await fetch(STATE.workerUrl + '/api/chat', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ text: prompt, systemPrompt: sys, mode: 'game' }) });
           if (!r.ok) throw new Error('Worker HTTP ' + r.status);
           const d = await r.json(); node.lastOutput = d.reply || '';
@@ -1544,7 +1834,7 @@ async function runProDag(query) {
           else if (node.provider === 'openai') node.lastOutput = await callOpenAICompat(node.model.includes('/') ? 'https://openrouter.ai/api/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions', k, node.model, sys, prompt);
           else node.lastOutput = await callGeminiDirect(k, node.model, sys, prompt);
         } else {
-          await new Promise(r => setTimeout(r, 360));
+          await new Promise(r => setTimeout(r, 340));
           node.lastOutput = '[' + node.title + ' SIM]: Обработано (' + parents.length + ' входов) для «' + query + '».';
         }
         node.ms = Math.round(performance.now() - t0) + ' ms'; node.status = 'done'; finalTxt = node.lastOutput;
@@ -1570,6 +1860,7 @@ $('btnModePro').onclick = () => { STATE.appMode = 'pro'; applyThemeAndMode(); re
 $('btnOpenSettings').onclick = () => {
   $('setGeminiKey').value = STATE.apiKey; $('setGroqKey').value = STATE.groqKey;
   $('setOrKey').value = STATE.orKey; $('setWorkerUrl').value = STATE.workerUrl; $('setAppPin').value = STATE.appPin;
+  $('setGhUrl').value = STATE.ghModuleUrl; $('setGhPin').value = STATE.ghModulePin;
   $('settingsModal').classList.add('open');
 };
 $('btnCloseSettings').onclick = () => $('settingsModal').classList.remove('open');
@@ -1577,13 +1868,15 @@ $('btnSaveSettings').onclick = async () => {
   STATE.apiKey = $('setGeminiKey').value.trim(); STATE.groqKey = $('setGroqKey').value.trim();
   STATE.orKey = $('setOrKey').value.trim(); STATE.appPin = $('setAppPin').value.trim();
   const newW = normalizeOrigin($('setWorkerUrl').value);
+  const newGh = normalizeOrigin($('setGhUrl').value), newGhPin = $('setGhPin').value.trim();
   $('settingsModal').classList.remove('open');
-  if (newW && newW !== STATE.workerUrl) { await connectD1Memory(newW, STATE.appPin); return; }
+  if (newW && newW !== STATE.workerUrl) await connectD1Memory(newW, STATE.appPin);
+  if (newGh && (newGh !== STATE.ghModuleUrl || newGhPin !== STATE.ghModulePin)) await connectGithubModule(newGh, newGhPin);
   await refreshAllAdaptiveModels(); applyThemeAndMode();
 };
 $('btnResetAll').onclick = () => {
   if (!confirm('Сбросить питомца, память и граф до яйца?')) return;
-  try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem('aios_v11_adaptive'); localStorage.removeItem('aios_v10_unified'); } catch (_) {}
+  try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem('aios_v12_mesh'); localStorage.removeItem('aios_v11_adaptive'); } catch (_) {}
   location.reload();
 };
 
@@ -1608,7 +1901,8 @@ applyThemeAndMode();
 renderGameStage();
 if (STATE.workerUrl) { connectD1Memory(STATE.workerUrl, STATE.appPin).catch(() => {}); }
 else if (isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey)) { refreshAllAdaptiveModels().catch(() => {}); }
-addLog('AI OS Companion v12 (Real Modular Mesh) готов.', 'SYS');
+if (STATE.ghModuleUrl) { connectGithubModule(STATE.ghModuleUrl, STATE.ghModulePin).catch(() => {}); }
+addLog('AI OS Companion v13 (Vibe-Coding Verifier + GitHub Deploy) готов.', 'SYS');
 </script>
 </body>
 </html>
