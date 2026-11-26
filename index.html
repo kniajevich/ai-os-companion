@@ -44,7 +44,6 @@ body.app-mode-pro .game-only { display: none !important; }
 .badge.warn { color: var(--warn); border-color: rgba(255,176,32,0.5); }
 .icon-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 9px; padding: 5px 9px; font-size: 12px; cursor: pointer; }
 
-/* GAME MODE */
 .game-shell { display: flex; flex-direction: column; gap: 9px; }
 .game-hud { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: var(--panel-alt); border: 1px solid var(--border); border-radius: 14px; padding: 9px 12px; }
 .xp-wrap { flex: 1; display: flex; flex-direction: column; gap: 4px; }
@@ -98,7 +97,6 @@ body.app-mode-pro .game-only { display: none !important; }
 .chat-tool-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 8px 10px; font-size: 14px; cursor: pointer; flex-shrink: 0; }
 .chat-tool-btn.rec { border-color: var(--danger); color: var(--danger); }
 
-/* PRO MODE: CLEAN QUICK CONNECT DECK + TOPOLOGY */
 .pro-connect-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
 @media (max-width: 1100px) { .pro-connect-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .pro-connect-grid { grid-template-columns: 1fr; } }
@@ -275,7 +273,6 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
     </div>
   </div>
 
-  <!-- ===================== GAME MODE ===================== -->
   <div id="gameView" class="game-shell game-only">
     <div class="game-hud">
       <div style="font-weight:800;font-size:14px;" id="hudPetName">🥚 Яйцо</div>
@@ -434,7 +431,6 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
         <button class="g-act-btn" data-drawer="memory"><span>🧠</span><span>Память</span></button>
       </div>
 
-      <!-- ДУБЛИРОВАННАЯ ПРОСТАЯ РЕГИСТРАЦИЯ КЛЮЧЕЙ И ПАМЯТИ В GAME MODE -->
       <div id="drawerModules" class="game-drawer">
         <strong style="font-size:13px;color:var(--accent);">🧩 Подключение API и Памяти (в 1 клик)</strong>
         <div class="mod-wizard-card">
@@ -488,7 +484,6 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
     </div>
   </div>
 
-  <!-- ===================== PRO MODE (CLEAN & MODULAR) ===================== -->
   <div id="proView" class="pro-only">
     <div class="pro-connect-grid">
       <div class="pro-mod-card" id="proCardGemini">
@@ -649,6 +644,12 @@ const $ = id => document.getElementById(id);
 function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); } catch (_) {} }
 function loadState() { try { const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('aios_v10_unified'); if (raw) Object.assign(STATE, JSON.parse(raw)); } catch (_) {} }
 function isRealKey(k) { return Boolean(k && k.trim().length > 16 && !k.includes('demo') && !k.includes('free')); }
+function normalizeOrigin(u) {
+  const s = (u || '').trim();
+  if (!s) return '';
+  try { return new URL(s.startsWith('http') ? s : 'https://' + s).origin; }
+  catch (_) { return s.replace(/\/+$/, ''); }
+}
 function workerHeaders() {
   const h = { 'Content-Type': 'application/json' };
   if (STATE.appPin) h['X-App-Pin'] = STATE.appPin;
@@ -722,32 +723,61 @@ async function discoverGeminiClient(key) {
 
 async function discoverGroqClient(groqKey) {
   if (!isRealKey(groqKey)) return null;
-  const res = await fetch('https://api.groq.com/openai/v1/models', { headers: { 'Authorization': 'Bearer ' + groqKey } });
-  if (!res.ok) throw new Error('Groq HTTP ' + res.status);
-  const data = await res.json();
-  const active = (data.data || []).filter(m => m.active !== false);
-  const whispers = active.filter(m => m.id.includes('whisper')).map(m => m.id);
-  const chatIds = active.map(m => m.id).filter(id => !id.includes('whisper') && !id.includes('guard') && !id.includes('tts') && !id.includes('orpheus'));
-  const whisper = whispers.find(w => w.includes('turbo')) || whispers[0] || 'whisper-large-v3-turbo';
-  let fast = chatIds.find(id => id.includes('20b') || id.includes('8b')) || chatIds[0] || 'openai/gpt-oss-20b';
-  let smart = chatIds.find(id => id.includes('120b') || id.includes('70b') || id.includes('qwen')) || chatIds[0] || 'openai/gpt-oss-120b';
-  let reason = 'heuristic';
-  if (isRealKey(STATE.apiKey) && chatIds.length > 0) {
+  // 1) Если подключён Cloudflare Worker — сканируем Groq через него (без CORS браузера)
+  if (STATE.workerUrl && STATE.d1Online) {
     try {
-      const evalPrompt = 'Живой список Groq: ' + chatIds.join(', ') + '. Выбери 1 быструю (fast) и 1 мощную бесплатную (smart, например 120b/70b/qwen). Ответь СТРОГО JSON с полями fast, smart, reason.';
-      const raw = await callGeminiDirect(STATE.apiKey, STATE.catalog.aistudio.fast, 'Отвечай только JSON без markdown.', evalPrompt);
-      const m = raw.match(/\{[\s\S]*\}/);
-      if (m) {
-        const parsed = JSON.parse(m[0]);
-        if (parsed.fast && chatIds.includes(parsed.fast)) fast = parsed.fast;
-        if (parsed.smart && chatIds.includes(parsed.smart)) smart = parsed.smart;
-        if (parsed.reason) reason = 'Flash-Lite: ' + parsed.reason;
+      const r = await fetch(STATE.workerUrl + '/api/models/refresh', { method: 'POST', headers: workerHeaders() });
+      if (r.ok) {
+        const d = await r.json();
+        if (d.catalog && d.catalog.groq) {
+          STATE.catalog.groq = d.catalog.groq;
+          addLog('Groq через Worker: fast=' + d.catalog.groq.fast + ', smart=' + d.catalog.groq.smart, 'PIPE');
+          return STATE.catalog.groq;
+        }
       }
     } catch (_) {}
   }
-  STATE.catalog.groq = { fast, smart, whisper, list: chatIds.length ? chatIds : [fast, smart], reason };
-  addLog('Groq подбор (' + reason + '): fast=' + fast + ', smart=' + smart, 'PIPE');
-  return STATE.catalog.groq;
+  // 2) Прямой скан из браузера с мягким фоллбэком при CORS-блокировке
+  try {
+    const res = await fetch('https://api.groq.com/openai/v1/models', { headers: { 'Authorization': 'Bearer ' + groqKey } });
+    if (!res.ok) throw new Error('Groq HTTP ' + res.status);
+    const data = await res.json();
+    const active = (data.data || []).filter(m => m.active !== false);
+    const whispers = active.filter(m => m.id.includes('whisper')).map(m => m.id);
+    const chatIds = active.map(m => m.id).filter(id => !id.includes('whisper') && !id.includes('guard') && !id.includes('tts') && !id.includes('orpheus'));
+    const whisper = whispers.find(w => w.includes('turbo')) || whispers[0] || 'whisper-large-v3-turbo';
+    let fast = chatIds.find(id => id.includes('20b') || id.includes('8b')) || chatIds[0] || 'openai/gpt-oss-20b';
+    let smart = chatIds.find(id => id.includes('120b') || id.includes('70b') || id.includes('qwen')) || chatIds[0] || 'openai/gpt-oss-120b';
+    let reason = 'heuristic';
+    if (isRealKey(STATE.apiKey) && chatIds.length > 0) {
+      try {
+        const evalPrompt = 'Живой список Groq: ' + chatIds.join(', ') + '. Выбери 1 быструю (fast) и 1 мощную бесплатную (smart, например 120b/70b/qwen). Ответь СТРОГО JSON с полями fast, smart, reason.';
+        const raw = await callGeminiDirect(STATE.apiKey, STATE.catalog.aistudio.fast, 'Отвечай только JSON без markdown.', evalPrompt);
+        const m = raw.match(/\{[\s\S]*\}/);
+        if (m) {
+          const parsed = JSON.parse(m[0]);
+          if (parsed.fast && chatIds.includes(parsed.fast)) fast = parsed.fast;
+          if (parsed.smart && chatIds.includes(parsed.smart)) smart = parsed.smart;
+          if (parsed.reason) reason = 'Flash-Lite: ' + parsed.reason;
+        }
+      } catch (_) {}
+    }
+    STATE.catalog.groq = { fast, smart, whisper, list: chatIds.length ? chatIds : [fast, smart], reason };
+    addLog('Groq подбор (' + reason + '): fast=' + fast + ', smart=' + smart, 'PIPE');
+    return STATE.catalog.groq;
+  } catch (err) {
+    // Браузер заблокировал прямой CORS (или AdGuard/VPN) — сохраняем ключ для работы через Worker!
+    STATE.catalog.groq = {
+      fast: 'openai/gpt-oss-20b',
+      smart: 'openai/gpt-oss-120b',
+      whisper: 'whisper-large-v3-turbo',
+      list: ['openai/gpt-oss-20b', 'openai/gpt-oss-120b', 'qwen/qwen3.8-27b'],
+      reason: 'cors-via-worker',
+      corsBlocked: true
+    };
+    addLog('Прямой CORS к Groq заблокирован браузером (' + err.message + '). Ключ сохранён для работы через Worker.', 'ERR');
+    return STATE.catalog.groq;
+  }
 }
 
 async function discoverOpenRouterClient(orKey) {
@@ -791,12 +821,12 @@ function syncNodesToFreshCatalog() {
 function syncProDeckStatus() {
   const gOn = isRealKey(STATE.apiKey), qOn = isRealKey(STATE.groqKey), cOn = isRealKey(STATE.orKey), mOn = Boolean(STATE.workerUrl && STATE.d1Online);
   $('proCardGemini').classList.toggle('active', gOn); $('proStGemini').textContent = gOn ? STATE.catalog.aistudio.fast : 'OFF';
-  $('proCardGroq').classList.toggle('active', qOn); $('proStGroq').textContent = qOn ? STATE.catalog.groq.fast : 'OFF';
+  $('proCardGroq').classList.toggle('active', qOn); $('proStGroq').textContent = qOn ? (STATE.catalog.groq.corsBlocked && !mOn ? 'KEY (нужен D1)' : STATE.catalog.groq.fast) : 'OFF';
   $('proCardOr').classList.toggle('active', cOn); $('proStOr').textContent = cOn ? STATE.catalog.openai.smart : 'OFF';
   $('proCardD1').classList.toggle('active', mOn); $('proStD1').textContent = mOn ? 'ONLINE ✓' : 'LOCAL';
   $('vaultStatusLabel').textContent = mOn ? 'CLOUD D1 ✓' : 'LOCAL';
   $('gmStGemini').textContent = gOn ? STATE.catalog.aistudio.fast : 'OFF';
-  $('gmStGroq').textContent = qOn ? STATE.catalog.groq.fast : 'OFF';
+  $('gmStGroq').textContent = qOn ? (STATE.catalog.groq.corsBlocked && !mOn ? 'KEY (нужен D1)' : STATE.catalog.groq.fast) : 'OFF';
   $('gmStOr').textContent = cOn ? 'ON ✓' : 'OFF';
   $('gmStD1').textContent = mOn ? 'CLOUD D1 ✓' : 'LOCAL';
 
@@ -845,8 +875,13 @@ async function activateGeminiKey(k) {
 async function activateGroqKey(k) {
   const clean = k.trim(); if (!isRealKey(clean)) { alert('Вставь корректный ключ gsk_...'); return; }
   STATE.groqKey = clean;
-  const res = await discoverGroqClient(clean).catch(e => { alert(e.message); return null; });
-  if (res) { syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector(); await playModuleInstallAnim('Groq LPU', 'Турбина Groq подключена! Выбрано (' + res.reason + '): быстрая ' + res.fast + ' и умная ' + res.smart + '! (+25 XP)'); }
+  const res = await discoverGroqClient(clean);
+  syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector();
+  if (res && res.corsBlocked && !STATE.d1Online) {
+    await playModuleInstallAnim('Groq Key Saved', 'Ключ Groq сохранён! Браузер заблокировал прямой CORS к api.groq.com — подключи Память D1 (Worker), и Groq заработает через него без ограничений! (+25 XP)');
+  } else if (res) {
+    await playModuleInstallAnim('Groq LPU', 'Турбина Groq подключена! Выбрано (' + res.reason + '): быстрая ' + res.fast + ' и умная ' + res.smart + '! (+25 XP)');
+  }
 }
 
 async function activateOrKey(k) {
@@ -856,14 +891,15 @@ async function activateOrKey(k) {
 }
 
 async function connectD1Memory(url, pin = '') {
-  const clean = url.trim().replace(/\/+$/, '');
-  if (!clean.startsWith('http')) { alert('Вставь URL Worker (https://...)'); return; }
+  const clean = normalizeOrigin(url);
+  if (!clean.startsWith('http')) { alert('Вставь корректный URL Worker (https://...)'); return; }
   if (pin !== undefined) STATE.appPin = pin.trim();
   $('proStD1').textContent = 'ПРОВЕРКА...'; $('gmStD1').textContent = 'ПРОВЕРКА...';
   try {
-    const hRes = await fetch(clean + '/api/health', { headers: workerHeaders() });
+    const targetHealth = clean + '/api/health';
+    const hRes = await fetch(targetHealth, { headers: workerHeaders() });
     if (hRes.status === 401) throw new Error('Неверный PIN-код (401)');
-    if (!hRes.ok) throw new Error('HTTP ' + hRes.status);
+    if (!hRes.ok) throw new Error('HTTP ' + hRes.status + ' на ' + targetHealth);
     const hData = await hRes.json();
     if (!hData.ok || !hData.d1) throw new Error('D1 не привязана');
     STATE.workerUrl = clean; STATE.d1Online = true;
@@ -884,7 +920,7 @@ async function connectD1Memory(url, pin = '') {
       }
     }
     applyThemeAndMode(); renderGameStage(); renderModGraph(); syncInspector();
-    await playModuleInstallAnim('Cloudflare D1', 'Клик! Общая память Cloudflare D1 прищёлкнулась, а каталог свежих моделей синхронизирован! (+25 XP)');
+    await playModuleInstallAnim('Cloudflare D1', 'Клик! Память D1 подключена (' + clean + '), а модели синхронизированы! (+25 XP)');
   } catch (err) {
     STATE.d1Online = false; syncProDeckStatus(); setPetVisual('awake', 'shock');
     alert('Ошибка D1: ' + err.message);
@@ -1317,7 +1353,11 @@ async function runProDag(query) {
       const k = isRealKey(node.key) ? node.key : (node.provider === 'groq' ? STATE.groqKey : (node.provider === 'openai' ? STATE.orKey : STATE.apiKey));
       const t0 = performance.now();
       try {
-        if (isRealKey(k)) {
+        if (node.provider === 'groq' && STATE.workerUrl && STATE.d1Online) {
+          const r = await fetch(STATE.workerUrl + '/api/chat', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ text: prompt, systemPrompt: sys, mode: 'game' }) });
+          if (!r.ok) throw new Error('Worker HTTP ' + r.status);
+          const d = await r.json(); node.lastOutput = d.reply || '';
+        } else if (isRealKey(k)) {
           if (node.provider === 'groq') node.lastOutput = await callOpenAICompat('https://api.groq.com/openai/v1/chat/completions', k, node.model, sys, prompt);
           else if (node.provider === 'openai') node.lastOutput = await callOpenAICompat(node.model.includes('/') ? 'https://openrouter.ai/api/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions', k, node.model, sys, prompt);
           else node.lastOutput = await callGeminiDirect(k, node.model, sys, prompt);
@@ -1366,7 +1406,7 @@ $('btnCloseSettings').onclick = () => $('settingsModal').classList.remove('open'
 $('btnSaveSettings').onclick = async () => {
   STATE.apiKey = $('setGeminiKey').value.trim(); STATE.groqKey = $('setGroqKey').value.trim();
   STATE.orKey = $('setOrKey').value.trim(); STATE.appPin = $('setAppPin').value.trim();
-  const newW = $('setWorkerUrl').value.trim().replace(/\/+$/, '');
+  const newW = normalizeOrigin($('setWorkerUrl').value);
   $('settingsModal').classList.remove('open');
   if (newW && newW !== STATE.workerUrl) { await connectD1Memory(newW, STATE.appPin); return; }
   await refreshAllAdaptiveModels(); applyThemeAndMode();
@@ -1398,7 +1438,7 @@ applyThemeAndMode();
 renderGameStage();
 if (STATE.workerUrl) { connectD1Memory(STATE.workerUrl, STATE.appPin).catch(() => {}); }
 else if (isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey)) { refreshAllAdaptiveModels().catch(() => {}); }
-addLog('AI OS Companion v11.1 (Adaptive Auto-Discovery) готов.', 'SYS');
+addLog('AI OS Companion v11.2 (CORS + URL Origin Safe) готов.', 'SYS');
 </script>
 </body>
 </html>
