@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>AI OS Companion — GAME &amp; PRO (Adaptive)</title>
+<title>AI OS Companion — GAME &amp; PRO (Modular Mesh)</title>
 <style>
 :root {
   --bg: #05080d; --panel: #0b111b; --panel-alt: #0f1724; --border: #1e2d42;
@@ -44,6 +44,7 @@ body.app-mode-pro .game-only { display: none !important; }
 .badge.warn { color: var(--warn); border-color: rgba(255,176,32,0.5); }
 .icon-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 9px; padding: 5px 9px; font-size: 12px; cursor: pointer; }
 
+/* GAME MODE */
 .game-shell { display: flex; flex-direction: column; gap: 9px; }
 .game-hud { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: var(--panel-alt); border: 1px solid var(--border); border-radius: 14px; padding: 9px 12px; }
 .xp-wrap { flex: 1; display: flex; flex-direction: column; gap: 4px; }
@@ -63,7 +64,7 @@ body.app-mode-pro .game-only { display: none !important; }
 .egg-cracks-2 .crack-1, .egg-cracks-2 .crack-2 { opacity: 1; }
 
 .game-card { width: 100%; background: rgba(7, 11, 19, 0.92); border: 1px solid var(--border); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-.game-input, .game-textarea { width: 100%; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px; color: var(--text); font-family: var(--font-main); font-size: 13.5px; outline: none; }
+.game-input, .game-textarea, .game-select { width: 100%; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px; color: var(--text); font-family: var(--font-main); font-size: 13.5px; outline: none; }
 .game-input:focus { border-color: var(--accent); }
 .primary-btn { background: color-mix(in srgb, var(--accent) 20%, var(--panel-alt)); border: 1.5px solid var(--accent); color: var(--accent); border-radius: 10px; padding: 8px 12px; font-weight: 700; font-size: 12.5px; cursor: pointer; text-align: center; }
 .secondary-btn { background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 7px 10px; font-weight: 600; font-size: 12px; cursor: pointer; text-decoration: none; text-align: center; }
@@ -97,6 +98,7 @@ body.app-mode-pro .game-only { display: none !important; }
 .chat-tool-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 8px 10px; font-size: 14px; cursor: pointer; flex-shrink: 0; }
 .chat-tool-btn.rec { border-color: var(--danger); color: var(--danger); }
 
+/* PRO MODE */
 .pro-connect-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
 @media (max-width: 1100px) { .pro-connect-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .pro-connect-grid { grid-template-columns: 1fr; } }
@@ -121,9 +123,8 @@ body.app-mode-pro .game-only { display: none !important; }
 .host-pill strong { display: block; color: var(--accent); font-size: 9.5px; }
 .host-pill.pet-host strong { color: var(--accent-2); }
 .host-pill.vault-host strong { color: var(--purple); }
-.swap-btn { background: color-mix(in srgb, var(--accent-2) 15%, var(--panel)); border: 1px solid var(--accent-2); color: var(--accent-2); border-radius: 9px; padding: 6px 9px; font-family: var(--font-mono); font-size: 11px; font-weight: 700; cursor: pointer; }
 
-.workspace { display: grid; grid-template-columns: 1.68fr 0.92fr; gap: 12px; }
+.workspace { display: grid; grid-template-columns: 1.62fr 0.98fr; gap: 12px; }
 @media (max-width: 1024px) { .workspace { grid-template-columns: 1fr; } }
 .stage { background: linear-gradient(to right, var(--grid-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px), radial-gradient(circle at 45% 48%, color-mix(in srgb, var(--accent) 12%, var(--panel-alt)) 0%, #05080e 86%); background-size: 28px 28px, 28px 28px, 100% 100%; border: 1px solid var(--border); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
 .stage-top-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
@@ -131,7 +132,7 @@ body.app-mode-pro .game-only { display: none !important; }
 .view-mode-btn { background: transparent; border: none; color: var(--muted); font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; padding: 5px 9px; border-radius: 7px; cursor: pointer; }
 .view-mode-btn.active { background: color-mix(in srgb, var(--accent) 18%, var(--panel)); color: var(--accent); }
 .speech { min-height: 44px; max-height: 92px; overflow-y: auto; background: rgba(8,12,20,0.9); border: 1px solid var(--border); border-radius: 11px; padding: 8px 12px; font-size: 12.5px; text-align: center; }
-.stage-arena { display: grid; grid-template-columns: 0.76fr 1.24fr; gap: 10px; min-height: 350px; }
+.stage-arena { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 10px; min-height: 350px; }
 .stage-arena.mode-avatar { grid-template-columns: 1fr; }
 .stage-arena.mode-avatar .graph-pane { display: none; }
 .stage-arena.mode-graph { grid-template-columns: 1fr; }
@@ -166,22 +167,41 @@ svg#wireSvg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-e
 .node-port { position: absolute; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; border-radius: 50%; background: var(--panel); border: 2px solid var(--accent-2); cursor: crosshair; touch-action: none; z-index: 6; }
 .port-in { left: -7px; }
 .port-out { right: -7px; border-color: var(--accent); }
+
 .telemetry { background: var(--panel-alt); border: 1px solid var(--border); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
 .tele-card { background: rgba(5,8,14,0.68); border: 1px solid var(--border); border-radius: 12px; padding: 10px; }
-.tele-title { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); margin-bottom: 7px; display: flex; justify-content: space-between; }
+.tele-title { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); margin-bottom: 7px; display: flex; justify-content: space-between; align-items: center; }
 .insp-input, .insp-select, .insp-textarea { width: 100%; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; color: var(--text); font-family: var(--font-mono); font-size: 10.5px; margin-bottom: 5px; outline: none; }
 .insp-output { background: rgba(2,4,9,0.85); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-family: var(--font-mono); font-size: 9.5px; color: var(--accent); max-height: 75px; overflow-y: auto; white-space: pre-wrap; }
-.node-item { padding: 6px 8px; border-radius: 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 5px; font-family: var(--font-mono); font-size: 10.5px; }
+
+/* REAL MESH DEVICE CARDS */
+.dev-card { padding: 7px 8px; border-radius: 9px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); margin-bottom: 6px; font-family: var(--font-mono); font-size: 10.5px; display: flex; flex-direction: column; gap: 5px; }
+.dev-card.is-leader { border-color: color-mix(in srgb, var(--accent) 60%, transparent); background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.dev-card.is-pet { border-color: color-mix(in srgb, var(--accent-2) 55%, transparent); }
+.dev-head { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.dev-role { font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 4px; }
+.role-leader { background: rgba(0,245,184,0.16); color: var(--accent); }
+.role-pet { background: rgba(56,189,248,0.16); color: var(--accent-2); }
+.role-vault { background: rgba(192,132,252,0.16); color: var(--purple); }
+.dev-btns { display: flex; flex-wrap: wrap; gap: 4px; }
+.dev-mini-btn { background: rgba(0,0,0,0.45); border: 1px solid var(--border); color: var(--text); border-radius: 5px; padding: 3px 6px; font-family: var(--font-mono); font-size: 9.5px; cursor: pointer; }
+.dev-mini-btn:hover { border-color: var(--accent-2); color: var(--accent-2); }
+.add-dev-box { background: rgba(2,4,9,0.7); border: 1px dashed var(--accent-2); border-radius: 9px; padding: 8px; display: none; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.add-dev-box.open { display: flex; }
+.snippet-pre { background: rgba(2,4,9,0.9); border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--accent); white-space: pre-wrap; word-break: break-all; max-height: 250px; overflow-y: auto; }
+
 .log-wrap { margin-top: 12px; background: rgba(4,7,12,0.85); border: 1px solid var(--border); border-radius: 12px; }
 .log { padding: 8px 12px; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); max-height: 120px; overflow-y: auto; }
 
-svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-select: none; }
+/* SVG PET + COMPANION SATELLITES */
+svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-select: none; }
 @keyframes floatRoot { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
 @keyframes jitterShock { 0%,100% { transform: translate(0,0); } 25% { transform: translate(-4px,2px) rotate(-2deg); } 75% { transform: translate(4px,-2px) rotate(2deg); } }
 @keyframes spinCore { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes dashFlow { to { stroke-dashoffset: -28; } }
 @keyframes haloSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes burstRing { 0% { r: 22; opacity: 0.95; stroke-width: 6; } 100% { r: 145; opacity: 0; stroke-width: 1; } }
+@keyframes compBob { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-7px); } }
 
 .pet-root { transform-origin: 270px 195px; animation: floatRoot 3.8s ease-in-out infinite; }
 .state-booting .pet-root { animation: jitterShock 0.16s infinite; }
@@ -217,9 +237,16 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
 .burst-ring { opacity: 0; }
 .anim-burst .burst-ring { animation: burstRing 0.9s ease-out forwards; }
 
+.companion-layer { display: none; }
+.companion-blob .comp-blob { display: block; }
+.companion-crab .comp-crab { display: block; }
+.companion-swarm .comp-swarm { display: block; }
+.companion-chibi-fox .comp-chibi-fox { display: block; }
+.comp-float { transform-origin: 560px 235px; animation: compBob 2.7s ease-in-out infinite; }
+
 .modal-bg { position: fixed; inset: 0; background: rgba(2,5,10,0.86); display: none; align-items: center; justify-content: center; z-index: 100; padding: 14px; }
 .modal-bg.open { display: flex; }
-.modal-card { width: 100%; max-width: 460px; background: var(--panel); border: 1.5px solid var(--accent); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 9px; max-height: 92vh; overflow-y: auto; }
+.modal-card { width: 100%; max-width: 470px; background: var(--panel); border: 1.5px solid var(--accent); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 9px; max-height: 92vh; overflow-y: auto; }
 </style>
 </head>
 <body class="ui-cyber theme-robot app-mode-game">
@@ -228,27 +255,28 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
 <div id="settingsModal" class="modal-bg">
   <div class="modal-card">
     <strong style="font-family:var(--font-mono);color:var(--accent);font-size:13px;">⚙ КЛЮЧИ, РЕГИСТРАЦИЯ И ПАМЯТЬ</strong>
-    <div class="pro-mod-row">
-      <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Google Ключ</a>
-      <input id="setGeminiKey" class="game-input" type="password" placeholder="AIzaSy..." style="padding:7px 9px;font-size:12px;" />
-    </div>
-    <div class="pro-mod-row">
-      <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Groq Ключ</a>
-      <input id="setGroqKey" class="game-input" type="password" placeholder="gsk_..." style="padding:7px 9px;font-size:12px;" />
-    </div>
-    <div class="pro-mod-row">
-      <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ OR Ключ</a>
-      <input id="setOrKey" class="game-input" type="password" placeholder="sk-or-..." style="padding:7px 9px;font-size:12px;" />
-    </div>
-    <div class="pro-mod-row">
-      <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ 1-клик D1</a>
-      <input id="setWorkerUrl" class="game-input" type="text" placeholder="https://ai-os-brain....workers.dev" style="padding:7px 9px;font-size:12px;" />
-    </div>
+    <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Google Ключ</a><input id="setGeminiKey" class="game-input" type="password" placeholder="AIzaSy..." style="padding:7px 9px;font-size:12px;" /></div>
+    <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Groq Ключ</a><input id="setGroqKey" class="game-input" type="password" placeholder="gsk_..." style="padding:7px 9px;font-size:12px;" /></div>
+    <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ OR Ключ</a><input id="setOrKey" class="game-input" type="password" placeholder="sk-or-..." style="padding:7px 9px;font-size:12px;" /></div>
+    <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ 1-клик D1</a><input id="setWorkerUrl" class="game-input" type="text" placeholder="https://ai-os-brain....workers.dev" style="padding:7px 9px;font-size:12px;" /></div>
     <input id="setAppPin" class="game-input" type="password" placeholder="APP PIN (опционально)" style="padding:7px 9px;font-size:12px;" />
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px;">
       <button id="btnResetAll" class="secondary-btn" style="color:var(--danger);">↺ Сброс</button>
       <button id="btnCloseSettings" class="secondary-btn">Отмена</button>
       <button id="btnSaveSettings" class="primary-btn">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- DEVICE PAIRING SNIPPET MODAL -->
+<div id="pairModal" class="modal-bg">
+  <div class="modal-card">
+    <strong id="pairModalTitle" style="font-family:var(--font-mono);color:var(--accent-2);font-size:13px;">📋 ПОДКЛЮЧЕНИЕ УЗЛА-СПУТНИКА</strong>
+    <div id="pairModalDesc" style="font-size:12px;color:var(--muted);"></div>
+    <pre id="pairModalCode" class="snippet-pre"></pre>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button id="btnCopyPair" class="primary-btn">Копировать</button>
+      <button id="btnClosePair" class="secondary-btn">Закрыть</button>
     </div>
   </div>
 </div>
@@ -273,6 +301,7 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
     </div>
   </div>
 
+  <!-- ===================== GAME MODE ===================== -->
   <div id="gameView" class="game-shell game-only">
     <div class="game-hud">
       <div style="font-weight:800;font-size:14px;" id="hudPetName">🥚 Яйцо</div>
@@ -301,21 +330,22 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
       </div>
 
       <div id="gameAvatarSlot" style="width:100%;display:none;justify-content:center;">
-        <svg id="pet" class="state-off skin-robot grim-normal" viewBox="0 0 540 345" xmlns="http://www.w3.org/2000/svg">
+        <svg id="pet" class="state-off skin-robot grim-normal companion-none" viewBox="0 0 650 345" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="carbonTex" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#162032" /><path d="M0 4 L4 0 L8 4 L4 8 Z" fill="#1e2b42" opacity="0.65" /></pattern>
             <linearGradient id="foxFurGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c2591b" /><stop offset="100%" stop-color="#3b1308" /></linearGradient>
             <linearGradient id="obsidianGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#271b3d" /><stop offset="100%" stop-color="#090612" /></linearGradient>
             <linearGradient id="monolithGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#311042" /><stop offset="100%" stop-color="#090412" /></linearGradient>
             <linearGradient id="visorGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#060b14" /><stop offset="100%" stop-color="#0d1626" /></linearGradient>
+            <radialGradient id="blobCompGrad" cx="35%" cy="35%" r="65%"><stop offset="0%" stop-color="#67e8f9" /><stop offset="100%" stop-color="#7e22ce" /></radialGradient>
             <radialGradient id="floorShadow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="var(--accent)" stop-opacity="0.25" /><stop offset="100%" stop-color="#020408" stop-opacity="0" /></radialGradient>
             <filter id="neonGlow" x="-35%" y="-35%" width="170%" height="170%"><feGaussianBlur stdDeviation="4" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
           </defs>
           <ellipse cx="270" cy="324" rx="110" ry="15" fill="url(#floorShadow)" />
           <circle id="burstRing" class="burst-ring" cx="270" cy="220" r="24" fill="none" stroke="var(--accent)" stroke-width="4" filter="url(#neonGlow)" />
           <g id="dock-brain">
-            <rect x="175" y="10" width="190" height="28" rx="10" fill="#0f1726" stroke="#2b3d5c" stroke-width="1.8" />
-            <text id="svgLeaderDockText" x="270" y="28" text-anchor="middle" fill="var(--accent)" font-size="10.5" font-weight="700">BRAIN // AUTO-FLASH</text>
+            <rect x="165" y="10" width="210" height="28" rx="10" fill="#0f1726" stroke="#2b3d5c" stroke-width="1.8" />
+            <text id="svgLeaderDockText" x="270" y="28" text-anchor="middle" fill="var(--accent)" font-size="10" font-weight="700">LEADER // ЭТОТ БРАУЗЕР</text>
             <path d="M270 38 L270 84" stroke="#223047" stroke-width="4" />
             <path class="wire-active wire-brain" d="M270 38 L270 84" stroke="var(--accent)" stroke-width="3.5" filter="url(#neonGlow)" />
           </g>
@@ -359,12 +389,7 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
               <circle id="coreDot" cx="270" cy="265" r="6" fill="#475569" />
             </g>
             <g class="pet-head">
-              <g class="skin-layer layer-robot">
-                <rect x="172" y="126" width="16" height="48" rx="8" fill="#1a2538" stroke="#475569" stroke-width="2" />
-                <rect x="352" y="126" width="16" height="48" rx="8" fill="#1a2538" stroke="#475569" stroke-width="2" />
-                <line x1="270" y1="92" x2="270" y2="62" stroke="#64748b" stroke-width="4" />
-                <circle id="antennaOrb" cx="270" cy="56" r="8" fill="#334155" stroke="#64748b" stroke-width="2" />
-              </g>
+              <g class="skin-layer layer-robot"><rect x="172" y="126" width="16" height="48" rx="8" fill="#1a2538" stroke="#475569" stroke-width="2" /><rect x="352" y="126" width="16" height="48" rx="8" fill="#1a2538" stroke="#475569" stroke-width="2" /><line x1="270" y1="92" x2="270" y2="62" stroke="#64748b" stroke-width="4" /><circle id="antennaOrb" cx="270" cy="56" r="8" fill="#334155" stroke="#64748b" stroke-width="2" /></g>
               <g class="skin-layer layer-beast"><path d="M192 108 L184 54 L232 94 Z" fill="url(#foxFurGrad)" stroke="#fb923c" stroke-width="2.2" /><path d="M348 108 L356 54 L308 94 Z" fill="url(#foxFurGrad)" stroke="#fb923c" stroke-width="2.2" /></g>
               <g class="skin-layer layer-relic"><path d="M194 106 L174 58 L218 92 Z" fill="#1e1333" stroke="#c084fc" stroke-width="2" /><path d="M346 106 L366 58 L322 92 Z" fill="#1e1333" stroke="#c084fc" stroke-width="2" /><polygon points="270,54 279,74 270,84 261,74" fill="#ff3b6b" /></g>
               <g class="skin-layer layer-monolith"><polygon points="270,48 318,92 222,92" fill="#240b36" stroke="#a855f7" stroke-width="2.2" /></g>
@@ -394,6 +419,15 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
               <path class="mouth-layer mouth-error" d="M248 181 Q259 171 270 181 Q281 191 292 181" stroke="#ff3b6b" stroke-width="3" fill="none" />
             </g>
           </g>
+          <!-- СПУТНИК-ПИТОМЕЦ (КЛАСС PET, ПРИВЯЗАН К ДОБАВЛЕННОМУ УЗЛУ) -->
+          <g class="companion-layer comp-blob comp-crab comp-swarm comp-chibi-fox">
+            <path d="M365 268 Q435 280 510 250" stroke="var(--accent-2)" stroke-width="2" stroke-dasharray="5 5" fill="none" opacity="0.75" />
+            <text id="svgPetHostTag" x="560" y="168" text-anchor="middle" fill="var(--accent-2)" font-family="monospace" font-size="10" font-weight="700">PET // УЗЕЛ</text>
+          </g>
+          <g class="companion-layer comp-blob"><g class="comp-float"><path d="M512 270 C506 220, 530 190, 560 190 C590 190, 614 220, 608 270 C602 286, 518 286, 512 270 Z" fill="url(#blobCompGrad)" stroke="#67e8f9" stroke-width="2" filter="url(#neonGlow)" /><circle cx="544" cy="230" r="5" fill="#fff" /><circle cx="576" cy="230" r="5" fill="#fff" /><path d="M550 245 Q560 253 570 245" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" /></g></g>
+          <g class="companion-layer comp-crab"><g class="comp-float"><rect x="512" y="214" width="96" height="46" rx="15" fill="#9a3412" stroke="#fb923c" stroke-width="2" /><path d="M524 260 L506 284 M544 260 L534 286 M576 260 L586 286 M596 260 L614 284" stroke="#fb923c" stroke-width="3.5" stroke-linecap="round" /><circle cx="540" cy="204" r="5.5" fill="#facc15" /><circle cx="580" cy="204" r="5.5" fill="#facc15" /></g></g>
+          <g class="companion-layer comp-swarm"><g class="comp-float"><circle cx="534" cy="206" r="13" fill="#0d1b2a" stroke="#34d399" stroke-width="2" /><circle cx="534" cy="206" r="4" fill="#34d399" /><circle cx="586" cy="206" r="13" fill="#0d1b2a" stroke="#60a5fa" stroke-width="2" /><circle cx="586" cy="206" r="4" fill="#60a5fa" /><circle cx="540" cy="256" r="11" fill="#0d1b2a" stroke="#34d399" stroke-width="2" /><circle cx="540" cy="256" r="3.5" fill="#34d399" /><circle cx="580" cy="256" r="11" fill="#0d1b2a" stroke="#60a5fa" stroke-width="2" /><circle cx="580" cy="256" r="3.5" fill="#60a5fa" /></g></g>
+          <g class="companion-layer comp-chibi-fox"><g class="comp-float"><path d="M532 214 L526 184 L550 206 Z" fill="#ea580c" stroke="#fdba74" stroke-width="1.5" /><path d="M588 214 L594 184 L570 206 Z" fill="#ea580c" stroke="#fdba74" stroke-width="1.5" /><rect x="526" y="206" width="68" height="56" rx="22" fill="url(#foxFurGrad)" stroke="#fb923c" stroke-width="2" /><circle cx="548" cy="230" r="5" fill="#ffb020" /><circle cx="572" cy="230" r="5" fill="#ffb020" /><path d="M552 244 Q560 250 568 244" stroke="#fed7aa" stroke-width="2.2" fill="none" stroke-linecap="round" /></g></g>
         </svg>
       </div>
 
@@ -484,40 +518,24 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
     </div>
   </div>
 
+  <!-- ===================== PRO MODE ===================== -->
   <div id="proView" class="pro-only">
     <div class="pro-connect-grid">
       <div class="pro-mod-card" id="proCardGemini">
         <div class="pro-mod-head"><span>🤖 AI Studio (Auto Lite)</span><span id="proStGemini" style="color:var(--accent);">OFF</span></div>
-        <div class="pro-mod-row">
-          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Получить</a>
-          <input id="proInGemini" class="pro-mini-in" type="password" placeholder="AIzaSy..." />
-          <button id="proBtnGemini" class="pro-mini-btn go">Вкл</button>
-        </div>
+        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Получить</a><input id="proInGemini" class="pro-mini-in" type="password" placeholder="AIzaSy..." /><button id="proBtnGemini" class="pro-mini-btn go">Вкл</button></div>
       </div>
       <div class="pro-mod-card" id="proCardGroq">
         <div class="pro-mod-head"><span>⚡ Groq (Flash-Lite подбор)</span><span id="proStGroq" style="color:var(--warn);">OFF</span></div>
-        <div class="pro-mod-row">
-          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Получить</a>
-          <input id="proInGroq" class="pro-mini-in" type="password" placeholder="gsk_..." />
-          <button id="proBtnGroq" class="pro-mini-btn go">Вкл</button>
-        </div>
+        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Получить</a><input id="proInGroq" class="pro-mini-in" type="password" placeholder="gsk_..." /><button id="proBtnGroq" class="pro-mini-btn go">Вкл</button></div>
       </div>
       <div class="pro-mod-card" id="proCardOr">
         <div class="pro-mod-head"><span>🛡 OpenRouter (Free)</span><span id="proStOr" style="color:var(--purple);">OFF</span></div>
-        <div class="pro-mod-row">
-          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ Получить</a>
-          <input id="proInOr" class="pro-mini-in" type="password" placeholder="sk-or-..." />
-          <button id="proBtnOr" class="pro-mini-btn go">Вкл</button>
-        </div>
+        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ Получить</a><input id="proInOr" class="pro-mini-in" type="password" placeholder="sk-or-..." /><button id="proBtnOr" class="pro-mini-btn go">Вкл</button></div>
       </div>
       <div class="pro-mod-card" id="proCardD1">
         <div class="pro-mod-head"><span>💾 Память D1 + PIN</span><span id="proStD1" style="color:var(--accent-2);">LOCAL</span></div>
-        <div class="pro-mod-row">
-          <a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend" title="1-клик деплой Worker + D1">☁️ Создать D1</a>
-          <input id="proInD1" class="pro-mini-in" type="text" placeholder="https://...workers.dev" />
-          <input id="proInPin" class="pro-mini-in" type="password" placeholder="PIN" style="max-width:48px;" />
-          <button id="proBtnD1" class="pro-mini-btn go">Вкл</button>
-        </div>
+        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ Создать D1</a><input id="proInD1" class="pro-mini-in" type="text" placeholder="https://...workers.dev" /><input id="proInPin" class="pro-mini-in" type="password" placeholder="PIN" style="max-width:48px;" /><button id="proBtnD1" class="pro-mini-btn go">Вкл</button></div>
       </div>
     </div>
 
@@ -540,11 +558,10 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
         </div>
       </div>
       <div class="group-box">
-        <span class="group-label"><span>3. Топология</span><span>СВАП + СЕЙФ</span></span>
+        <span class="group-label"><span>3. Активная Иерархия</span><span>РАНГ СОХРАНЁН</span></span>
         <div class="hierarchy-row">
-          <div class="host-pill"><strong>LEADER</strong><span id="leaderHostLabel">Linux DietPi</span></div>
-          <button id="btnSwapHosts" class="swap-btn">⇄ СВАП</button>
-          <div class="host-pill pet-host"><strong>PET</strong><span id="petHostLabel">ESP32-C5</span></div>
+          <div class="host-pill"><strong>LEADER (МОЗГ)</strong><span id="leaderHostLabel">Этот браузер</span></div>
+          <div class="host-pill pet-host"><strong>PET (СПУТНИК)</strong><span id="petHostLabel">Не добавлен</span></div>
           <div class="host-pill vault-host"><strong>VAULT</strong><span id="vaultStatusLabel">LOCAL</span></div>
         </div>
       </div>
@@ -563,7 +580,7 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
             <span id="proEmotionBadge" class="badge">GRIMACE: NORMAL</span>
           </div>
         </div>
-        <div id="proSpeechBox" class="speech">Подключай модули сверху — модели определяются автоматически под доступные бесплатные квоты.</div>
+        <div id="proSpeechBox" class="speech">Добавляй реальные устройства (Linux, ESP32, Android) справа — они появятся спутниками, и их можно свапать с Leader!</div>
         <div id="stageArena" class="stage-arena mode-hybrid">
           <div id="proAvatarSlot" class="avatar-pane"></div>
           <div class="graph-pane">
@@ -591,7 +608,7 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
 
       <div class="telemetry">
         <div class="tele-card">
-          <div class="tele-title"><span>ИНСПЕКТОР МОДУЛЯ</span><span id="inspProviderTag">AI STUDIO</span></div>
+          <div class="tele-title"><span>ИНСПЕКТОР ИИ-МОДУЛЯ</span><span id="inspProviderTag">AI STUDIO</span></div>
           <input id="inspTitle" class="insp-input" type="text" placeholder="Название" />
           <select id="inspProvider" class="insp-select">
             <option value="aistudio">Google AI Studio (Auto)</option>
@@ -605,10 +622,39 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
           <div id="inspOutput" class="insp-output">Нет вывода.</div>
           <button id="btnDeleteModNode" class="secondary-btn" style="margin-top:6px;width:100%;color:var(--danger);">Удалить блок</button>
         </div>
+
+        <!-- ОТДЕЛЬНО: МОИ РЕАЛЬНЫЕ УЗЛЫ И СПУТНИКИ (БЕЗ ФЕЙКОВ!) -->
         <div class="tele-card">
-          <div class="tele-title"><span>КАТАЛОГ + УЗЛЫ</span><span id="proRouteLabel">IDLE</span></div>
-          <div id="catalogSummary" style="font-family:var(--font-mono);font-size:9.5px;color:var(--accent);margin-bottom:6px;line-height:1.35;"></div>
+          <div class="tele-title">
+            <span>🛰 УЗЛЫ И СПУТНИКИ</span>
+            <button id="btnToggleAddDev" class="pro-mini-btn go">+ Добавить узел</button>
+          </div>
+          <div id="addDevBox" class="add-dev-box">
+            <input id="devNameIn" class="insp-input" type="text" placeholder="Имя (напр: Мой DietPi или ESP32-P4)" />
+            <select id="devKindIn" class="insp-select">
+              <option value="linux-dietpi">🐧 Linux / Orange Pi / DietPi</option>
+              <option value="esp32-p4">🖥 ESP32-P4 (Медиа / Экран)</option>
+              <option value="esp32-c5">📡 ESP32-C5 / C6 (Wi-Fi Мост)</option>
+              <option value="esp32-wroom">🔌 ESP32 WROOM (Поллер)</option>
+              <option value="android-ios">📱 Android / iOS Смартфон</option>
+              <option value="desktop-os">💻 Windows / macOS / Linux GUI</option>
+            </select>
+            <select id="devPetIn" class="insp-select">
+              <option value="blob">🟢 Питомец: Плазма-слизень</option>
+              <option value="crab">🦀 Питомец: Меха-краб</option>
+              <option value="swarm">🐝 Питомец: Рой-4</option>
+              <option value="chibi-fox">🦊 Питомец: Мини-лисёнок</option>
+            </select>
+            <input id="devAddrIn" class="insp-input" type="text" placeholder="IP/URL (опц., напр: http://192.168.1.42:8080)" />
+            <button id="btnCreateDev" class="primary-btn" style="padding:6px 10px;font-size:11.5px;">Присоединить спутника</button>
+          </div>
           <div id="nodeList"></div>
+        </div>
+
+        <!-- ОТДЕЛЬНО: АВТО-КАТАЛОГ МОДЕЛЕЙ -->
+        <div class="tele-card">
+          <div class="tele-title"><span>🧠 КАТАЛОГ МОДЕЛЕЙ (AUTO)</span><span id="proRouteLabel">IDLE</span></div>
+          <div id="catalogSummary" style="font-family:var(--font-mono);font-size:9.5px;color:var(--accent);line-height:1.4;"></div>
         </div>
       </div>
     </div>
@@ -617,13 +663,34 @@ svg#pet { width: 100%; max-width: 440px; height: auto; cursor: pointer; user-sel
 </div>
 
 <script>
-const STORAGE_KEY = 'aios_v11_adaptive';
+const STORAGE_KEY = 'aios_v12_mesh';
 const NL = String.fromCharCode(10);
 
+const KIND_LABELS = {
+  'browser-local': '🌐 Браузер (Текущий)',
+  'linux-dietpi': '🐧 Linux / DietPi',
+  'esp32-p4': '🖥 ESP32-P4',
+  'esp32-c5': '📡 ESP32-C5/C6',
+  'esp32-wroom': '🔌 ESP32 WROOM',
+  'android-ios': '📱 Android / iOS',
+  'desktop-os': '💻 Desktop OS'
+};
+
+const PET_LABELS = {
+  blob: 'Плазма-слизень',
+  crab: 'Меха-краб',
+  swarm: 'Рой-4',
+  'chibi-fox': 'Мини-лисёнок'
+};
+
 const STATE = {
-  appMode: 'game', ui: 'cyber', skin: 'robot', viewMode: 'hybrid', swappedHosts: false,
+  appMode: 'game', ui: 'cyber', skin: 'robot', viewMode: 'hybrid',
   stage: 'egg', eggTaps: 0, name: 'Яйцо', xp: 0, mood: 'normal',
   apiKey: '', groqKey: '', orKey: '', workerUrl: '', appPin: '', d1Online: false,
+  devices: [
+    { id: 'dev-browser', name: 'Этот браузер', kind: 'browser-local', petSkin: 'chibi-fox', addr: 'local', isLeader: true, activeCompanion: false }
+  ],
+  activeCompId: null,
   catalog: {
     aistudio: { fast: 'gemini-3.1-flash-lite', smart: 'gemini-3.8-flash', list: ['gemini-3.1-flash-lite', 'gemini-flash-lite-latest'], reason: 'default' },
     groq: { fast: 'openai/gpt-oss-20b', smart: 'openai/gpt-oss-120b', whisper: 'whisper-large-v3-turbo', list: ['openai/gpt-oss-20b', 'openai/gpt-oss-120b'], reason: 'default' },
@@ -642,13 +709,23 @@ const RT = {
 const $ = id => document.getElementById(id);
 
 function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); } catch (_) {} }
-function loadState() { try { const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('aios_v10_unified'); if (raw) Object.assign(STATE, JSON.parse(raw)); } catch (_) {} }
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('aios_v11_adaptive') || localStorage.getItem('aios_v10_unified');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      Object.assign(STATE, parsed);
+      if (!Array.isArray(STATE.devices) || STATE.devices.length === 0) {
+        STATE.devices = [{ id: 'dev-browser', name: 'Этот браузер', kind: 'browser-local', petSkin: 'chibi-fox', addr: 'local', isLeader: true }];
+      }
+    }
+  } catch (_) {}
+}
 function isRealKey(k) { return Boolean(k && k.trim().length > 16 && !k.includes('demo') && !k.includes('free')); }
 function normalizeOrigin(u) {
   const s = (u || '').trim();
   if (!s) return '';
-  try { return new URL(s.startsWith('http') ? s : 'https://' + s).origin; }
-  catch (_) { return s.replace(/\/+$/, ''); }
+  try { return new URL(s.startsWith('http') ? s : 'https://' + s).origin; } catch (_) { return s.replace(/\/+$/, ''); }
 }
 function workerHeaders() {
   const h = { 'Content-Type': 'application/json' };
@@ -683,19 +760,150 @@ function addXP(pts) {
   saveState();
 }
 
+function getLeaderDevice() { return STATE.devices.find(d => d.isLeader) || STATE.devices[0]; }
+function getActivePetDevice() {
+  const pets = STATE.devices.filter(d => !d.isLeader);
+  if (pets.length === 0) return null;
+  return pets.find(d => d.id === STATE.activeCompId) || pets[0];
+}
+
 function setPetVisual(powerState, mood) {
   STATE.mood = mood || 'normal';
   const pet = $('pet');
-  pet.classList.remove('state-off', 'state-booting', 'state-awake', 'state-error', 'grim-normal', 'grim-smug', 'grim-focus', 'grim-shock', 'skin-robot', 'skin-beast', 'skin-relic', 'skin-monolith');
-  pet.classList.add('state-' + powerState, 'grim-' + STATE.mood, 'skin-' + STATE.skin);
+  const compDev = getActivePetDevice();
+  const compClass = compDev ? ('companion-' + compDev.petSkin) : 'companion-none';
+  pet.classList.remove('state-off', 'state-booting', 'state-awake', 'state-error', 'grim-normal', 'grim-smug', 'grim-focus', 'grim-shock', 'skin-robot', 'skin-beast', 'skin-relic', 'skin-monolith', 'companion-none', 'companion-blob', 'companion-crab', 'companion-swarm', 'companion-chibi-fox');
+  pet.classList.add('state-' + powerState, 'grim-' + STATE.mood, 'skin-' + STATE.skin, compClass);
   pet.classList.toggle('mod-memory-on', Boolean(STATE.workerUrl && STATE.d1Online));
   pet.classList.toggle('mod-turbo-on', isRealKey(STATE.groqKey));
   pet.classList.toggle('mod-critic-on', isRealKey(STATE.orKey));
   $('liveDot').classList.toggle('on', powerState === 'awake');
   $('coreDot').setAttribute('fill', powerState === 'awake' ? '#00f5b8' : (powerState === 'booting' ? '#ffb020' : '#475569'));
   $('proEmotionBadge').textContent = 'GRIMACE: ' + STATE.mood.toUpperCase();
+  const leader = getLeaderDevice();
+  $('svgLeaderDockText').textContent = 'LEADER // ' + (leader ? leader.name.toUpperCase() : 'BROWSER');
+  $('svgPetHostTag').textContent = compDev ? ('PET // ' + compDev.name.toUpperCase()) : '';
 }
 
+/* ================= REAL MODULAR DEVICES + SWAP ================= */
+function buildPairSnippet(dev) {
+  const wUrl = STATE.workerUrl || 'https://ТВОЙ-WORKER.workers.dev';
+  if (dev.kind === 'linux-dietpi') {
+    return {
+      title: '🐧 Агент для ' + dev.name,
+      desc: 'Запусти этот опросник на DietPi / Linux — узел будет получать команды и слать статус в общую память:',
+      code: 'export AI_OS_WORKER="' + wUrl + '"' + NL + 'export AI_OS_NODE="' + dev.id + '"' + NL + 'while true; do curl -s "$AI_OS_WORKER/api/poll?node=$AI_OS_NODE"; sleep 3; done'
+    };
+  }
+  if (dev.kind.startsWith('esp32')) {
+    return {
+      title: '📡 Конфиг прошивки для ' + dev.name + ' (' + dev.kind.toUpperCase() + ')',
+      desc: 'Вставь эти параметры в config.h прошивки (опрос /api/poll каждые 2-3 сек, роль сохраняется при свапе):',
+      code: '#define AI_OS_NODE_ID "' + dev.id + '"' + NL + '#define AI_OS_KIND "' + dev.kind + '"' + NL + '#define AI_OS_WORKER_URL "' + wUrl + '/api/poll"' + NL + '#define AI_OS_ROLE "' + (dev.isLeader ? 'LEADER' : 'PET') + '"' + NL + '#define AI_OS_PET_SKIN "' + dev.petSkin + '"'
+    };
+  }
+  return {
+    title: '📱 Подключение клиента: ' + dev.name,
+    desc: 'Открой эту же ссылку на устройстве и подключи Worker URL в PRO Mode или ⚙ — все факты и персонаж синхронизируются через D1:',
+    code: 'URL: https://kniajevich.github.io/ai-os-companion/' + NL + 'Worker D1: ' + wUrl + NL + 'Узел: ' + dev.name + ' [' + (dev.isLeader ? 'LEADER' : 'PET') + ']'
+  };
+}
+
+function showPairModal(dev) {
+  const info = buildPairSnippet(dev);
+  $('pairModalTitle').textContent = info.title;
+  $('pairModalDesc').textContent = info.desc;
+  $('pairModalCode').textContent = info.code;
+  $('pairModal').classList.add('open');
+}
+
+$('btnClosePair').onclick = () => $('pairModal').classList.remove('open');
+$('btnCopyPair').onclick = () => { navigator.clipboard?.writeText($('pairModalCode').textContent); $('btnCopyPair').textContent = 'Скопировано ✓'; setTimeout(() => { $('btnCopyPair').textContent = 'Копировать'; }, 1200); };
+
+function swapLeaderWithDevice(devId) {
+  const target = STATE.devices.find(d => d.id === devId);
+  if (!target || target.isLeader) return;
+  const oldLeader = getLeaderDevice();
+  STATE.devices.forEach(d => { d.isLeader = (d.id === devId); });
+  if (oldLeader) STATE.activeCompId = oldLeader.id;
+  setPetVisual('awake', 'smug');
+  renderNodesList();
+  saveState();
+  const msg = 'Свап без ломки ранга! LEADER переехал на «' + target.name + '», а «' + (oldLeader ? oldLeader.name : 'прежний хост') + '» стал спутником PET!';
+  $('proSpeechBox').textContent = msg;
+  addLog(msg, 'SYS');
+}
+
+function renderNodesList() {
+  const box = $('nodeList'); box.innerHTML = '';
+  const leader = getLeaderDevice();
+  const activePet = getActivePetDevice();
+  $('leaderHostLabel').textContent = leader ? leader.name : 'Этот браузер';
+  $('petHostLabel').textContent = activePet ? (activePet.name + ' (' + PET_LABELS[activePet.petSkin] + ')') : 'Не добавлен';
+
+  STATE.devices.forEach(dev => {
+    const card = document.createElement('div');
+    card.className = 'dev-card ' + (dev.isLeader ? 'is-leader' : 'is-pet');
+
+    const head = document.createElement('div'); head.className = 'dev-head';
+    const title = document.createElement('strong'); title.textContent = dev.name;
+    const badge = document.createElement('span'); badge.className = 'dev-role ' + (dev.isLeader ? 'role-leader' : 'role-pet');
+    badge.textContent = dev.isLeader ? 'LEADER' : 'PET';
+    head.appendChild(title); head.appendChild(badge); card.appendChild(head);
+
+    const sub = document.createElement('div'); sub.style.color = 'var(--muted)'; sub.style.fontSize = '9.5px';
+    sub.textContent = (KIND_LABELS[dev.kind] || dev.kind) + (dev.isLeader ? '' : (' • Спутник: ' + (PET_LABELS[dev.petSkin] || dev.petSkin))) + (dev.addr && dev.addr !== 'local' ? (' • ' + dev.addr) : '');
+    card.appendChild(sub);
+
+    const btns = document.createElement('div'); btns.className = 'dev-btns';
+    if (!dev.isLeader) {
+      const swapBtn = document.createElement('button'); swapBtn.className = 'dev-mini-btn'; swapBtn.textContent = '⇄ Свап с Leader';
+      swapBtn.onclick = () => swapLeaderWithDevice(dev.id);
+      btns.appendChild(swapBtn);
+
+      const focusBtn = document.createElement('button'); focusBtn.className = 'dev-mini-btn'; focusBtn.textContent = STATE.activeCompId === dev.id ? '👁 На сцене' : '👁 Показать';
+      focusBtn.onclick = () => { STATE.activeCompId = dev.id; setPetVisual('awake', 'smug'); renderNodesList(); saveState(); };
+      btns.appendChild(focusBtn);
+    }
+    if (dev.kind !== 'browser-local') {
+      const codeBtn = document.createElement('button'); codeBtn.className = 'dev-mini-btn'; codeBtn.textContent = '📋 Код';
+      codeBtn.onclick = () => showPairModal(dev);
+      btns.appendChild(codeBtn);
+
+      const delBtn = document.createElement('button'); delBtn.className = 'dev-mini-btn'; delBtn.textContent = '✕';
+      delBtn.onclick = () => {
+        if (dev.isLeader) STATE.devices[0].isLeader = true;
+        STATE.devices = STATE.devices.filter(x => x.id !== dev.id);
+        setPetVisual('awake', 'normal'); renderNodesList(); saveState();
+      };
+      btns.appendChild(delBtn);
+    }
+    if (btns.children.length) card.appendChild(btns);
+    box.appendChild(card);
+  });
+
+  if (STATE.workerUrl && STATE.d1Online) {
+    const d1 = document.createElement('div'); d1.className = 'dev-card';
+    d1.innerHTML = '<div class="dev-head"><strong>Cloudflare D1 Vault</strong><span class="dev-role role-vault">MEMORY</span></div><div style="color:var(--accent);font-size:9.5px;">' + STATE.workerUrl + ' ✓</div>';
+    box.appendChild(d1);
+  }
+}
+
+$('btnToggleAddDev').onclick = () => $('addDevBox').classList.toggle('open');
+$('btnCreateDev').onclick = async () => {
+  const kind = $('devKindIn').value;
+  const petSkin = $('devPetIn').value;
+  const name = $('devNameIn').value.trim() || (KIND_LABELS[kind].replace(/^[^ ]+ /, '') + ' #' + STATE.devices.length);
+  const addr = $('devAddrIn').value.trim();
+  const id = 'dev-' + Math.floor(100 + Math.random() * 900);
+  STATE.devices.push({ id, name, kind, petSkin, addr, isLeader: false });
+  STATE.activeCompId = id;
+  $('devNameIn').value = ''; $('devAddrIn').value = ''; $('addDevBox').classList.remove('open');
+  renderNodesList();
+  await playModuleInstallAnim(name, 'Новый спутник-питомец «' + name + '» (' + PET_LABELS[petSkin] + ') вышел на орбиту! Нажми «⇄ Свап», если хочешь перенести на него Leader.');
+};
+
+/* ================= ADAPTIVE MODEL DISCOVERY ================= */
 function versionScore(id) {
   const m = id.match(/(\d+(?:\.\d+)?)/);
   let s = m ? parseFloat(m[1]) * 100 : 200;
@@ -723,7 +931,6 @@ async function discoverGeminiClient(key) {
 
 async function discoverGroqClient(groqKey) {
   if (!isRealKey(groqKey)) return null;
-  // 1) Если подключён Cloudflare Worker — сканируем Groq через него (без CORS браузера)
   if (STATE.workerUrl && STATE.d1Online) {
     try {
       const r = await fetch(STATE.workerUrl + '/api/models/refresh', { method: 'POST', headers: workerHeaders() });
@@ -737,7 +944,6 @@ async function discoverGroqClient(groqKey) {
       }
     } catch (_) {}
   }
-  // 2) Прямой скан из браузера с мягким фоллбэком при CORS-блокировке
   try {
     const res = await fetch('https://api.groq.com/openai/v1/models', { headers: { 'Authorization': 'Bearer ' + groqKey } });
     if (!res.ok) throw new Error('Groq HTTP ' + res.status);
@@ -754,28 +960,15 @@ async function discoverGroqClient(groqKey) {
         const evalPrompt = 'Живой список Groq: ' + chatIds.join(', ') + '. Выбери 1 быструю (fast) и 1 мощную бесплатную (smart, например 120b/70b/qwen). Ответь СТРОГО JSON с полями fast, smart, reason.';
         const raw = await callGeminiDirect(STATE.apiKey, STATE.catalog.aistudio.fast, 'Отвечай только JSON без markdown.', evalPrompt);
         const m = raw.match(/\{[\s\S]*\}/);
-        if (m) {
-          const parsed = JSON.parse(m[0]);
-          if (parsed.fast && chatIds.includes(parsed.fast)) fast = parsed.fast;
-          if (parsed.smart && chatIds.includes(parsed.smart)) smart = parsed.smart;
-          if (parsed.reason) reason = 'Flash-Lite: ' + parsed.reason;
-        }
+        if (m) { const p = JSON.parse(m[0]); if (p.fast && chatIds.includes(p.fast)) fast = p.fast; if (p.smart && chatIds.includes(p.smart)) smart = p.smart; if (p.reason) reason = 'Flash-Lite: ' + p.reason; }
       } catch (_) {}
     }
     STATE.catalog.groq = { fast, smart, whisper, list: chatIds.length ? chatIds : [fast, smart], reason };
     addLog('Groq подбор (' + reason + '): fast=' + fast + ', smart=' + smart, 'PIPE');
     return STATE.catalog.groq;
   } catch (err) {
-    // Браузер заблокировал прямой CORS (или AdGuard/VPN) — сохраняем ключ для работы через Worker!
-    STATE.catalog.groq = {
-      fast: 'openai/gpt-oss-20b',
-      smart: 'openai/gpt-oss-120b',
-      whisper: 'whisper-large-v3-turbo',
-      list: ['openai/gpt-oss-20b', 'openai/gpt-oss-120b', 'qwen/qwen3.8-27b'],
-      reason: 'cors-via-worker',
-      corsBlocked: true
-    };
-    addLog('Прямой CORS к Groq заблокирован браузером (' + err.message + '). Ключ сохранён для работы через Worker.', 'ERR');
+    STATE.catalog.groq = { fast: 'openai/gpt-oss-20b', smart: 'openai/gpt-oss-120b', whisper: 'whisper-large-v3-turbo', list: ['openai/gpt-oss-20b', 'openai/gpt-oss-120b', 'qwen/qwen3.8-27b'], reason: 'cors-via-worker', corsBlocked: true };
+    addLog('Прямой CORS к Groq заблокирован (' + err.message + '). Ключ сохранён для Worker.', 'ERR');
     return STATE.catalog.groq;
   }
 }
@@ -797,10 +990,7 @@ async function discoverOpenRouterClient(orKey) {
 async function refreshAllAdaptiveModels() {
   $('proRouteLabel').textContent = 'SCANNING...';
   if (STATE.workerUrl && STATE.d1Online) {
-    try {
-      const r = await fetch(STATE.workerUrl + '/api/models/refresh', { method: 'POST', headers: workerHeaders() });
-      if (r.ok) { const d = await r.json(); if (d.catalog) { if (d.catalog.aistudio) STATE.catalog.aistudio = d.catalog.aistudio; if (d.catalog.groq) STATE.catalog.groq = d.catalog.groq; if (d.catalog.openrouter) STATE.catalog.openai = d.catalog.openrouter; } }
-    } catch (_) {}
+    try { const r = await fetch(STATE.workerUrl + '/api/models/refresh', { method: 'POST', headers: workerHeaders() }); if (r.ok) { const d = await r.json(); if (d.catalog) { if (d.catalog.aistudio) STATE.catalog.aistudio = d.catalog.aistudio; if (d.catalog.groq) STATE.catalog.groq = d.catalog.groq; if (d.catalog.openrouter) STATE.catalog.openai = d.catalog.openrouter; } } } catch (_) {}
   }
   try { await discoverGeminiClient(STATE.apiKey); } catch (_) {}
   try { await discoverGroqClient(STATE.groqKey); } catch (_) {}
@@ -835,14 +1025,14 @@ function syncProDeckStatus() {
   ['proInOr', 'gmInOr'].forEach(id => { if ($(id).value !== STATE.orKey) $(id).value = STATE.orKey; });
   ['proInD1', 'gmInD1'].forEach(id => { if ($(id).value !== STATE.workerUrl) $(id).value = STATE.workerUrl; });
   ['proInPin', 'gmInPin'].forEach(id => { if ($(id).value !== STATE.appPin) $(id).value = STATE.appPin; });
-  $('catalogSummary').textContent = 'Lite: ' + STATE.catalog.aistudio.fast + NL + 'Groq Fast/Smart: ' + STATE.catalog.groq.fast + ' / ' + STATE.catalog.groq.smart + NL + 'OR Free: ' + STATE.catalog.openai.smart;
+  $('catalogSummary').textContent = 'AI Studio: ' + STATE.catalog.aistudio.fast + ' / ' + STATE.catalog.aistudio.smart + NL + 'Groq: ' + STATE.catalog.groq.fast + ' / ' + STATE.catalog.groq.smart + NL + 'OpenRouter: ' + STATE.catalog.openai.smart;
 }
 
 function applyThemeAndMode() {
   document.body.className = 'ui-' + STATE.ui + ' theme-' + STATE.skin + ' app-mode-' + STATE.appMode;
   $('btnModeGame').classList.toggle('active', STATE.appMode === 'game');
   $('btnModePro').classList.toggle('active', STATE.appMode === 'pro');
-  $('topSubLabel').textContent = STATE.appMode === 'game' ? ('GAME Mode • ' + STATE.catalog.aistudio.fast) : 'PRO Mode • Адаптивный оркестратор';
+  $('topSubLabel').textContent = STATE.appMode === 'game' ? ('GAME Mode • ' + STATE.catalog.aistudio.fast) : 'PRO Mode • Модули, DAG и Спутники';
   const pet = $('pet');
   if (STATE.appMode === 'game') $('gameAvatarSlot').appendChild(pet);
   else { $('proAvatarSlot').appendChild(pet); setTimeout(renderWires, 30); }
@@ -865,8 +1055,7 @@ async function playModuleInstallAnim(title, commentText) {
 
 async function activateGeminiKey(k) {
   const clean = k.trim(); if (!isRealKey(clean)) { alert('Вставь корректный ключ AIza...'); return; }
-  STATE.apiKey = clean;
-  await discoverGeminiClient(clean).catch(e => alert(e.message));
+  STATE.apiKey = clean; await discoverGeminiClient(clean).catch(e => alert(e.message));
   if (isRealKey(STATE.groqKey)) await discoverGroqClient(STATE.groqKey).catch(() => {});
   syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector();
   await playModuleInstallAnim('AI Studio', 'Подключен свежий ' + STATE.catalog.aistudio.fast + '! (+25 XP)');
@@ -874,13 +1063,12 @@ async function activateGeminiKey(k) {
 
 async function activateGroqKey(k) {
   const clean = k.trim(); if (!isRealKey(clean)) { alert('Вставь корректный ключ gsk_...'); return; }
-  STATE.groqKey = clean;
-  const res = await discoverGroqClient(clean);
+  STATE.groqKey = clean; const res = await discoverGroqClient(clean);
   syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector();
   if (res && res.corsBlocked && !STATE.d1Online) {
-    await playModuleInstallAnim('Groq Key Saved', 'Ключ Groq сохранён! Браузер заблокировал прямой CORS к api.groq.com — подключи Память D1 (Worker), и Groq заработает через него без ограничений! (+25 XP)');
+    await playModuleInstallAnim('Groq Key Saved', 'Ключ Groq сохранён! Подключи Память D1 (Worker), чтобы обойти CORS браузера! (+25 XP)');
   } else if (res) {
-    await playModuleInstallAnim('Groq LPU', 'Турбина Groq подключена! Выбрано (' + res.reason + '): быстрая ' + res.fast + ' и умная ' + res.smart + '! (+25 XP)');
+    await playModuleInstallAnim('Groq LPU', 'Турбина Groq подключена! Выбрано (' + res.reason + '): ' + res.fast + ' / ' + res.smart + ' (+25 XP)');
   }
 }
 
@@ -900,8 +1088,7 @@ async function connectD1Memory(url, pin = '') {
     const hRes = await fetch(targetHealth, { headers: workerHeaders() });
     if (hRes.status === 401) throw new Error('Неверный PIN-код (401)');
     if (!hRes.ok) throw new Error('HTTP ' + hRes.status + ' на ' + targetHealth);
-    const hData = await hRes.json();
-    if (!hData.ok || !hData.d1) throw new Error('D1 не привязана');
+    const hData = await hRes.json(); if (!hData.ok || !hData.d1) throw new Error('D1 не привязана');
     STATE.workerUrl = clean; STATE.d1Online = true;
     const syncRes = await fetch(clean + '/api/sync', {
       method: 'POST', headers: workerHeaders(),
@@ -935,24 +1122,19 @@ $('proBtnOr').onclick = () => activateOrKey($('proInOr').value);
 $('gmBtnOr').onclick = () => activateOrKey($('gmInOr').value);
 $('proBtnD1').onclick = () => connectD1Memory($('proInD1').value, $('proInPin').value);
 $('gmBtnD1').onclick = () => connectD1Memory($('gmInD1').value, $('gmInPin').value);
-
-$('btnRefreshCatalog').onclick = async () => {
-  await refreshAllAdaptiveModels();
-  await playModuleInstallAnim('Auto-Scan', 'Обновил живые модели: Gemini=' + STATE.catalog.aistudio.fast + ', Groq=' + STATE.catalog.groq.fast + '/' + STATE.catalog.groq.smart + '.');
-};
+$('btnRefreshCatalog').onclick = async () => { await refreshAllAdaptiveModels(); await playModuleInstallAnim('Auto-Scan', 'Обновил модели: Gemini=' + STATE.catalog.aistudio.fast + ', Groq=' + STATE.catalog.groq.fast + '/' + STATE.catalog.groq.smart + '.'); };
 
 function buildUnifiedSystemPrompt(extraRole = '') {
   const t = STATE.traits;
   const factsText = STATE.facts.slice(0, 10).map(f => '- ' + f.text).join(NL) || '- Пока нет фактов.';
   const sumText = STATE.summaries.slice(0, 2).map(s => '- ' + s.text).join(NL) || '- Снов нет.';
   const rulesText = STATE.lessons.slice(0, 5).map(l => '- ' + l.rule).join(NL) || '- Ошибок нет.';
+  const leader = getLeaderDevice();
   return [
-    'ТЫ — живой цифровой питомец ' + STATE.name + ' (форма: ' + STATE.skin + ', XP: ' + STATE.xp + ').',
+    'ТЫ — живой цифровой питомец ' + STATE.name + ' (форма: ' + STATE.skin + ', хост Leader: ' + (leader ? leader.name : 'Browser') + ', XP: ' + STATE.xp + ').',
     'ХАРАКТЕР (0..10): Юмор=' + t.humor + ', Дерзость=' + t.sass + ', Забота=' + t.care + ', Краткость=' + t.concise + '.',
     'ПРАВИЛО МИМИКИ: Начинай ответ с одного тега [MOOD:normal], [MOOD:smug], [MOOD:focus] или [MOOD:shock].',
-    'ФАКТЫ:' + NL + factsText,
-    'СНЫ:' + NL + sumText,
-    'УРОКИ:' + NL + rulesText,
+    'ФАКТЫ:' + NL + factsText, 'СНЫ:' + NL + sumText, 'УРОКИ:' + NL + rulesText,
     extraRole ? ('РОЛЬ: ' + extraRole) : ''
   ].filter(Boolean).join(NL + NL);
 }
@@ -1378,18 +1560,6 @@ async function runProDag(query) {
 
 $('btnProRunGraph').onclick = () => { const v = $('proCmdInput').value.trim() || 'Оцени текущую архитектуру'; $('proCmdInput').value = ''; runProDag(v); };
 
-function renderNodesList() {
-  const nodes = [
-    { id: 'dietpi-01', name: 'Orange Pi DietPi', role: STATE.swappedHosts ? 'PET' : 'LEADER', ip: '192.168.1.42' },
-    { id: 'esp32-c5', name: 'ESP32-C5 Bridge', role: STATE.swappedHosts ? 'LEADER' : 'PET', ip: '192.168.1.88' },
-    { id: 'cf-d1', name: 'Cloudflare D1 Vault', role: 'MEMORY', ip: STATE.d1Online ? 'ONLINE ✓' : 'LOCAL' }
-  ];
-  $('nodeList').innerHTML = nodes.map(n => '<div class="node-item"><strong>' + n.name + '</strong> <span style="color:var(--accent);">[' + n.role + ']</span><div style="color:var(--muted);font-size:9.5px;">' + n.ip + '</div></div>').join('');
-  $('leaderHostLabel').textContent = STATE.swappedHosts ? 'ESP32-P4' : 'Linux DietPi';
-  $('petHostLabel').textContent = STATE.swappedHosts ? 'Linux DietPi' : 'ESP32-C5';
-}
-
-$('btnSwapHosts').onclick = () => { STATE.swappedHosts = !STATE.swappedHosts; renderNodesList(); saveState(); };
 document.querySelectorAll('.ui-btn').forEach(b => b.onclick = () => { STATE.ui = b.dataset.ui; document.querySelectorAll('.ui-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); applyThemeAndMode(); saveState(); });
 document.querySelectorAll('.skin-btn').forEach(b => b.onclick = () => { STATE.skin = b.dataset.skin; document.querySelectorAll('.skin-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); applyThemeAndMode(); setPetVisual('awake', STATE.mood); saveState(); });
 document.querySelectorAll('.view-mode-btn').forEach(b => b.onclick = () => { STATE.viewMode = b.dataset.view; document.querySelectorAll('.view-mode-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); $('stageArena').className = 'stage-arena mode-' + STATE.viewMode; setTimeout(renderWires, 25); });
@@ -1413,7 +1583,7 @@ $('btnSaveSettings').onclick = async () => {
 };
 $('btnResetAll').onclick = () => {
   if (!confirm('Сбросить питомца, память и граф до яйца?')) return;
-  try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem('aios_v10_unified'); } catch (_) {}
+  try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem('aios_v11_adaptive'); localStorage.removeItem('aios_v10_unified'); } catch (_) {}
   location.reload();
 };
 
@@ -1438,7 +1608,7 @@ applyThemeAndMode();
 renderGameStage();
 if (STATE.workerUrl) { connectD1Memory(STATE.workerUrl, STATE.appPin).catch(() => {}); }
 else if (isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey)) { refreshAllAdaptiveModels().catch(() => {}); }
-addLog('AI OS Companion v11.2 (CORS + URL Origin Safe) готов.', 'SYS');
+addLog('AI OS Companion v12 (Real Modular Mesh) готов.', 'SYS');
 </script>
 </body>
 </html>
