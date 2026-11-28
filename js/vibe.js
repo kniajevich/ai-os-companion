@@ -1,4 +1,4 @@
-// AI OS Companion — Vibe-Coding Verifier, Auto-Language, Sandbox & Autonomous Skill Forge
+// AI OS Companion — Vibe-Coding Verifier, Sandbox, GitHub Importer & Reliable Skill Forge
 function detectVibeLanguage(task, filePath) {
   const p = (filePath || '').toLowerCase();
   if (p.endsWith('.html') || p.endsWith('.htm') || p.endsWith('.svg')) return 'html';
@@ -91,21 +91,18 @@ async function quickAiCall(sysPrompt, userPrompt, useSmart = false, jsonMode = f
 }
 
 async function ghCall(suffix, method = 'GET', bodyObj = null) {
-  // Через D1 Прокси (если D1 знает про GitHub) или напрямую
   if (STATE.workerUrl && STATE.d1Online && STATE.vault?.github) {
     const opts = { method, headers: workerHeaders() };
     if (bodyObj !== null) opts.body = JSON.stringify(bodyObj);
     const res = await fetch(STATE.workerUrl + '/api/gh' + suffix, opts);
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
+    const data = await res.json(); if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
     return data;
   }
   if (STATE.ghModuleUrl && STATE.ghOnline) {
     const opts = { method, headers: ghHeaders() };
     if (bodyObj !== null) opts.body = JSON.stringify(bodyObj);
     const res = await fetch(STATE.ghModuleUrl + '/api' + suffix, opts);
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
+    const data = await res.json(); if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
     return data;
   }
   throw new Error('GitHub модуль не подключён');
@@ -131,7 +128,7 @@ async function runVibeCodingLoop(task, rawLang, existingContent = '') {
     const errPart = lastErr ? (NL + NL + 'ИСПРАВЬ ОШИБКУ:' + NL + lastErr) : '';
     const genPrompt = 'Задача: ' + task + NL + 'Язык: ' + lang + NL + 'Контракт:' + NL + contract + ctxPart + errPart + NL + NL + 'Верни ТОЛЬКО код внутри блока ```' + lang + ' ... ```.';
     if (hasMod('gemini') || hasMod('groq') || hasMod('openrouter') || STATE.d1Online) {
-      code = extractCodeBlock(await quickAiCall('Ты строгий инженер. Пиши чистый код без заглушек.', genPrompt, true));
+      code = extractCodeBlock(await quickAiCall('Ты строгий инженер. Пиши чистый код без заглушек.', genPrompt, false));
     } else {
       await new Promise(r => setTimeout(r, 380));
       code = lang === 'json' ? JSON.stringify({ demo: true, task }, null, 2) : ('// Демо ' + lang + ' для: ' + task + NL + 'console.log(' + Q2 + 'AI OS OK' + Q2 + ');');
@@ -159,55 +156,63 @@ async function runVibeCodingLoop(task, rawLang, existingContent = '') {
   saveState();
 }
 
+function parseForgeSections(raw) {
+  const iMeta = raw.indexOf('===META==='), iCode = raw.indexOf('===CODE==='), iTest = raw.indexOf('===TEST===');
+  if (iMeta !== -1 && iCode !== -1) {
+    const metaSlice = raw.slice(iMeta + 10, iCode);
+    const m = metaSlice.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error('В секции META не найден JSON');
+    const meta = JSON.parse(m[0]);
+    const codeRaw = iTest !== -1 ? raw.slice(iCode + 10, iTest) : raw.slice(iCode + 10);
+    const testRaw = iTest !== -1 ? raw.slice(iTest + 10) : '';
+    meta.code = extractCodeBlock(codeRaw);
+    meta.testCode = testRaw ? extractCodeBlock(testRaw) : '';
+    return meta;
+  }
+  const m = raw.match(/\{[\s\S]*\}/);
+  if (m) return JSON.parse(m[0]);
+  throw new Error('Модель ответила не по шаблону: ' + raw.slice(0, 120));
+}
+
 async function runAutonomousSkillForge(goalHint = '') {
   if (!hasMod('github')) { toast('Подключи 🐙 GitHub Deploy в 🧩 Модули!', 'warn'); toggleGameDrawer('modules'); return; }
   toggleGameDrawer('vibe'); setPetVisual('booting', 'focus');
   $('vibeResultBox').style.display = 'flex'; $('vibeVerdict').className = 'vibe-verdict';
-  $('vibeVerdict').textContent = '🧠 Шаг 1/4: Анализирую свои навыки и придумываю новый инструмент...';
+  $('vibeVerdict').textContent = '🧠 Шаг 1/4: Анализирую свои навыки и придумываю уникальный инструмент...';
   $('btnVibePush').disabled = true;
 
   let existingRepos = [];
   try { const rd = await ghCall('/repos', 'GET'); existingRepos = (rd.repos || []).map(x => x.name); } catch (_) {}
 
-  const planSys = 'Ты саморазвивающийся ИИ-агент ' + STATE.name + '. ' + getLiveTelemetryText() + NL + 'Уже существующие репо: ' + (existingRepos.join(', ') || 'нет') + '. Установленные навыки: ' + (STATE.skills.map(s => s.id).join(', ') || 'нет') + '. Придумай ОДИН НОВЫЙ полезный изолированный JS-навык, которого у тебя ещё нет (напр: трекер заметок/конвертер, анализ логов, генератор конфигов ESP32, крипто-курсы, парсер JSON/RSS или калькулятор). Контракт: async function runSkill(input) { return { ok: true, result: ... }; }. Ответь СТРОГО одним JSON-объектом с полями: repoName, isPrivate (boolean), skillId, skillName, description, whyNeeded, code, testCode, sampleInput.';
-  const planUser = goalHint ? ('Пожелание хозяина: ' + goalHint) : 'Сам выбери самый полезный инструмент на данный момент и в перспективе.';
+  const planSys = 'Ты саморазвивающийся ИИ-агент ' + STATE.name + '. ' + getLiveTelemetryText() + NL + 'Уже существующие репо (НЕ дублируй их): ' + (existingRepos.join(', ') || 'нет') + '. Установленные навыки: ' + (STATE.skills.map(s => s.id).join(', ') || 'нет') + '. Придумай ОДИН НОВЫЙ полезный изолированный JS-навык, которого у тебя ещё нет (например: парсер/конвертер валют или времени, генератор конфига для ESP32, анализ текста, трекер заметок, калькулятор). Ответь СТРОГО тремя секциями:' + NL + '===META===' + NL + 'однострочный валидный JSON без кода, с полями repoName, isPrivate (boolean), skillId, skillName, description, whyNeeded, sampleInput' + NL + '===CODE===' + NL + 'блок ```js ... ``` с функцией async function runSkill(input) { ... return { ok: true, result: ... }; }' + NL + '===TEST===' + NL + 'блок ```js ... ``` с тестом вызова await runSkill(sampleInput)';
+  const planUser = goalHint ? ('Пожелание хозяина: ' + goalHint) : 'Сам выбери самый полезный новый инструмент.';
 
   let plan = null;
   try {
-    if (hasMod('gemini') || hasMod('groq') || hasMod('openrouter') || STATE.d1Online) {
-      const rawPlan = await quickAiCall('Отвечай строго валидным JSON без markdown.', planSys + NL + NL + planUser, true, true);
-      const m = rawPlan.match(/\{[\s\S]*\}/);
-      if (m) plan = JSON.parse(m[0]);
+    if (!hasMod('gemini') && !hasMod('groq') && !hasMod('openrouter') && !STATE.d1Online) {
+      throw new Error('Нет активного ИИ-мозга');
     }
-  } catch (e) { addLog('Forge plan err: ' + e.message, 'ERR'); }
-
-  if (!plan || !plan.code || !plan.skillId) {
-    plan = {
-      repoName: 'sparky-tool-weather', isPrivate: true, skillId: 'live_weather', skillName: 'Погода Open-Meteo',
-      description: 'Получает реальную температуру и ветер без API-ключа.',
-      whyNeeded: 'Модель не вернула JSON вовремя — подключаю базовый метео-инструмент!',
-      code: `async function runSkill(input) {
-  const lat = (input && input.lat) || 52.37;
-  const lon = (input && input.lon) || 4.89;
-  const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current_weather=true');
-  const data = await res.json();
-  return { temp_c: data.current_weather?.temperature, wind_kmh: data.current_weather?.windspeed };
-}`,
-      testCode: `if (typeof runSkill !== 'function') throw new Error('Нет runSkill');`,
-      sampleInput: { lat: 52.37, lon: 4.89 }
-    };
+    const rawPlan = await quickAiCall(planSys, planUser, false, false);
+    if (!rawPlan || rawPlan.startsWith('Ошибка доступа')) throw new Error(rawPlan || 'Пустой ответ ИИ');
+    plan = parseForgeSections(rawPlan);
+  } catch (e) {
+    setPetVisual('awake', 'shock');
+    $('vibeVerdict').className = 'vibe-verdict fail';
+    $('vibeVerdict').textContent = '✗ Не удалось спроектировать инструмент: ' + e.message;
+    addLog('Forge err: ' + e.message, 'ERR');
+    return;
   }
 
   $('vibeVerdict').textContent = '🧪 Шаг 2/4: Проверяю в песочнице «' + plan.skillName + '»...';
   let check = await deterministicVerify(plan.code, 'js', true, plan.testCode || '');
   if (!check.ok && (hasMod('gemini') || hasMod('groq'))) {
     try {
-      const fixRaw = await quickAiCall('Исправь JS-код функции runSkill(input). Верни только код.', 'Ошибка: ' + check.errors.join('; ') + NL + NL + plan.code, true);
+      const fixRaw = await quickAiCall('Исправь JS-код функции runSkill(input). Верни только код в ```js ... ```.', 'Ошибка: ' + check.errors.join('; ') + NL + NL + plan.code, false, false);
       plan.code = extractCodeBlock(fixRaw); check = await deterministicVerify(plan.code, 'js', true, plan.testCode || '');
     } catch (_) {}
   }
   RT.vibeLastCode = plan.code; RT.vibeLastVerified = check.ok; $('vibeRepoIn').value = plan.repoName; $('vibePathIn').value = 'skill.js'; $('vibeCodeOut').textContent = plan.code;
-  if (!check.ok) { setPetVisual('awake', 'shock'); $('vibeVerdict').className = 'vibe-verdict fail'; $('vibeVerdict').textContent = '✗ Ошибка: ' + check.errors.join('; '); return; }
+  if (!check.ok) { setPetVisual('awake', 'shock'); $('vibeVerdict').className = 'vibe-verdict fail'; $('vibeVerdict').textContent = '✗ Верификатор остановил код: ' + check.errors.join('; '); return; }
 
   setPetVisual('awake', 'smug'); $('vibeVerdict').className = 'vibe-verdict ok';
   $('vibeVerdict').textContent = '✓ «' + plan.skillName + '» прошёл тесты! Подтверди создание репо в Security Gate.';
@@ -215,6 +220,30 @@ async function runAutonomousSkillForge(goalHint = '') {
   $('ghGateMeta').textContent = 'Позиция Спарки: ' + plan.whyNeeded + NL + 'Новый репо: ' + plan.repoName + ' (' + (plan.isPrivate ? '🔒 Private' : '🌐 Public') + ') | Тесты: ✓ PASSED';
   $('ghCommitMsg').value = 'feat: create autonomous skill ' + plan.skillId;
   $('ghGatePreview').textContent = plan.code.slice(0, 900); $('ghGateModal').classList.add('open');
+}
+
+async function importSkillsFromGithub() {
+  if (!hasMod('github')) { toast('Подключи 🐙 GitHub Deploy', 'warn'); return; }
+  toast('Ищу навыки (skill.js) в твоих репо...');
+  try {
+    const rd = await ghCall('/repos', 'GET');
+    const candidates = (rd.repos || []).filter(r => r.name.includes('skill') || r.name.includes('tool') || r.name.includes('sparky')).slice(0, 10);
+    let imported = 0;
+    for (const r of candidates) {
+      try {
+        const f = await ghCall('/file?repo=' + encodeURIComponent(r.name) + '&path=skill.js', 'GET');
+        if (f && f.content) {
+          const id = r.name.replace(/[^a-zA-Z0-9_]/g, '_');
+          const sk = { id, name: r.name, description: r.desc || ('Импорт из ' + r.name), repo: r.name, path: 'skill.js', code: f.content, enabled: true, sampleInput: {} };
+          STATE.skills = [sk, ...STATE.skills.filter(x => x.id !== sk.id)];
+          if (STATE.workerUrl && STATE.d1Online) fetch(STATE.workerUrl + '/api/skill', { method: 'POST', headers: workerHeaders(), body: JSON.stringify(sk) }).catch(() => {});
+          imported++;
+        }
+      } catch (_) {}
+    }
+    renderSkillsLists(); saveState();
+    toast(imported > 0 ? ('Подтянуто навыков: ' + imported + ' ✓') : 'Не найдено репо с skill.js');
+  } catch (e) { toast('Ошибка импорта: ' + e.message, 'err'); }
 }
 
 async function executeSkillInSandbox(skill, inputObj = {}) {
@@ -226,7 +255,14 @@ function renderSkillsLists() {
   if ($('proSkillCount')) $('proSkillCount').textContent = String(STATE.skills.length);
   const renderTarget = (elId, compact) => {
     const box = $(elId); if (!box) return; box.innerHTML = '';
-    if (STATE.skills.length === 0) { box.innerHTML = '<div style="color:var(--muted);font-size:11px;">Навыков пока нет.</div>'; return; }
+    if (!compact && hasMod('github')) {
+      const impBtn = document.createElement('button'); impBtn.className = 'secondary-btn'; impBtn.style.marginBottom = '6px'; impBtn.style.fontSize = '11.5px';
+      impBtn.textContent = '📥 Подтянуть готовые навыки с GitHub'; impBtn.onclick = importSkillsFromGithub;
+      box.appendChild(impBtn);
+    }
+    if (STATE.skills.length === 0) {
+      const emp = document.createElement('div'); emp.style.color = 'var(--muted)'; emp.style.fontSize = '11px'; emp.textContent = 'Навыков пока нет.'; box.appendChild(emp); return;
+    }
     STATE.skills.forEach(sk => {
       const row = document.createElement('div'); row.className = 'mem-item';
       const lbl = document.createElement('span'); lbl.textContent = (sk.enabled ? '✓ ' : '⏸ ') + sk.name + ' (' + sk.id + ')'; row.appendChild(lbl);
