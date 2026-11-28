@@ -15,7 +15,7 @@ const KIND_LABELS = {
   'android-ios': '📱 Android / iOS',
   'desktop-os': '💻 Desktop OS'
 };
-const PET_LABELS = { blob: 'Плазма-слизень', crab: 'Меха-краб', swarm: 'Рой-4', 'chibi-fox': 'Мини-лисёнок' };
+const PET_LABELS = { blob: 'Плазма-слизень', turtle: 'Кибер-черепашка', crab: 'Кибер-черепашка', swarm: 'Рой-4', 'chibi-fox': 'Мини-лисёнок' };
 
 const STATE = {
   appMode: 'game', ui: 'cyber', skin: 'robot', viewMode: 'hybrid', soundOn: true,
@@ -47,7 +47,6 @@ const $ = id => document.getElementById(id);
 
 function saveState() {
   try {
-    // Не сохраняем сырые ключи в localStorage, если они уже лежат в D1 Сейфе
     const copy = JSON.parse(JSON.stringify(STATE));
     if (copy.d1Online) { copy.apiKey = ''; copy.groqKey = ''; copy.orKey = ''; copy.ghModulePin = ''; }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(copy));
@@ -59,6 +58,7 @@ function loadState() {
     if (raw) {
       Object.assign(STATE, JSON.parse(raw));
       if (!Array.isArray(STATE.devices) || STATE.devices.length === 0) STATE.devices = [{ id: 'dev-browser', name: 'Этот браузер', kind: 'browser-local', petSkin: 'chibi-fox', addr: 'local', isLeader: true }];
+      STATE.devices.forEach(d => { if (d.petSkin === 'crab') d.petSkin = 'turtle'; });
       if (!Array.isArray(STATE.skills)) STATE.skills = [];
       if (!STATE.vault) STATE.vault = { gemini: false, groq: false, openrouter: false, github: false, ghUrl: '' };
     }
@@ -122,8 +122,9 @@ function getActivePetDevice() { const pets = STATE.devices.filter(d => !d.isLead
 function setPetVisual(powerState, mood) {
   STATE.mood = mood || 'normal';
   const pet = $('pet'), compDev = getActivePetDevice();
-  const compClass = compDev ? ('companion-' + compDev.petSkin) : 'companion-none';
-  pet.classList.remove('state-off', 'state-booting', 'state-awake', 'state-error', 'grim-normal', 'grim-smug', 'grim-focus', 'grim-shock', 'skin-robot', 'skin-beast', 'skin-relic', 'skin-monolith', 'companion-none', 'companion-blob', 'companion-crab', 'companion-swarm', 'companion-chibi-fox');
+  const skinName = compDev ? (compDev.petSkin === 'crab' ? 'turtle' : compDev.petSkin) : 'none';
+  const compClass = 'companion-' + skinName;
+  pet.classList.remove('state-off', 'state-booting', 'state-awake', 'state-error', 'grim-normal', 'grim-smug', 'grim-focus', 'grim-shock', 'skin-robot', 'skin-beast', 'skin-relic', 'skin-monolith', 'companion-none', 'companion-blob', 'companion-turtle', 'companion-crab', 'companion-swarm', 'companion-chibi-fox');
   pet.classList.add('state-' + powerState, 'grim-' + STATE.mood, 'skin-' + STATE.skin, compClass);
   pet.classList.toggle('mod-memory-on', Boolean(STATE.workerUrl && STATE.d1Online));
   pet.classList.toggle('mod-turbo-on', hasMod('groq'));
@@ -222,7 +223,7 @@ async function connectD1Memory(url, pin = '') {
       if (b.catalog) { if (b.catalog.aistudio) STATE.catalog.aistudio = b.catalog.aistudio; if (b.catalog.groq) STATE.catalog.groq = b.catalog.groq; if (b.catalog.openrouter) STATE.catalog.openai = b.catalog.openrouter; }
       if (b.vaultStatus) { STATE.vault = b.vaultStatus; if (b.vaultStatus.github) { STATE.ghOnline = true; STATE.ghModuleUrl = b.vaultStatus.ghUrl || STATE.ghModuleUrl; } }
       if (Array.isArray(b.skills) && b.skills.length > 0) STATE.skills = b.skills.map(s => ({ id: s.id, name: s.name, description: s.description, repo: s.repo, path: s.path, code: s.code, enabled: Boolean(s.enabled) }));
-      if (Array.isArray(b.devices) && b.devices.length > 0) STATE.devices = b.devices;
+      if (Array.isArray(b.devices) && b.devices.length > 0) { STATE.devices = b.devices; STATE.devices.forEach(d => { if (d.petSkin === 'crab') d.petSkin = 'turtle'; }); }
       if (b.profile && !b.adoptedClient) {
         STATE.name = b.profile.name; STATE.stage = b.profile.stage; STATE.xp = b.profile.xp; STATE.skin = b.profile.skin;
         try { STATE.traits = JSON.parse(b.profile.traits_json); } catch (_) {}

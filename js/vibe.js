@@ -1,4 +1,4 @@
-// AI OS Companion — Vibe-Coding Verifier, Sandbox, GitHub Importer & Reliable Skill Forge
+// AI OS Companion — Vibe-Coding Verifier, Sandbox, GitHub Importer & Self-Focused Skill Forge
 function detectVibeLanguage(task, filePath) {
   const p = (filePath || '').toLowerCase();
   if (p.endsWith('.html') || p.endsWith('.htm') || p.endsWith('.svg')) return 'html';
@@ -178,14 +178,15 @@ async function runAutonomousSkillForge(goalHint = '') {
   if (!hasMod('github')) { toast('Подключи 🐙 GitHub Deploy в 🧩 Модули!', 'warn'); toggleGameDrawer('modules'); return; }
   toggleGameDrawer('vibe'); setPetVisual('booting', 'focus');
   $('vibeResultBox').style.display = 'flex'; $('vibeVerdict').className = 'vibe-verdict';
-  $('vibeVerdict').textContent = '🧠 Шаг 1/4: Анализирую свои навыки и придумываю уникальный инструмент...';
+  $('vibeVerdict').textContent = '🧠 Шаг 1/4: Думаю, какой инструмент усилит МЕНЯ и хозяина...';
   $('btnVibePush').disabled = true;
 
   let existingRepos = [];
   try { const rd = await ghCall('/repos', 'GET'); existingRepos = (rd.repos || []).map(x => x.name); } catch (_) {}
+  const factsSnippet = STATE.facts.slice(0, 6).map(f => '- ' + f.text).join(NL) || '- нет фактов';
 
-  const planSys = 'Ты саморазвивающийся ИИ-агент ' + STATE.name + '. ' + getLiveTelemetryText() + NL + 'Уже существующие репо (НЕ дублируй их): ' + (existingRepos.join(', ') || 'нет') + '. Установленные навыки: ' + (STATE.skills.map(s => s.id).join(', ') || 'нет') + '. Придумай ОДИН НОВЫЙ полезный изолированный JS-навык, которого у тебя ещё нет (например: парсер/конвертер валют или времени, генератор конфига для ESP32, анализ текста, трекер заметок, калькулятор). Ответь СТРОГО тремя секциями:' + NL + '===META===' + NL + 'однострочный валидный JSON без кода, с полями repoName, isPrivate (boolean), skillId, skillName, description, whyNeeded, sampleInput' + NL + '===CODE===' + NL + 'блок ```js ... ``` с функцией async function runSkill(input) { ... return { ok: true, result: ... }; }' + NL + '===TEST===' + NL + 'блок ```js ... ``` с тестом вызова await runSkill(sampleInput)';
-  const planUser = goalHint ? ('Пожелание хозяина: ' + goalHint) : 'Сам выбери самый полезный новый инструмент.';
+  const planSys = 'ТЫ — цифровой питомец ' + STATE.name + ', живущий в AI OS Companion. Ты создаёшь НОВЫЙ рабочий инструмент ЛИЧНО ДЛЯ СЕБЯ и своего хозяина, чтобы расширить свои способности в этом мире.' + NL + 'ЗАПРЕЩЕНО писать шаблонные фразы вроде «полезно для копирайтеров и блогеров» или «для широкой аудитории»! Пиши от первого лица: зачем ЭТОТ инструмент нужен ЛИЧНО ТЕБЕ и хозяину с учётом ваших интересов.' + NL + 'Твоё состояние: ' + getLiveTelemetryText() + NL + 'Факты о хозяине:' + NL + factsSnippet + NL + 'Уже существующие репо (НЕ повторяй): ' + (existingRepos.join(', ') || 'нет') + NL + 'Уже установленные навыки (НЕ повторяй): ' + (STATE.skills.map(s => s.id).join(', ') || 'нет') + NL + 'Придумай ОДИН реально полезный изолированный JS-навык (например: запрос к бесплатному открытому API без ключа вроде курсов/гео/вики/GitHub-релизов, генератор конфигов под ESP32/DietPi, парсер логов/JSON или персональный ассистент-утилита). По умолчанию isPrivate ставь true.' + NL + 'Ответь СТРОГО тремя секциями:' + NL + '===META===' + NL + 'однострочный JSON с полями repoName (напр. sparky-tool-...), isPrivate (true), skillId, skillName, description, whyNeeded (от первого лица «Я сделаю себе..., чтобы нам с тобой...»), sampleInput (объект)' + NL + '===CODE===' + NL + 'блок ```js ... ``` с функцией async function runSkill(input) { ... return { ok: true, result: ... }; }' + NL + '===TEST===' + NL + 'блок ```js ... ``` с проверкой await runSkill(sampleInput)';
+  const planUser = goalHint ? ('Пожелание хозяина: ' + goalHint) : 'Сам выбери, какого навыка нам с тобой не хватает прямо сейчас и в перспективе.';
 
   let plan = null;
   try {
@@ -203,6 +204,7 @@ async function runAutonomousSkillForge(goalHint = '') {
     return;
   }
 
+  if (plan.isPrivate === undefined) plan.isPrivate = true;
   $('vibeVerdict').textContent = '🧪 Шаг 2/4: Проверяю в песочнице «' + plan.skillName + '»...';
   let check = await deterministicVerify(plan.code, 'js', true, plan.testCode || '');
   if (!check.ok && (hasMod('gemini') || hasMod('groq'))) {
