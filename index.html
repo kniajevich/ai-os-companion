@@ -3,236 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>AI OS Companion v14 — Living Self-Evolving Agent</title>
-<style>
-:root {
-  --bg: #05080d; --panel: #0b111b; --panel-alt: #0f1724; --border: #1e2d42;
-  --text: #e6edf3; --muted: #7b8ca3; --accent: #00f5b8; --accent-2: #38bdf8;
-  --warn: #ffb020; --danger: #ff3b6b; --purple: #c084fc;
-  --font-main: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --radius: 20px; --scan-opacity: 0; --hazard-opacity: 0; --grid-color: rgba(56, 189, 248, 0.05); --mood-glow: var(--accent);
-}
-body.ui-cyber { --bg: #05080d; --panel: #0b111b; --panel-alt: #0f1724; --border: #1f3047; --radius: 22px; --scan-opacity: 0; --hazard-opacity: 0; }
-body.ui-crt { --bg: #030905; --panel: #07140b; --panel-alt: #0a1c10; --border: #1b4d2c; --text: #b7ffca; --muted: #58a673; --accent: #39ff14; --accent-2: #00e5ff; --font-main: ui-monospace, Menlo, monospace; --radius: 10px; --scan-opacity: 0.2; --hazard-opacity: 0; }
-body.ui-reactor { --bg: #0b0b0c; --panel: #141416; --panel-alt: #1b1b1f; --border: #3a352c; --text: #f3efe6; --muted: #9a9182; --accent: #ffb020; --accent-2: #ff5533; --radius: 8px; --scan-opacity: 0.05; --hazard-opacity: 0.85; }
-body.ui-cyber.theme-robot { --accent: #00f5b8; --accent-2: #38bdf8; }
-body.ui-cyber.theme-beast { --accent: #ff9e2c; --accent-2: #f43f5e; }
-body.ui-cyber.theme-relic { --accent: #c084fc; --accent-2: #ff3b6b; }
-body.ui-cyber.theme-monolith { --accent: #a855f7; --accent-2: #38bdf8; }
-body.mood-focus { --mood-glow: #ffb020; }
-body.mood-shock { --mood-glow: #ff3b6b; }
-body.mood-smug { --mood-glow: var(--accent); }
-* { box-sizing: border-box; }
-body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 50% -10%, color-mix(in srgb, var(--mood-glow) 18%, var(--bg)) 0%, transparent 62%), var(--bg); color: var(--text); font-family: var(--font-main); display: flex; justify-content: center; padding: 10px; transition: background 0.5s ease; }
-.crt-overlay { pointer-events: none; position: fixed; inset: 0; z-index: 50; opacity: var(--scan-opacity); background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,0.45) 3px, rgba(0,0,0,0.45) 4px); }
-.app { width: 100%; max-width: 1380px; background: var(--panel); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 14px; box-shadow: 0 24px 80px rgba(0,0,0,0.85); position: relative; overflow: hidden; align-self: flex-start; }
-body.app-mode-game .app { max-width: 540px; }
-body.app-mode-game .pro-only { display: none !important; }
-body.app-mode-pro .game-only { display: none !important; }
-.hazard-strip { height: 6px; margin: -14px -14px 12px -14px; opacity: var(--hazard-opacity); background: repeating-linear-gradient(-45deg, #ffb020, #ffb020 12px, #18181b 12px, #18181b 24px); }
-.toast-box { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(11,17,27,0.96); border: 1.5px solid var(--accent); color: var(--text); padding: 9px 16px; border-radius: 99px; font-size: 12.5px; font-weight: 600; z-index: 200; opacity: 0; pointer-events: none; transition: all 0.25s ease; box-shadow: 0 12px 35px rgba(0,0,0,0.8); max-width: 90vw; text-align: center; }
-.toast-box.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.top-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
-.title-wrap { display: flex; align-items: center; gap: 9px; }
-.dot-live { width: 10px; height: 10px; border-radius: 50%; background: #475569; flex-shrink: 0; }
-.dot-live.on { background: var(--accent); box-shadow: 0 0 12px var(--accent); }
-.mode-switch { display: flex; gap: 4px; background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 11px; padding: 3px; }
-.mode-btn { background: transparent; border: none; color: var(--muted); font-family: var(--font-mono); font-size: 11px; font-weight: 800; padding: 6px 11px; border-radius: 8px; cursor: pointer; }
-.mode-btn.active { background: color-mix(in srgb, var(--accent) 20%, var(--panel-alt)); color: var(--accent); }
-.top-badges { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
-.badge { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; padding: 5px 9px; border-radius: 9px; background: var(--panel-alt); border: 1px solid var(--border); color: var(--muted); }
-.badge.online { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
-.badge.warn { color: var(--warn); border-color: rgba(255,176,32,0.5); }
-.icon-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 9px; padding: 5px 9px; font-size: 12px; cursor: pointer; }
-.game-shell { display: flex; flex-direction: column; gap: 9px; }
-.game-hud { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: var(--panel-alt); border: 1px solid var(--border); border-radius: 14px; padding: 9px 12px; }
-.xp-wrap { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-.xp-top { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); }
-.xp-bar { height: 7px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
-.xp-fill { height: 100%; width: 10%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width 0.3s ease; }
-.hud-pill-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--accent-2); border-radius: 9px; padding: 6px 8px; font-family: var(--font-mono); font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-.game-stage { position: relative; background: linear-gradient(to right, var(--grid-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px), radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--mood-glow) 15%, var(--panel-alt)) 0%, #05080e 88%); background-size: 26px 26px, 26px 26px, 100% 100%; border: 1px solid var(--border); border-radius: 18px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: background 0.4s ease; }
-.xp-pop { position: absolute; top: 14px; right: 16px; font-family: var(--font-mono); font-weight: 800; font-size: 13px; color: var(--accent); background: rgba(5,8,13,0.9); border: 1px solid var(--accent); padding: 4px 10px; border-radius: 99px; opacity: 0; transform: translateY(10px); pointer-events: none; transition: all 0.4s ease; z-index: 15; }
-.xp-pop.show { opacity: 1; transform: translateY(0); }
-.egg-card { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 10px; text-align: center; cursor: pointer; user-select: none; }
-.egg-svg { width: 148px; height: 175px; filter: drop-shadow(0 0 24px color-mix(in srgb, var(--accent) 32%, transparent)); animation: floatRoot 3s ease-in-out infinite; }
-.egg-shake { animation: jitterShock 0.25s ease !important; }
-.egg-crack { opacity: 0; transition: opacity 0.2s; }
-.egg-cracks-1 .crack-1 { opacity: 1; }
-.egg-cracks-2 .crack-1, .egg-cracks-2 .crack-2 { opacity: 1; }
-.game-card { width: 100%; background: rgba(7, 11, 19, 0.92); border: 1px solid var(--border); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-.game-input, .game-textarea, .game-select { width: 100%; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; color: var(--text); font-family: var(--font-main); font-size: 13px; outline: none; }
-.primary-btn { background: color-mix(in srgb, var(--accent) 20%, var(--panel-alt)); border: 1.5px solid var(--accent); color: var(--accent); border-radius: 10px; padding: 8px 12px; font-weight: 700; font-size: 12.5px; cursor: pointer; text-align: center; }
-.primary-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.secondary-btn { background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 7px 10px; font-weight: 600; font-size: 12px; cursor: pointer; text-decoration: none; text-align: center; }
-.skin-chips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-.chip-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
-.chip-btn.active { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 16%, transparent); }
-.chat-box { width: 100%; max-height: 195px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; background: rgba(4, 7, 13, 0.72); border: 1px solid var(--border); border-radius: 14px; padding: 10px; }
-.msg-bubble { padding: 8px 10px; border-radius: 11px; font-size: 13px; line-height: 1.4; max-width: 92%; white-space: pre-wrap; }
-.msg-user { align-self: flex-end; background: color-mix(in srgb, var(--accent-2) 18%, var(--panel-alt)); border: 1px solid color-mix(in srgb, var(--accent-2) 40%, transparent); }
-.msg-ai { align-self: flex-start; background: rgba(17, 25, 39, 0.95); border: 1px solid var(--border); }
-.msg-meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 9.5px; color: var(--muted); margin-top: 4px; }
-.msg-bad-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 5px; font-size: 10px; padding: 1px 5px; cursor: pointer; }
-.game-actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-.g-act-btn { background: var(--panel-alt); border: 1px solid var(--border); border-radius: 12px; padding: 8px 4px; color: var(--text); font-size: 11px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; }
-.g-act-btn:hover, .g-act-btn.active { border-color: var(--accent); color: var(--accent); }
-.game-drawer { background: var(--panel-alt); border: 1px solid var(--accent-2); border-radius: 14px; padding: 11px; display: none; flex-direction: column; gap: 8px; }
-.game-drawer.open { display: flex; }
-.mod-wizard-card { background: rgba(5, 8, 14, 0.85); border: 1px solid var(--border); border-radius: 11px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
-.mod-wizard-head { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; font-family: var(--font-mono); }
-.slider-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; }
-.slider-row input[type=range] { flex: 1; accent-color: var(--accent); }
-.mem-list { max-height: 170px; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; }
-.mem-item { background: rgba(0,0,0,0.35); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; font-size: 11.5px; display: flex; justify-content: space-between; align-items: center; gap: 6px; }
-.vibe-checks-row { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); }
-.vibe-verdict { font-family: var(--font-mono); font-size: 11px; padding: 6px 9px; border-radius: 8px; border: 1px solid var(--border); background: rgba(0,0,0,0.4); }
-.vibe-verdict.ok { border-color: var(--accent); color: var(--accent); }
-.vibe-verdict.fail { border-color: var(--danger); color: var(--danger); }
-.code-pre { background: #03060c; border: 1px solid var(--border); border-radius: 9px; padding: 9px; font-family: var(--font-mono); font-size: 11px; color: #c9d1d9; max-height: 180px; overflow: auto; white-space: pre; margin: 0; }
-.new-repo-box { background: rgba(0,0,0,0.35); border: 1px dashed var(--accent-2); border-radius: 10px; padding: 8px; display: none; flex-direction: column; gap: 6px; }
-.new-repo-box.open { display: flex; }
-.game-chat-bar { display: flex; gap: 6px; align-items: center; background: var(--panel-alt); border: 1px solid var(--border); border-radius: 14px; padding: 6px; }
-.game-chat-input { flex: 1; background: transparent; border: none; color: var(--text); font-size: 14px; padding: 6px; outline: none; min-width: 0; }
-.chat-tool-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 8px 10px; font-size: 14px; cursor: pointer; flex-shrink: 0; }
-.chat-tool-btn.rec { border-color: var(--danger); color: var(--danger); }
-.pro-connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(225px, 1fr)); gap: 8px; margin-bottom: 10px; }
-.pro-mod-card { background: var(--panel-alt); border: 1px solid var(--border); border-radius: 12px; padding: 9px; display: flex; flex-direction: column; gap: 6px; }
-.pro-mod-card.active { border-color: var(--accent); }
-.pro-mod-head { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; }
-.pro-mod-row { display: flex; gap: 5px; align-items: center; }
-.pro-mini-in { flex: 1; min-width: 0; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 7px; padding: 5px 7px; color: var(--text); font-family: var(--font-mono); font-size: 10.5px; outline: none; }
-.pro-mini-btn { background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text); border-radius: 7px; padding: 5px 8px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; cursor: pointer; text-decoration: none; white-space: nowrap; }
-.pro-mini-btn.go { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 16%, transparent); }
-.switcher-grid { display: grid; grid-template-columns: 0.85fr 1.25fr 1.4fr; gap: 10px; margin-bottom: 10px; }
-@media (max-width: 980px) { .switcher-grid { grid-template-columns: 1fr; } }
-.group-box { background: var(--panel-alt); border: 1px solid var(--border); border-radius: 14px; padding: 10px; }
-.group-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
-.pill-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-.pill-row-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-.tab-btn { background: rgba(0,0,0,0.28); border: 1px solid var(--border); border-radius: 9px; padding: 7px 6px; color: var(--text); font-size: 11.5px; font-weight: 600; cursor: pointer; }
-.tab-btn.active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); }
-.hierarchy-row { display: flex; gap: 6px; align-items: stretch; }
-.host-pill { flex: 1; background: rgba(5,8,13,0.7); border: 1px solid var(--border); border-radius: 9px; padding: 5px 8px; font-family: var(--font-mono); font-size: 10px; }
-.host-pill strong { display: block; color: var(--accent); font-size: 9.5px; }
-.host-pill.pet-host strong { color: var(--accent-2); }
-.host-pill.vault-host strong { color: var(--purple); }
-.workspace { display: grid; grid-template-columns: 1.62fr 0.98fr; gap: 12px; }
-@media (max-width: 1024px) { .workspace { grid-template-columns: 1fr; } }
-.stage { background: linear-gradient(to right, var(--grid-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px), radial-gradient(circle at 45% 48%, color-mix(in srgb, var(--mood-glow) 13%, var(--panel-alt)) 0%, #05080e 86%); background-size: 28px 28px, 28px 28px, 100% 100%; border: 1px solid var(--border); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-.stage-top-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
-.view-modes { display: flex; gap: 4px; background: rgba(5,8,13,0.85); border: 1px solid var(--border); border-radius: 10px; padding: 3px; }
-.view-mode-btn { background: transparent; border: none; color: var(--muted); font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; padding: 5px 9px; border-radius: 7px; cursor: pointer; }
-.view-mode-btn.active { background: color-mix(in srgb, var(--accent) 18%, var(--panel)); color: var(--accent); }
-.speech { min-height: 44px; max-height: 92px; overflow-y: auto; background: rgba(8,12,20,0.9); border: 1px solid var(--border); border-radius: 11px; padding: 8px 12px; font-size: 12.5px; text-align: center; }
-.stage-arena { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 10px; min-height: 350px; }
-.stage-arena.mode-avatar { grid-template-columns: 1fr; }
-.stage-arena.mode-avatar .graph-pane { display: none; }
-.stage-arena.mode-graph { grid-template-columns: 1fr; }
-.stage-arena.mode-graph .avatar-pane { display: none; }
-@media (max-width: 820px) { .stage-arena { grid-template-columns: 1fr; } }
-.avatar-pane { background: rgba(5,8,14,0.52); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; display: flex; align-items: center; justify-content: center; padding: 6px; }
-.graph-pane { background: rgba(4,7,13,0.78); border: 1px solid var(--border); border-radius: 12px; position: relative; overflow: hidden; min-height: 340px; display: flex; flex-direction: column; }
-.graph-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; padding: 7px 10px; background: rgba(11,17,27,0.92); border-bottom: 1px solid var(--border); }
-.preset-chip, .add-node-btn { background: rgba(0,0,0,0.35); border: 1px solid var(--border); color: var(--muted); font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; padding: 4px 7px; border-radius: 6px; cursor: pointer; }
-.preset-chip.active { color: var(--accent); border-color: var(--accent); }
-.add-node-btn { color: var(--accent-2); border-color: rgba(56,189,248,0.35); }
-.graph-canvas { position: relative; flex: 1; min-height: 295px; overflow: hidden; touch-action: none; user-select: none; }
-.graph-canvas.cycle-warn { box-shadow: inset 0 0 0 2px var(--danger); }
-svg#wireSvg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-.wire-edge { fill: none; stroke: rgba(123,140,163,0.45); stroke-width: 2.3; pointer-events: stroke; cursor: pointer; }
-.wire-edge.active-flow { stroke: var(--accent); stroke-width: 3.2; stroke-dasharray: 8 6; animation: dashFlow 0.55s linear infinite; }
-.wire-edge.done-flow { stroke: var(--accent-2); }
-.wire-temp { fill: none; stroke: var(--warn); stroke-width: 2.4; stroke-dasharray: 5 5; }
-.ai-node { position: absolute; width: 160px; background: rgba(11,17,27,0.95); border: 1.5px solid var(--border); border-radius: 11px; padding: 7px 9px; z-index: 3; cursor: grab; touch-action: none; }
-.ai-node.selected { border-color: var(--accent-2); }
-.ai-node.running { border-color: var(--accent); box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 42%, transparent); }
-.ai-node.done { border-color: color-mix(in srgb, var(--accent) 65%, var(--border)); }
-.ai-node.error { border-color: var(--danger); }
-.ai-node-head { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 9px; margin-bottom: 3px; }
-.ai-node-provider { font-weight: 800; padding: 1px 5px; border-radius: 4px; }
-.prov-aistudio { background: rgba(0,245,184,0.16); color: #00f5b8; }
-.prov-groq { background: rgba(255,176,32,0.18); color: #ffb020; }
-.prov-openai { background: rgba(56,189,248,0.16); color: #38bdf8; }
-.prov-critic { background: rgba(192,132,252,0.18); color: #c084fc; }
-.prov-verifier { background: rgba(255,59,107,0.18); color: #ff6b8b; }
-.ai-node-title { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ai-node-model { font-family: var(--font-mono); font-size: 9px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.node-port { position: absolute; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; border-radius: 50%; background: var(--panel); border: 2px solid var(--accent-2); cursor: crosshair; touch-action: none; z-index: 6; }
-.port-in { left: -7px; }
-.port-out { right: -7px; border-color: var(--accent); }
-.telemetry { background: var(--panel-alt); border: 1px solid var(--border); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-.tele-card { background: rgba(5,8,14,0.68); border: 1px solid var(--border); border-radius: 12px; padding: 10px; }
-.tele-title { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); margin-bottom: 7px; display: flex; justify-content: space-between; align-items: center; }
-.insp-input, .insp-select, .insp-textarea { width: 100%; background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; color: var(--text); font-family: var(--font-mono); font-size: 10.5px; margin-bottom: 5px; outline: none; }
-.insp-output { background: rgba(2,4,9,0.85); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-family: var(--font-mono); font-size: 9.5px; color: var(--accent); max-height: 75px; overflow-y: auto; white-space: pre-wrap; }
-.dev-card { padding: 7px 8px; border-radius: 9px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); margin-bottom: 6px; font-family: var(--font-mono); font-size: 10.5px; display: flex; flex-direction: column; gap: 5px; }
-.dev-card.is-leader { border-color: color-mix(in srgb, var(--accent) 60%, transparent); background: color-mix(in srgb, var(--accent) 6%, transparent); }
-.dev-card.is-pet { border-color: color-mix(in srgb, var(--accent-2) 55%, transparent); }
-.dev-head { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
-.dev-role { font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 4px; }
-.role-leader { background: rgba(0,245,184,0.16); color: var(--accent); }
-.role-pet { background: rgba(56,189,248,0.16); color: var(--accent-2); }
-.role-vault { background: rgba(192,132,252,0.16); color: var(--purple); }
-.dev-btns { display: flex; flex-wrap: wrap; gap: 4px; }
-.dev-mini-btn { background: rgba(0,0,0,0.45); border: 1px solid var(--border); color: var(--text); border-radius: 5px; padding: 3px 6px; font-family: var(--font-mono); font-size: 9.5px; cursor: pointer; }
-.add-dev-box { background: rgba(2,4,9,0.7); border: 1px dashed var(--accent-2); border-radius: 9px; padding: 8px; display: none; flex-direction: column; gap: 6px; margin-bottom: 8px; }
-.add-dev-box.open { display: flex; }
-.snippet-pre { background: rgba(2,4,9,0.9); border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--accent); white-space: pre-wrap; word-break: break-all; max-height: 220px; overflow-y: auto; }
-.log-wrap { margin-top: 12px; background: rgba(4,7,12,0.85); border: 1px solid var(--border); border-radius: 12px; }
-.log { padding: 8px 12px; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); max-height: 120px; overflow-y: auto; }
-svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-select: none; }
-@keyframes floatRoot { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
-@keyframes jitterShock { 0%,100% { transform: translate(0,0); } 25% { transform: translate(-4px,2px) rotate(-2deg); } 75% { transform: translate(4px,-2px) rotate(2deg); } }
-@keyframes spinCore { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes dashFlow { to { stroke-dashoffset: -28; } }
-@keyframes haloSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes burstRing { 0% { r: 22; opacity: 0.95; stroke-width: 6; } 100% { r: 145; opacity: 0; stroke-width: 1; } }
-@keyframes compBob { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-7px); } }
-.pet-root { transform-origin: 270px 195px; animation: floatRoot 3.8s ease-in-out infinite; }
-.state-booting .pet-root { animation: jitterShock 0.16s infinite; }
-.core-outer { transform-origin: 270px 265px; opacity: 0.25; }
-.state-awake .core-outer, .state-booting .core-outer { opacity: 1; animation: spinCore 4.5s linear infinite; }
-.mod-turbo-on .core-outer { animation: spinCore 1.1s linear infinite !important; }
-.relic-halo, .mono-satellites { transform-origin: 270px 152px; animation: haloSpin 14s linear infinite; }
-.skin-layer { display: none; }
-.skin-robot .layer-robot { display: block; }
-.skin-beast .layer-beast { display: block; }
-.skin-relic .layer-relic { display: block; }
-.skin-monolith .layer-monolith { display: block; }
-.face-layer, .mouth-layer { display: none; }
-.state-off .eyes-off, .state-off .mouth-off { display: block; }
-.state-booting .eyes-boot, .state-booting .mouth-boot { display: block; }
-.state-error .eyes-error, .state-error .mouth-error { display: block; }
-.state-awake.grim-normal .eyes-awake, .state-awake.grim-normal .mouth-awake { display: block; }
-.state-awake.grim-smug .eyes-smug, .state-awake.grim-smug .mouth-smug { display: block; }
-.state-awake.grim-focus .eyes-focus, .state-awake.grim-focus .mouth-focus { display: block; }
-.state-awake.grim-shock .eyes-error, .state-awake.grim-shock .mouth-shock { display: block; }
-.eyelid-blink { transform-origin: 270px 140px; transform: scaleY(0); transition: transform 0.08s; }
-.is-blinking .eyelid-blink { transform: scaleY(1); }
-.wire-active { opacity: 0; stroke-dasharray: 8 7; transition: opacity 0.35s ease; }
-.state-booting .wire-brain, .state-awake .wire-brain { opacity: 1; animation: dashFlow 0.7s linear infinite; }
-.mod-memory-on .wire-memory { opacity: 1; animation: dashFlow 0.6s linear infinite; }
-.mod-turbo-on .wire-term, .mod-critic-on .wire-term, .mod-gh-on .wire-term { opacity: 1; animation: dashFlow 0.55s linear infinite; }
-.attach-memory { transform: translate(-42px, 16px) rotate(-12deg); opacity: 0.25; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease; }
-.mod-memory-on .attach-memory { transform: translate(0, 0) rotate(0deg); opacity: 1; }
-.attach-term { transform: translate(42px, 16px) rotate(12deg); opacity: 0.25; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease; }
-.mod-turbo-on .attach-term, .mod-critic-on .attach-term, .mod-gh-on .attach-term { transform: translate(0, 0) rotate(0deg); opacity: 1; }
-.shield-aura { opacity: 0; transition: opacity 0.4s; }
-.mod-critic-on .shield-aura { opacity: 0.55; animation: haloSpin 18s linear infinite; transform-origin: 270px 210px; }
-.burst-ring { opacity: 0; }
-.anim-burst .burst-ring { animation: burstRing 0.9s ease-out forwards; }
-.companion-layer { display: none; }
-.companion-blob .comp-blob { display: block; }
-.companion-crab .comp-crab { display: block; }
-.companion-swarm .comp-swarm { display: block; }
-.companion-chibi-fox .comp-chibi-fox { display: block; }
-.comp-float { transform-origin: 560px 235px; animation: compBob 2.7s ease-in-out infinite; }
-.modal-bg { position: fixed; inset: 0; background: rgba(2,5,10,0.86); display: none; align-items: center; justify-content: center; z-index: 100; padding: 14px; }
-.modal-bg.open { display: flex; }
-.modal-card { width: 100%; max-width: 480px; background: var(--panel); border: 1.5px solid var(--accent); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 9px; max-height: 92vh; overflow-y: auto; }
-</style>
+<title>AI OS Companion v15 — Modular Vault Edition</title>
+<link rel="stylesheet" href="css/style.css?v=15" />
 </head>
 <body class="ui-cyber theme-robot app-mode-game">
 <div class="crt-overlay"></div>
@@ -240,18 +12,19 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
 
 <div id="settingsModal" class="modal-bg">
   <div class="modal-card">
-    <strong style="font-family:var(--font-mono);color:var(--accent);font-size:13px;">⚙ КЛЮЧИ, МОДУЛИ И ПАМЯТЬ</strong>
-    <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Google Ключ</a><input id="setGeminiKey" class="game-input" type="password" placeholder="AIzaSy..." style="padding:7px 9px;font-size:12px;" /></div>
-    <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Groq Ключ</a><input id="setGroqKey" class="game-input" type="password" placeholder="gsk_..." style="padding:7px 9px;font-size:12px;" /></div>
-    <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ OR Ключ</a><input id="setOrKey" class="game-input" type="password" placeholder="sk-or-..." style="padding:7px 9px;font-size:12px;" /></div>
+    <strong style="font-family:var(--font-mono);color:var(--accent);font-size:13px;">⚙ ВХОД ЧЕРЕЗ D1 СЕЙФ И КЛЮЧИ</strong>
     <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ 1-клик D1</a><input id="setWorkerUrl" class="game-input" type="text" placeholder="https://ai-os-brain....workers.dev" style="padding:7px 9px;font-size:12px;" /></div>
-    <input id="setAppPin" class="game-input" type="password" placeholder="APP PIN (опционально)" style="padding:7px 9px;font-size:12px;" />
-    <div class="pro-mod-row"><span class="pro-mini-btn">🐙 GitHub Deploy</span><input id="setGhUrl" class="game-input" type="text" placeholder="https://ai-os-github-module....workers.dev" style="padding:7px 9px;font-size:12px;" /></div>
+    <input id="setAppPin" class="game-input" type="password" placeholder="APP PIN от ai-os-brain" style="padding:7px 9px;font-size:12px;" />
+    <hr style="width:100%;border:0;border-top:1px solid var(--border);margin:2px 0;" />
+    <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Google</a><input id="setGeminiKey" class="game-input" type="password" placeholder="AIzaSy... (сохранится в D1 Сейф)" style="padding:7px 9px;font-size:12px;" /></div>
+    <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Groq</a><input id="setGroqKey" class="game-input" type="password" placeholder="gsk_... (сохранится в D1 Сейф)" style="padding:7px 9px;font-size:12px;" /></div>
+    <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ OR</a><input id="setOrKey" class="game-input" type="password" placeholder="sk-or-... (сохранится в D1 Сейф)" style="padding:7px 9px;font-size:12px;" /></div>
+    <div class="pro-mod-row"><span class="pro-mini-btn">🐙 GitHub</span><input id="setGhUrl" class="game-input" type="text" placeholder="https://ai-os-github-module....workers.dev" style="padding:7px 9px;font-size:12px;" /></div>
     <input id="setGhPin" class="game-input" type="password" placeholder="MODULE_PIN для GitHub модуля" style="padding:7px 9px;font-size:12px;" />
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px;">
       <button id="btnResetAll" class="secondary-btn" style="color:var(--danger);">↺ Сброс</button>
       <button id="btnCloseSettings" class="secondary-btn">Отмена</button>
-      <button id="btnSaveSettings" class="primary-btn">Сохранить</button>
+      <button id="btnSaveSettings" class="primary-btn">Сохранить в Сейф</button>
     </div>
   </div>
 </div>
@@ -288,7 +61,7 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
       <span id="liveDot" class="dot-live"></span>
       <div>
         <strong style="font-size:14px;">AI OS Companion</strong>
-        <div style="font-size:11px;color:var(--muted);" id="topSubLabel">GAME Mode • Саморазвитие</div>
+        <div style="font-size:11px;color:var(--muted);" id="topSubLabel">GAME Mode • D1 Vault</div>
       </div>
     </div>
     <div class="top-badges">
@@ -302,15 +75,11 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
     </div>
   </div>
 
-  <!-- ===================== GAME MODE ===================== -->
   <div id="gameView" class="game-shell game-only">
     <div class="game-hud">
       <div style="font-weight:800;font-size:14px;" id="hudPetName">🥚 Яйцо</div>
       <div class="xp-wrap">
-        <div class="xp-top">
-          <span id="hudStageLabel">Стадия: Ожидание</span>
-          <span id="hudXpLabel">Lv.1 • 0 XP</span>
-        </div>
+        <div class="xp-top"><span id="hudStageLabel">Стадия: Ожидание</span><span id="hudXpLabel">Lv.1 • 0 XP</span></div>
         <div class="xp-bar"><div id="hudXpFill" class="xp-fill"></div></div>
       </div>
       <button id="btnHudSkills" class="hud-pill-btn" title="Навыки">⚡ 0</button>
@@ -330,6 +99,7 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
         </svg>
         <div style="font-weight:700;font-size:15px;">Тапни по яйцу, чтобы вылупился питомец!</div>
         <div id="eggTapHint" style="font-family:var(--font-mono);font-size:12px;color:var(--accent);">Нажатий: 0 / 3</div>
+        <button id="btnEggLoginD1" class="secondary-btn" style="margin-top:6px;font-size:11.5px;">💾 Уже есть Сейф D1? Подключить по PIN</button>
       </div>
 
       <div id="gameAvatarSlot" style="width:100%;display:none;justify-content:center;">
@@ -371,17 +141,8 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
             <g class="skin-layer layer-relic relic-halo"><circle cx="270" cy="152" r="102" fill="none" stroke="#c084fc" stroke-width="1.5" stroke-dasharray="16 10" opacity="0.6" /></g>
             <g class="skin-layer layer-monolith mono-satellites"><circle cx="270" cy="68" r="6" fill="#a855f7" /><circle cx="158" cy="195" r="6" fill="#ffb020" /><circle cx="382" cy="195" r="6" fill="#38bdf8" /></g>
             <g class="skin-layer layer-beast"><path d="M202 280 C142 285, 118 242, 144 214 C162 196, 188 218, 198 246 Z" fill="url(#foxFurGrad)" stroke="#fb923c" stroke-width="2" /></g>
-            <g class="attach-memory">
-              <rect x="148" y="226" width="42" height="58" rx="11" fill="#131c2e" stroke="#38bdf8" stroke-width="2" />
-              <rect x="156" y="236" width="26" height="8" rx="3" fill="#09111e" />
-              <rect x="158" y="238" width="16" height="4" rx="2" fill="#38bdf8" filter="url(#neonGlow)" />
-              <line x1="156" y1="254" x2="182" y2="254" stroke="#38bdf8" stroke-width="2" />
-              <line x1="156" y1="263" x2="175" y2="263" stroke="#38bdf8" stroke-width="2" opacity="0.6" />
-            </g>
-            <g class="attach-term">
-              <rect x="350" y="226" width="42" height="58" rx="11" fill="#131c2e" stroke="#ffb020" stroke-width="2" />
-              <polygon points="371,236 363,252 371,252 367,268 381,248 372,248" fill="#ffb020" filter="url(#neonGlow)" />
-            </g>
+            <g class="attach-memory"><rect x="148" y="226" width="42" height="58" rx="11" fill="#131c2e" stroke="#38bdf8" stroke-width="2" /><rect x="156" y="236" width="26" height="8" rx="3" fill="#09111e" /><rect x="158" y="238" width="16" height="4" rx="2" fill="#38bdf8" filter="url(#neonGlow)" /><line x1="156" y1="254" x2="182" y2="254" stroke="#38bdf8" stroke-width="2" /><line x1="156" y1="263" x2="175" y2="263" stroke="#38bdf8" stroke-width="2" opacity="0.6" /></g>
+            <g class="attach-term"><rect x="350" y="226" width="42" height="58" rx="11" fill="#131c2e" stroke="#ffb020" stroke-width="2" /><polygon points="371,236 363,252 371,252 367,268 381,248 372,248" fill="#ffb020" filter="url(#neonGlow)" /></g>
             <g class="pet-torso">
               <rect class="skin-layer layer-robot" x="200" y="222" width="140" height="86" rx="26" fill="url(#carbonTex)" stroke="#3d5273" stroke-width="2.5" />
               <rect class="skin-layer layer-beast" x="200" y="222" width="140" height="86" rx="30" fill="url(#foxFurGrad)" stroke="#fb923c" stroke-width="2.5" />
@@ -447,7 +208,6 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
 
       <div id="gameSparkBox" class="game-card" style="display:none;">
         <strong style="color:var(--accent);">⚡ Зажги искру разума (Google AI Studio)</strong>
-        <div style="font-size:12.5px;color:var(--muted);line-height:1.4;">Вставь бесплатный ключ — я сам найду самую свежую бесплатную модель Flash-Lite.</div>
         <button id="btnOpenAiStudio" class="secondary-btn">↗ Получить бесплатный ключ в AI Studio</button>
         <input id="gameKeyInput" class="game-input" type="password" placeholder="Вставь ключ AIzaSy..." />
         <button id="btnIgniteSpark" class="primary-btn">🔥 Найти свежий Flash-Lite и начать</button>
@@ -457,7 +217,6 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
 
     <div id="gamePlayBox" style="display:none;flex-direction:column;gap:9px;">
       <div id="gameChatList" class="chat-box"></div>
-
       <div class="game-actions-grid">
         <button class="g-act-btn" data-drawer="vibe"><span>💻</span><span>Вайбкодинг</span></button>
         <button class="g-act-btn" data-drawer="feed"><span>🍖</span><span>Факт</span></button>
@@ -516,26 +275,26 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
       </div>
 
       <div id="drawerModules" class="game-drawer">
-        <strong style="font-size:13px;color:var(--accent);">🧩 Подключение API и Модулей (в 1 клик)</strong>
+        <strong style="font-size:13px;color:var(--accent);">🧩 Подключение через Единый Сейф D1</strong>
+        <div class="mod-wizard-card">
+          <div class="mod-wizard-head"><span>💾 Облачный Сейф D1 (Главный вход)</span><span id="gmStD1" style="color:var(--accent-2);">LOCAL</span></div>
+          <a class="secondary-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ Поднять Память D1 в 1 клик</a>
+          <div style="display:flex;gap:6px;"><input id="gmInD1" class="game-input" type="text" placeholder="https://ai-os-brain....workers.dev" style="padding:7px 9px;font-size:12px;" /><input id="gmInPin" class="game-input" type="password" placeholder="APP PIN" style="max-width:74px;padding:7px 9px;font-size:12px;" /><button id="gmBtnD1" class="primary-btn">Вкл</button></div>
+        </div>
         <div class="mod-wizard-card">
           <div class="mod-wizard-head"><span>🤖 Google AI Studio</span><span id="gmStGemini" style="color:var(--accent);">OFF</span></div>
-          <a class="secondary-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ 1. Получить бесплатный ключ Google</a>
+          <a class="secondary-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Получить бесплатный ключ Google</a>
           <div style="display:flex;gap:6px;"><input id="gmInGemini" class="game-input" type="password" placeholder="AIzaSy..." style="padding:7px 9px;font-size:12px;" /><button id="gmBtnGemini" class="primary-btn">Вкл</button></div>
         </div>
         <div class="mod-wizard-card">
           <div class="mod-wizard-head"><span>⚡ Groq LPU (Скорость + Голос)</span><span id="gmStGroq" style="color:var(--warn);">OFF</span></div>
-          <a class="secondary-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ 1. Получить бесплатный ключ Groq</a>
+          <a class="secondary-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Получить бесплатный ключ Groq</a>
           <div style="display:flex;gap:6px;"><input id="gmInGroq" class="game-input" type="password" placeholder="gsk_..." style="padding:7px 9px;font-size:12px;" /><button id="gmBtnGroq" class="primary-btn">Вкл</button></div>
         </div>
         <div class="mod-wizard-card">
           <div class="mod-wizard-head"><span>🛡 OpenRouter (Критик / Резерв)</span><span id="gmStOr" style="color:var(--purple);">OFF</span></div>
-          <a class="secondary-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ 1. Получить бесплатный ключ OpenRouter</a>
+          <a class="secondary-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ Получить бесплатный ключ OpenRouter</a>
           <div style="display:flex;gap:6px;"><input id="gmInOr" class="game-input" type="password" placeholder="sk-or-..." style="padding:7px 9px;font-size:12px;" /><button id="gmBtnOr" class="primary-btn">Вкл</button></div>
-        </div>
-        <div class="mod-wizard-card">
-          <div class="mod-wizard-head"><span>💾 Облачная Память D1</span><span id="gmStD1" style="color:var(--accent-2);">LOCAL</span></div>
-          <a class="secondary-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ 1. Поднять Память D1 в 1 клик (Cloudflare)</a>
-          <div style="display:flex;gap:6px;"><input id="gmInD1" class="game-input" type="text" placeholder="https://ai-os-brain....workers.dev" style="padding:7px 9px;font-size:12px;" /><input id="gmInPin" class="game-input" type="password" placeholder="PIN" style="max-width:64px;padding:7px 9px;font-size:12px;" /><button id="gmBtnD1" class="primary-btn">Вкл</button></div>
         </div>
         <div class="mod-wizard-card">
           <div class="mod-wizard-head"><span>🐙 GitHub Deploy (ai-os-github-module)</span><span id="gmStGh" style="color:var(--warn);">OFF</span></div>
@@ -575,21 +334,21 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
   <!-- ===================== PRO MODE ===================== -->
   <div id="proView" class="pro-only">
     <div class="pro-connect-grid">
+      <div class="pro-mod-card" id="proCardD1">
+        <div class="pro-mod-head"><span>💾 Единый Сейф D1 + PIN</span><span id="proStD1" style="color:var(--accent-2);">LOCAL</span></div>
+        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ Создать D1</a><input id="proInD1" class="pro-mini-in" type="text" placeholder="https://...workers.dev" /><input id="proInPin" class="pro-mini-in" type="password" placeholder="PIN" style="max-width:48px;" /><button id="proBtnD1" class="pro-mini-btn go">Вкл</button></div>
+      </div>
       <div class="pro-mod-card" id="proCardGemini">
         <div class="pro-mod-head"><span>🤖 AI Studio (Auto Lite)</span><span id="proStGemini" style="color:var(--accent);">OFF</span></div>
-        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Получить</a><input id="proInGemini" class="pro-mini-in" type="password" placeholder="AIzaSy..." /><button id="proBtnGemini" class="pro-mini-btn go">Вкл</button></div>
+        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://aistudio.google.com/apikey">↗ Получить</a><input id="proInGemini" class="pro-mini-in" type="password" placeholder="AIzaSy... (в Сейф)" /><button id="proBtnGemini" class="pro-mini-btn go">Вкл</button></div>
       </div>
       <div class="pro-mod-card" id="proCardGroq">
         <div class="pro-mod-head"><span>⚡ Groq (Flash-Lite подбор)</span><span id="proStGroq" style="color:var(--warn);">OFF</span></div>
-        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Получить</a><input id="proInGroq" class="pro-mini-in" type="password" placeholder="gsk_..." /><button id="proBtnGroq" class="pro-mini-btn go">Вкл</button></div>
+        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://console.groq.com/keys">↗ Получить</a><input id="proInGroq" class="pro-mini-in" type="password" placeholder="gsk_... (в Сейф)" /><button id="proBtnGroq" class="pro-mini-btn go">Вкл</button></div>
       </div>
       <div class="pro-mod-card" id="proCardOr">
         <div class="pro-mod-head"><span>🛡 OpenRouter (Free)</span><span id="proStOr" style="color:var(--purple);">OFF</span></div>
-        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ Получить</a><input id="proInOr" class="pro-mini-in" type="password" placeholder="sk-or-..." /><button id="proBtnOr" class="pro-mini-btn go">Вкл</button></div>
-      </div>
-      <div class="pro-mod-card" id="proCardD1">
-        <div class="pro-mod-head"><span>💾 Память D1 + PIN</span><span id="proStD1" style="color:var(--accent-2);">LOCAL</span></div>
-        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://deploy.workers.cloudflare.com/?url=https://github.com/kniajevich/ai-os-companion/tree/main/backend">☁️ Создать D1</a><input id="proInD1" class="pro-mini-in" type="text" placeholder="https://...workers.dev" /><input id="proInPin" class="pro-mini-in" type="password" placeholder="PIN" style="max-width:46px;" /><button id="proBtnD1" class="pro-mini-btn go">Вкл</button></div>
+        <div class="pro-mod-row"><a class="pro-mini-btn" target="_blank" rel="noopener" href="https://openrouter.ai/settings/keys">↗ Получить</a><input id="proInOr" class="pro-mini-in" type="password" placeholder="sk-or-... (в Сейф)" /><button id="proBtnOr" class="pro-mini-btn go">Вкл</button></div>
       </div>
       <div class="pro-mod-card" id="proCardGh">
         <div class="pro-mod-head"><span>🐙 GitHub Deploy + PIN</span><span id="proStGh" style="color:var(--warn);">OFF</span></div>
@@ -638,7 +397,7 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
             <span id="proEmotionBadge" class="badge">GRIMACE: NORMAL</span>
           </div>
         </div>
-        <div id="proSpeechBox" class="speech">В обычном режиме — быстрый ответ. В «Вайбкодинг Loop» — авто-язык, контракт, проверка и пуш в новый репо.</div>
+        <div id="proSpeechBox" class="speech">Единый Сейф D1 хранит ключи, GitHub-прокси, навыки и спутников. Достаточно входа по APP_PIN!</div>
         <div id="stageArena" class="stage-arena mode-hybrid">
           <div id="proAvatarSlot" class="avatar-pane"></div>
           <div class="graph-pane">
@@ -677,7 +436,7 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
             <option value="verifier">Verifier (Browser Sandbox)</option>
           </select>
           <select id="inspModel" class="insp-select"></select>
-          <input id="inspKey" class="insp-input" type="password" placeholder="API Key (или общий)" />
+          <input id="inspKey" class="insp-input" type="password" placeholder="API Key (или из D1 Сейфа)" />
           <textarea id="inspPrompt" class="insp-textarea" rows="2" placeholder="Промпт блока"></textarea>
           <div id="inspOutput" class="insp-output">Нет вывода.</div>
           <button id="btnDeleteModNode" class="secondary-btn" style="margin-top:6px;width:100%;color:var(--danger);">Удалить блок</button>
@@ -689,10 +448,7 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
         </div>
 
         <div class="tele-card">
-          <div class="tele-title">
-            <span>🛰 УЗЛЫ И СПУТНИКИ</span>
-            <button id="btnToggleAddDev" class="pro-mini-btn go">+ Добавить узел</button>
-          </div>
+          <div class="tele-title"><span>🛰 УЗЛЫ И СПУТНИКИ</span><button id="btnToggleAddDev" class="pro-mini-btn go">+ Добавить узел</button></div>
           <div id="addDevBox" class="add-dev-box">
             <input id="devNameIn" class="insp-input" type="text" placeholder="Имя (напр: Мой DietPi или ESP32-P4)" />
             <select id="devKindIn" class="insp-select">
@@ -725,899 +481,9 @@ svg#pet { width: 100%; max-width: 520px; height: auto; cursor: pointer; user-sel
   </div>
 </div>
 
-<script>
-const STORAGE_KEY = 'aios_v14_evolving';
-const NL = String.fromCharCode(10);
-const BSLASH = String.fromCharCode(92);
-const Q1 = String.fromCharCode(34);
-const Q2 = String.fromCharCode(39);
-const Q3 = String.fromCharCode(96);
-
-const KIND_LABELS = {
-  'browser-local': '🌐 Браузер (Текущий)', 'linux-dietpi': '🐧 Linux / DietPi', 'esp32-p4': '🖥 ESP32-P4',
-  'esp32-c5': '📡 ESP32-C5/C6', 'esp32-wroom': '🔌 ESP32 WROOM', 'android-ios': '📱 Android / iOS', 'desktop-os': '💻 Desktop OS'
-};
-const PET_LABELS = { blob: 'Плазма-слизень', crab: 'Меха-краб', swarm: 'Рой-4', 'chibi-fox': 'Мини-лисёнок' };
-
-const STATE = {
-  appMode: 'game', ui: 'cyber', skin: 'robot', viewMode: 'hybrid', soundOn: true,
-  stage: 'egg', eggTaps: 0, name: 'Яйцо', xp: 0, mood: 'normal',
-  apiKey: '', groqKey: '', orKey: '', workerUrl: '', appPin: '', d1Online: false,
-  ghModuleUrl: '', ghModulePin: '', ghOnline: false,
-  devices: [{ id: 'dev-browser', name: 'Этот браузер', kind: 'browser-local', petSkin: 'chibi-fox', addr: 'local', isLeader: true }],
-  activeCompId: null, skills: [],
-  catalog: {
-    aistudio: { fast: 'gemini-3.1-flash-lite', smart: 'gemini-3.8-flash', list: ['gemini-3.1-flash-lite', 'gemini-flash-lite-latest'], reason: 'default' },
-    groq: { fast: 'openai/gpt-oss-20b', smart: 'openai/gpt-oss-120b', whisper: 'whisper-large-v3-turbo', list: ['openai/gpt-oss-20b', 'openai/gpt-oss-120b'], reason: 'default' },
-    openai: { fast: 'openrouter/free', smart: 'openrouter/free', list: ['openrouter/free'], reason: 'default' },
-    critic: { fast: 'gemini-3.1-flash-lite', smart: 'gemini-3.1-flash-lite', list: ['gemini-3.1-flash-lite', 'cross-audit-diff'], reason: 'default' },
-    verifier: { fast: 'browser-sandbox-v1', smart: 'browser-sandbox-v1', list: ['browser-sandbox-v1'], reason: 'deterministic' }
-  },
-  traits: { humor: 6, sass: 4, care: 8, concise: 7 },
-  facts: [], summaries: [], lessons: [], chat: [], modNodes: [], modEdges: [], selectedModId: null
-};
-
-const RT = {
-  dragModId: null, dragEl: null, dragOffset: { x: 0, y: 0 },
-  wiringFromId: null, tempPos: null, nodeEls: new Map(), busy: false, rec: null,
-  vibePulledContent: '', vibeLastCode: '', vibeLastVerified: false, vibeLastLang: 'js',
-  pendingGate: null, audioCtx: null
-};
-
-const $ = id => document.getElementById(id);
-function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); } catch (_) {} }
-function loadState() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('aios_v13_vibe') || localStorage.getItem('aios_v12_mesh');
-    if (raw) {
-      Object.assign(STATE, JSON.parse(raw));
-      if (!Array.isArray(STATE.devices) || STATE.devices.length === 0) STATE.devices = [{ id: 'dev-browser', name: 'Этот браузер', kind: 'browser-local', petSkin: 'chibi-fox', addr: 'local', isLeader: true }];
-      if (!Array.isArray(STATE.skills)) STATE.skills = [];
-    }
-  } catch (_) {}
-}
-function isRealKey(k) { return Boolean(k && k.trim().length > 16 && !k.includes('demo') && !k.includes('free')); }
-function normalizeOrigin(u) {
-  const s = (u || '').trim(); if (!s) return '';
-  try { return new URL(s.startsWith('http') ? s : 'https://' + s).origin; } catch (_) { return s.replace(/\/+$/, ''); }
-}
-function workerHeaders() {
-  const h = { 'Content-Type': 'application/json' };
-  if (STATE.appPin) h['X-App-Pin'] = STATE.appPin;
-  if (isRealKey(STATE.apiKey)) h['X-Gemini-Key'] = STATE.apiKey;
-  if (isRealKey(STATE.groqKey)) h['X-Groq-Key'] = STATE.groqKey;
-  if (isRealKey(STATE.orKey)) h['X-OpenRouter-Key'] = STATE.orKey;
-  return h;
-}
-function ghHeaders() { const h = { 'Content-Type': 'application/json' }; if (STATE.ghModulePin) h['X-Module-Pin'] = STATE.ghModulePin; return h; }
-
-function toast(msg, type = 'info') {
-  const box = $('toastBox'); box.textContent = msg;
-  box.style.borderColor = type === 'err' ? 'var(--danger)' : (type === 'warn' ? 'var(--warn)' : 'var(--accent)');
-  box.classList.add('show'); setTimeout(() => box.classList.remove('show'), 2800);
-}
-function playTone(freq = 520, dur = 0.08) {
-  if (!STATE.soundOn) return;
-  try {
-    if (navigator.vibrate) navigator.vibrate(18);
-    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
-    if (!RT.audioCtx) RT.audioCtx = new AC();
-    const osc = RT.audioCtx.createOscillator(), g = RT.audioCtx.createGain();
-    osc.type = 'sine'; osc.frequency.value = freq; g.gain.setValueAtTime(0.05, RT.audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001, RT.audioCtx.currentTime + dur);
-    osc.connect(g); g.connect(RT.audioCtx.destination); osc.start(); osc.stop(RT.audioCtx.currentTime + dur);
-  } catch (_) {}
-}
-function addLog(msg, tag = 'SYS') {
-  const el = document.createElement('div'); const t = new Date().toLocaleTimeString('ru-RU', { hour12: false });
-  el.textContent = '[' + t + '][' + tag + '] ' + msg;
-  const box = $('logBox'); if (box) { box.prepend(el); while (box.children.length > 45) box.removeChild(box.lastChild); }
-}
-function showXpPop(label) { const pop = $('xpPop'); pop.textContent = label; pop.classList.add('show'); setTimeout(() => pop.classList.remove('show'), 1400); }
-function addXP(pts) {
-  STATE.xp += pts; const lvl = Math.floor(STATE.xp / 100) + 1, pct = STATE.xp % 100;
-  $('hudXpLabel').textContent = 'Lv.' + lvl + ' • ' + STATE.xp + ' XP';
-  $('hudXpFill').style.width = Math.max(8, pct) + '%';
-  $('hudStageLabel').textContent = lvl >= 3 ? 'Стадия: PRO-Дух' : (lvl === 2 ? 'Стадия: Напарник' : 'Стадия: Малыш');
-  if (pts > 0) { showXpPop('+' + pts + ' XP!'); playTone(680, 0.11); }
-  saveState();
-}
-function getLeaderDevice() { return STATE.devices.find(d => d.isLeader) || STATE.devices[0]; }
-function getActivePetDevice() { const pets = STATE.devices.filter(d => !d.isLeader); return pets.length ? (pets.find(d => d.id === STATE.activeCompId) || pets[0]) : null; }
-function setPetVisual(powerState, mood) {
-  STATE.mood = mood || 'normal';
-  const pet = $('pet'), compDev = getActivePetDevice();
-  const compClass = compDev ? ('companion-' + compDev.petSkin) : 'companion-none';
-  pet.classList.remove('state-off', 'state-booting', 'state-awake', 'state-error', 'grim-normal', 'grim-smug', 'grim-focus', 'grim-shock', 'skin-robot', 'skin-beast', 'skin-relic', 'skin-monolith', 'companion-none', 'companion-blob', 'companion-crab', 'companion-swarm', 'companion-chibi-fox');
-  pet.classList.add('state-' + powerState, 'grim-' + STATE.mood, 'skin-' + STATE.skin, compClass);
-  pet.classList.toggle('mod-memory-on', Boolean(STATE.workerUrl && STATE.d1Online));
-  pet.classList.toggle('mod-turbo-on', isRealKey(STATE.groqKey));
-  pet.classList.toggle('mod-critic-on', isRealKey(STATE.orKey));
-  pet.classList.toggle('mod-gh-on', Boolean(STATE.ghModuleUrl && STATE.ghOnline));
-  document.body.classList.remove('mood-normal', 'mood-smug', 'mood-focus', 'mood-shock');
-  document.body.classList.add('mood-' + STATE.mood);
-  $('liveDot').classList.toggle('on', powerState === 'awake');
-  $('coreDot').setAttribute('fill', powerState === 'awake' ? '#00f5b8' : (powerState === 'booting' ? '#ffb020' : '#475569'));
-  $('proEmotionBadge').textContent = 'GRIMACE: ' + STATE.mood.toUpperCase();
-  const leader = getLeaderDevice();
-  $('svgLeaderDockText').textContent = 'LEADER // ' + (leader ? leader.name.toUpperCase() : 'BROWSER');
-  $('svgPetHostTag').textContent = compDev ? ('PET // ' + compDev.name.toUpperCase()) : '';
-}
-
-function detectVibeLanguage(task, filePath) {
-  const p = (filePath || '').toLowerCase();
-  if (p.endsWith('.html') || p.endsWith('.htm') || p.endsWith('.svg')) return 'html';
-  if (p.endsWith('.json')) return 'json';
-  if (p.endsWith('.py')) return 'python';
-  if (p.endsWith('.ino') || p.endsWith('.cpp') || p.endsWith('.h') || p.endsWith('.c')) return 'cpp';
-  if (p.endsWith('.js') || p.endsWith('.mjs')) return 'js';
-  const t = (task || '').toLowerCase();
-  if (t.includes('html') || t.includes('виджет') || t.includes('кнопк') || t.includes('страниц') || t.includes('css')) return 'html';
-  if (t.includes('esp32') || t.includes('c++') || t.includes('arduino') || t.includes('прошивк')) return 'cpp';
-  if (t.includes('python') || t.includes('питон') || t.includes('.py')) return 'python';
-  if (t.includes('json') || t.includes('конфиг')) return 'json';
-  return 'js';
-}
-function extractCodeBlock(raw) {
-  const fence = '```', idx1 = raw.indexOf(fence);
-  if (idx1 === -1) return raw.trim();
-  const nlIdx = raw.indexOf(NL, idx1), start = nlIdx !== -1 ? nlIdx + 1 : idx1 + 3, idx2 = raw.indexOf(fence, start);
-  return (idx2 !== -1 ? raw.slice(start, idx2) : raw.slice(start)).trim();
-}
-function checkBracketsAndStrings(code) {
-  const stack = [], pairs = { '(': ')', '{': '}', '[': ']' }, closes = { ')': '(', '}': '{', ']': '[' };
-  let inQuote = null;
-  for (let i = 0; i < code.length; i++) {
-    const ch = code[i], prev = i > 0 ? code[i - 1] : '';
-    if (inQuote) { if (ch === inQuote && prev !== BSLASH) inQuote = null; continue; }
-    if (ch === Q1 || ch === Q2 || ch === Q3) { inQuote = ch; continue; }
-    if (pairs[ch]) stack.push(ch);
-    else if (closes[ch]) { if (stack.length === 0 || stack[stack.length - 1] !== closes[ch]) return 'Непарная скобка ' + ch; stack.pop(); }
-  }
-  if (inQuote) return 'Незакрытая кавычка ' + inQuote;
-  if (stack.length > 0) return 'Не закрыта скобка ' + stack[stack.length - 1];
-  return null;
-}
-function runJsSandbox(code, testOrCallCode, inputPayload = null) {
-  return new Promise(resolve => {
-    const workerSrc = 'self.onmessage = async function(ev){ try { ' + NL + code + NL + testOrCallCode + NL + ' } catch(err) { self.postMessage({ok:false, err: err.message}); } };';
-    let w;
-    try {
-      const blob = new Blob([workerSrc], { type: 'application/javascript' }), u = URL.createObjectURL(blob);
-      w = new Worker(u);
-      const timer = setTimeout(() => { w.terminate(); URL.revokeObjectURL(u); resolve({ ok: false, err: 'Таймаут песочницы (>4s)' }); }, 4000);
-      w.onmessage = ev => { clearTimeout(timer); w.terminate(); URL.revokeObjectURL(u); resolve(ev.data); };
-      w.onerror = er => { clearTimeout(timer); w.terminate(); URL.revokeObjectURL(u); resolve({ ok: false, err: er.message || 'Ошибка выполнения' }); };
-      w.postMessage(inputPayload);
-    } catch (_) { if (w) w.terminate(); resolve({ ok: true, skipped: true }); }
-  });
-}
-async function deterministicVerify(code, lang, useSandbox, testCode = '') {
-  const errors = [], checks = [];
-  if (!code || code.length < 4) return { ok: false, checks: ['Empty'], errors: ['Пустой код'] };
-  if (code.includes('// TODO') || code.includes('# TODO')) errors.push('Обнаружен незавершённый TODO');
-  if (lang === 'json') {
-    checks.push('JSON.parse'); try { JSON.parse(code); } catch (e) { errors.push('Битый JSON: ' + e.message); }
-  } else if (lang === 'js') {
-    checks.push('JS AST'); try { new Function(code); } catch (e) { errors.push('Синтаксис JS: ' + e.message); }
-    if (errors.length === 0 && useSandbox) {
-      checks.push('WebWorker Tests');
-      const sb = await runJsSandbox(code, testCode ? (testCode + NL + 'self.postMessage({ok:true});') : 'self.postMessage({ok:true});');
-      if (!sb.ok) errors.push('Sandbox: ' + sb.err);
-    }
-  } else if (lang === 'html') {
-    checks.push('HTML DOMParser');
-    const doc = new DOMParser().parseFromString(code, 'text/html');
-    doc.querySelectorAll('script').forEach((sc, idx) => {
-      if (sc.textContent.trim()) { checks.push('Script #' + (idx + 1)); try { new Function(sc.textContent); } catch (e) { errors.push('JS #' + (idx + 1) + ': ' + e.message); } }
-    });
-  } else {
-    checks.push('Brackets & Quotes'); const brErr = checkBracketsAndStrings(code); if (brErr) errors.push(brErr);
-  }
-  return { ok: errors.length === 0, checks, errors };
-}
-
-async function quickAiCall(sysPrompt, userPrompt, useSmart = false) {
-  if (STATE.workerUrl && STATE.d1Online) {
-    const r = await fetch(STATE.workerUrl + '/api/chat', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ text: userPrompt, systemPrompt: sysPrompt, mode: useSmart ? 'pro' : 'game' }) });
-    if (r.ok) { const d = await r.json(); return d.reply || ''; }
-  }
-  if (isRealKey(STATE.apiKey)) return await callGeminiDirect(STATE.apiKey, useSmart ? STATE.catalog.aistudio.smart : STATE.catalog.aistudio.fast, sysPrompt, userPrompt);
-  if (isRealKey(STATE.groqKey)) return await callOpenAICompat('https://api.groq.com/openai/v1/chat/completions', STATE.groqKey, useSmart ? STATE.catalog.groq.smart : STATE.catalog.groq.fast, sysPrompt, userPrompt);
-  if (isRealKey(STATE.orKey)) return await callOpenAICompat('https://openrouter.ai/api/v1/chat/completions', STATE.orKey, STATE.catalog.openai.smart, sysPrompt, userPrompt);
-  return '';
-}
-
-async function runVibeCodingLoop(task, rawLang, existingContent = '') {
-  const lang = rawLang === 'auto' ? detectVibeLanguage(task, $('vibePathIn').value) : rawLang;
-  RT.vibeLastLang = lang;
-  const useSyntax = $('vibeCheckSyntax').checked, useSandbox = $('vibeCheckSandbox').checked, useCritic = $('vibeCheckCritic').checked;
-  const maxTries = Number($('vibeMaxTries').value || 2);
-  setPetVisual('booting', 'focus'); $('vibeResultBox').style.display = 'flex';
-  $('vibeVerdict').className = 'vibe-verdict'; $('vibeVerdict').textContent = '⏳ Язык: ' + lang.toUpperCase() + ' • Контракт...';
-  $('btnVibePush').disabled = true;
-
-  let contract = '1) Валидный синтаксис ' + lang.toUpperCase() + '. 2) Полная реализация без TODO.';
-  if (isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey) || STATE.d1Online) {
-    try { contract = await quickAiCall('Ты Аналитик. Сформулируй 3 чётких критерия приёмки без самого кода.', 'Язык: ' + lang + NL + 'Задача: ' + task); } catch (_) {}
-  }
-  let code = '', lastErr = '', attempts = 0, finalCheck = { ok: true, checks: [], errors: [] };
-  for (let i = 1; i <= maxTries; i++) {
-    attempts = i; $('vibeVerdict').textContent = '⏳ [' + lang.toUpperCase() + '] Попытка ' + i + '/' + maxTries + '...';
-    const ctxPart = existingContent ? (NL + NL + 'ТЕКУЩИЙ ФАЙЛ:' + NL + existingContent.slice(0, 6000)) : '';
-    const errPart = lastErr ? (NL + NL + 'ИСПРАВЬ ОШИБКУ:' + NL + lastErr) : '';
-    const genPrompt = 'Задача: ' + task + NL + 'Язык: ' + lang + NL + 'Контракт:' + NL + contract + ctxPart + errPart + NL + NL + 'Верни ТОЛЬКО код внутри блока ```' + lang + ' ... ```.';
-    if (isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey) || isRealKey(STATE.orKey) || STATE.d1Online) {
-      code = extractCodeBlock(await quickAiCall('Ты строгий инженер. Пиши чистый код без заглушек.', genPrompt, true));
-    } else {
-      await new Promise(r => setTimeout(r, 380));
-      code = lang === 'json' ? JSON.stringify({ demo: true, task }, null, 2) : ('// Демо ' + lang + ' для: ' + task + NL + 'console.log(' + Q2 + 'AI OS OK' + Q2 + ');');
-    }
-    finalCheck = useSyntax ? await deterministicVerify(code, lang, useSandbox) : { ok: true, checks: ['Skipped'], errors: [] };
-    if (finalCheck.ok && useCritic && (isRealKey(STATE.orKey) || isRealKey(STATE.apiKey))) {
-      try {
-        const cr = await quickAiCall('Проверь код. Если багов нет — ответь PASS, иначе опиши ошибку.', 'Критерии:' + NL + contract + NL + 'Код:' + NL + code);
-        if (!cr.toUpperCase().includes('PASS')) { finalCheck.ok = false; finalCheck.errors.push('Критик: ' + cr.slice(0, 120)); } else finalCheck.checks.push('Критик PASS');
-      } catch (_) {}
-    }
-    if (finalCheck.ok) break;
-    const errMsg = finalCheck.errors.join('; '); if (errMsg === lastErr) break; lastErr = errMsg;
-  }
-  RT.vibeLastCode = code; RT.vibeLastVerified = finalCheck.ok; $('vibeCodeOut').textContent = code;
-  if (finalCheck.ok) {
-    setPetVisual('awake', 'smug'); $('vibeVerdict').className = 'vibe-verdict ok';
-    $('vibeVerdict').textContent = '✓ [' + lang.toUpperCase() + '] Готово (' + attempts + '/' + maxTries + ' • ' + finalCheck.checks.join(', ') + ')';
-    $('btnVibePush').disabled = !STATE.ghOnline; addXP(20);
-  } else {
-    setPetVisual('awake', 'shock'); $('vibeVerdict').className = 'vibe-verdict fail';
-    $('vibeVerdict').textContent = '✗ Ошибка (' + attempts + '/' + maxTries + '): ' + finalCheck.errors.join('; ');
-    $('btnVibePush').disabled = true;
-  }
-  saveState();
-}
-
-/* ================= AUTONOMOUS SKILL FORGE ================= */
-async function runAutonomousSkillForge(goalHint = '') {
-  if (!STATE.ghOnline) { toast('Подключи 🐙 GitHub Deploy в 🧩 Модули!', 'warn'); toggleGameDrawer('modules'); return; }
-  toggleGameDrawer('vibe'); setPetVisual('booting', 'focus');
-  $('vibeResultBox').style.display = 'flex'; $('vibeVerdict').className = 'vibe-verdict';
-  $('vibeVerdict').textContent = '🧠 Шаг 1/4: Оцениваю свои модули и выбираю нужный инструмент...';
-  $('btnVibePush').disabled = true;
-
-  let existingRepos = [];
-  try { const rr = await fetch(STATE.ghModuleUrl + '/api/repos', { headers: ghHeaders() }); if (rr.ok) { const rd = await rr.json(); existingRepos = (rd.repos || []).map(x => x.name); } } catch (_) {}
-
-  const planSys = 'Ты саморазвивающийся ИИ-агент ' + STATE.name + '. ' + getLiveTelemetryText() + NL + 'Репозитории: ' + (existingRepos.join(', ') || 'нет') + '. Придумай ОДИН полезный изолированный JS-навык, которого у тебя ещё нет (напр: погода через fetch Open-Meteo, конвертер, генератор чек-листов, анализатор текста или утилита ESP32). Контракт: async function runSkill(input) { return { ok: true, result: ... }; }. Ответь СТРОГО JSON с полями: repoName, isPrivate (boolean), skillId, skillName, description, whyNeeded, code, testCode, sampleInput.';
-  const planUser = goalHint ? ('Пожелание хозяина: ' + goalHint) : 'Выбери самый полезный инструмент на данный момент и в перспективе.';
-
-  let plan = null;
-  try {
-    if (isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey) || isRealKey(STATE.orKey) || STATE.d1Online) {
-      const rawPlan = await quickAiCall('Отвечай только валидным JSON без markdown.', planSys + NL + NL + planUser, true);
-      const m = rawPlan.match(/\{[\s\S]*\}/);
-      if (m) plan = JSON.parse(m[0]);
-    }
-  } catch (e) { addLog('Plan parse err: ' + e.message, 'ERR'); }
-
-  if (!plan || !plan.code || !plan.skillId) {
-    plan = {
-      repoName: 'sparky-tool-weather', isPrivate: true, skillId: 'live_weather', skillName: 'Погода Open-Meteo',
-      description: 'Получает реальную температуру и ветер без API-ключа.',
-      whyNeeded: 'У меня есть память и GitHub, но нет связи с погодой — сделаю себе метео-инструмент!',
-      code: `async function runSkill(input) {
-  const lat = (input && input.lat) || 52.37;
-  const lon = (input && input.lon) || 4.89;
-  const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current_weather=true');
-  const data = await res.json();
-  return { temp_c: data.current_weather?.temperature, wind_kmh: data.current_weather?.windspeed };
-}`,
-      testCode: `if (typeof runSkill !== 'function') throw new Error('Нет runSkill');`,
-      sampleInput: { lat: 52.37, lon: 4.89 }
-    };
-  }
-
-  $('vibeVerdict').textContent = '🧪 Шаг 2/4: Прогоняю Verifier + Песочницу для «' + plan.skillName + '»...';
-  let check = await deterministicVerify(plan.code, 'js', true, plan.testCode || '');
-  if (!check.ok && (isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey))) {
-    try {
-      const fixRaw = await quickAiCall('Исправь JS-код функции runSkill(input). Верни только код.', 'Ошибка: ' + check.errors.join('; ') + NL + NL + plan.code, true);
-      plan.code = extractCodeBlock(fixRaw); check = await deterministicVerify(plan.code, 'js', true, plan.testCode || '');
-    } catch (_) {}
-  }
-  RT.vibeLastCode = plan.code; RT.vibeLastVerified = check.ok; $('vibeRepoIn').value = plan.repoName; $('vibePathIn').value = 'skill.js'; $('vibeCodeOut').textContent = plan.code;
-  if (!check.ok) { setPetVisual('awake', 'shock'); $('vibeVerdict').className = 'vibe-verdict fail'; $('vibeVerdict').textContent = '✗ Ошибка: ' + check.errors.join('; '); return; }
-
-  setPetVisual('awake', 'smug'); $('vibeVerdict').className = 'vibe-verdict ok';
-  $('vibeVerdict').textContent = '✓ «' + plan.skillName + '» прошёл тесты! Подтверди создание репо в Security Gate.';
-  RT.pendingGate = { type: 'forge', repo: plan.repoName, isPrivate: Boolean(plan.isPrivate), path: 'skill.js', content: plan.code, plan };
-  $('ghGateMeta').textContent = 'Позиция Спарки: ' + plan.whyNeeded + NL + 'Новый репо: ' + plan.repoName + ' (' + (plan.isPrivate ? '🔒 Private' : '🌐 Public') + ') | Тесты: ✓ PASSED';
-  $('ghCommitMsg').value = 'feat: create autonomous skill ' + plan.skillId;
-  $('ghGatePreview').textContent = plan.code.slice(0, 900); $('ghGateModal').classList.add('open');
-}
-
-async function executeSkillInSandbox(skill, inputObj = {}) {
-  return await runJsSandbox(skill.code, 'const out = await runSkill(ev.data); self.postMessage({ ok: true, result: out });', inputObj);
-}
-
-function renderSkillsLists() {
-  $('btnHudSkills').textContent = '⚡ ' + STATE.skills.length;
-  $('proSkillCount').textContent = String(STATE.skills.length);
-  const renderTarget = (elId, compact) => {
-    const box = $(elId); if (!box) return; box.innerHTML = '';
-    if (STATE.skills.length === 0) { box.innerHTML = '<div style="color:var(--muted);font-size:11px;">Навыков пока нет.</div>'; return; }
-    STATE.skills.forEach(sk => {
-      const row = document.createElement('div'); row.className = 'mem-item';
-      const lbl = document.createElement('span'); lbl.textContent = (sk.enabled ? '✓ ' : '⏸ ') + sk.name + ' (' + sk.id + ')'; row.appendChild(lbl);
-      const btns = document.createElement('div'); btns.style.display = 'flex'; btns.style.gap = '4px';
-      const runB = document.createElement('button'); runB.className = 'msg-bad-btn'; runB.textContent = '▶ Тест';
-      runB.onclick = async () => {
-        const r = await executeSkillInSandbox(sk, sk.sampleInput || {});
-        const txt = r.ok ? JSON.stringify(r.result) : ('ERR: ' + r.err);
-        toast(sk.name + ': ' + txt.slice(0, 90));
-        STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'skill', model: sk.name, mood: r.ok ? 'smug' : 'shock', text: '⚡ Тест «' + sk.name + '»: ' + txt });
-        renderGameChat();
-      };
-      btns.appendChild(runB);
-      if (!compact) {
-        const delB = document.createElement('button'); delB.className = 'msg-bad-btn'; delB.textContent = '✕';
-        delB.onclick = () => {
-          STATE.skills = STATE.skills.filter(x => x.id !== sk.id);
-          if (STATE.workerUrl && STATE.d1Online) fetch(STATE.workerUrl + '/api/skill/' + encodeURIComponent(sk.id), { method: 'DELETE', headers: workerHeaders() }).catch(() => {});
-          renderSkillsLists(); saveState();
-        };
-        btns.appendChild(delB);
-      }
-      row.appendChild(btns); box.appendChild(row);
-    });
-  };
-  renderTarget('gameSkillsList', false); renderTarget('proSkillsList', true);
-}
-
-function getLiveTelemetryText() {
-  const leader = getLeaderDevice();
-  return ['AI Studio: ' + (isRealKey(STATE.apiKey) ? STATE.catalog.aistudio.fast : 'OFF'), 'Groq: ' + (isRealKey(STATE.groqKey) ? STATE.catalog.groq.fast : 'OFF'), 'OpenRouter: ' + (isRealKey(STATE.orKey) ? 'ON' : 'OFF'), 'D1: ' + (STATE.d1Online ? 'ONLINE' : 'LOCAL'), 'GitHub: ' + (STATE.ghOnline ? 'ONLINE' : 'OFF'), 'Хост: ' + (leader ? leader.name : 'Browser'), 'Спутников: ' + (STATE.devices.length - 1)].join(' | ');
-}
-function buildUnifiedSystemPrompt(extraRole = '') {
-  const t = STATE.traits;
-  const factsText = STATE.facts.slice(0, 10).map(f => '- ' + f.text).join(NL) || '- Пока нет фактов.';
-  const sumText = STATE.summaries.slice(0, 2).map(s => '- ' + s.text).join(NL) || '- Снов нет.';
-  const rulesText = STATE.lessons.slice(0, 5).map(l => '- ' + l.rule).join(NL) || '- Ошибок нет.';
-  const skillsText = STATE.skills.filter(s => s.enabled).map(s => '- id: ' + s.id + ' (' + s.name + ') — ' + s.description).join(NL) || '- Пока навыков нет.';
-  return [
-    'ТЫ — живой цифровой питомец ' + STATE.name + ' (форма: ' + STATE.skin + ', XP: ' + STATE.xp + ').',
-    'ХАРАКТЕР (0..10): Юмор=' + t.humor + ', Дерзость=' + t.sass + ', Забота=' + t.care + ', Краткость=' + t.concise + '.',
-    'ПРАВИЛО МИМИКИ: В начале ответа ставь один тег: [MOOD:normal], [MOOD:smug], [MOOD:focus] или [MOOD:shock].',
-    'ЖИВОЕ СОСТОЯНИЕ: ' + getLiveTelemetryText(),
-    'НАВЫКИ:' + NL + skillsText,
-    'ДЕЙСТВИЯ (только если нужно): [AUTO_FORGE:описание] — создать себе новый инструмент на GitHub; [RUN_SKILL:id|{}] — запустить навык.',
-    'ФАКТЫ:' + NL + factsText, 'СНЫ:' + NL + sumText, 'УРОКИ:' + NL + rulesText,
-    extraRole ? ('РОЛЬ: ' + extraRole) : ''
-  ].filter(Boolean).join(NL + NL);
-}
-
-async function callGeminiDirect(apiKey, model, sysPrompt, userText, imageObj = null) {
-  const parts = [{ text: userText }]; if (imageObj) parts.push({ inlineData: { mimeType: imageObj.mime, data: imageObj.base64 } });
-  const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(apiKey);
-  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ systemInstruction: { parts: [{ text: sysPrompt }] }, contents: [{ role: 'user', parts }], generationConfig: { temperature: 0.55, maxOutputTokens: 600 } }) });
-  if (!res.ok) throw new Error('HTTP ' + res.status); const data = await res.json(); return data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-}
-async function callOpenAICompat(endpoint, key, model, sysPrompt, userText) {
-  const hdrs = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key };
-  if (endpoint.includes('openrouter')) { hdrs['HTTP-Referer'] = 'https://kniajevich.github.io/ai-os-companion/'; hdrs['X-Title'] = 'AI OS Companion'; }
-  const res = await fetch(endpoint, { method: 'POST', headers: hdrs, body: JSON.stringify({ model, messages: [{ role: 'system', content: sysPrompt }, { role: 'user', content: userText }], max_tokens: 450 }) });
-  if (!res.ok) throw new Error('HTTP ' + res.status); const data = await res.json(); return data?.choices?.[0]?.message?.content || '';
-}
-function parseReplyTags(rawText) {
-  const moodRx = /^\[MOOD:(normal|smug|focus|shock)\]\s*/i, mm = rawText.match(moodRx), mood = mm ? mm[1].toLowerCase() : 'normal';
-  let txt = rawText.replace(moodRx, '');
-  const fm = txt.match(/\[AUTO_FORGE:([^\]]+)\]/i), autoForgeGoal = fm ? fm[1].trim() : null; txt = txt.replace(/\[AUTO_FORGE:([^\]]+)\]/i, '');
-  const sm = txt.match(/\[RUN_SKILL:([^|\]]+)(?:\|([^\]]+))?\]/i), runSkillReq = sm ? { id: sm[1].trim(), argRaw: sm[2] || '{}' } : null; txt = txt.replace(/\[RUN_SKILL:([^|\]]+)(?:\|([^\]]+))?\]/i, '').trim();
-  return { mood, cleanText: txt, autoForgeGoal, runSkillReq };
-}
-
-async function askPetBrain(userText, imageObj = null, mode = 'game') {
-  setPetVisual('booting', 'focus');
-  const sys = buildUnifiedSystemPrompt();
-  const shortHist = STATE.chat.slice(-4).map(c => (c.role === 'user' ? 'Хозяин: ' : STATE.name + ': ') + c.text).join(NL);
-  const fullHist = STATE.chat.slice(-8).map(c => (c.role === 'user' ? 'Хозяин: ' : STATE.name + ': ') + c.text).join(NL);
-  let rawReply = '', usedModel = 'demo-sim';
-  if (STATE.workerUrl && STATE.d1Online) {
-    try { const res = await fetch(STATE.workerUrl + '/api/chat', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ text: userText, mode, image: imageObj, telemetry: getLiveTelemetryText() }) }); if (res.ok) { const d = await res.json(); rawReply = '[MOOD:' + (d.mood || 'normal') + '] ' + (d.reply || ''); usedModel = (d.provider || 'd1') + ' / ' + (d.model || 'brain'); if (Number.isFinite(d.xp)) STATE.xp = d.xp; } } catch (err) { addLog('Worker error: ' + err.message, 'ERR'); }
-  }
-  if (!rawReply) {
-    const isShort = !imageObj && mode !== 'duel' && userText.length < 90 && !userText.toLowerCase().includes('гитхаб') && !userText.toLowerCase().includes('инструмент');
-    if (isShort && isRealKey(STATE.groqKey)) { try { rawReply = await callOpenAICompat('https://api.groq.com/openai/v1/chat/completions', STATE.groqKey, STATE.catalog.groq.fast, sys, (shortHist ? shortHist + NL + NL : '') + userText); usedModel = 'groq / ' + STATE.catalog.groq.fast; } catch (_) {} }
-    if (!rawReply && isRealKey(STATE.apiKey)) {
-      try { rawReply = await callGeminiDirect(STATE.apiKey, STATE.catalog.aistudio.fast, sys, (fullHist ? fullHist + NL + NL : '') + userText, imageObj); usedModel = STATE.catalog.aistudio.fast; }
-      catch (err) {
-        if (isRealKey(STATE.orKey)) { try { rawReply = await callOpenAICompat('https://openrouter.ai/api/v1/chat/completions', STATE.orKey, STATE.catalog.openai.fast, sys, userText); usedModel = STATE.catalog.openai.fast; } catch (_) {} }
-        if (!rawReply) rawReply = '[MOOD:shock] Ошибка API (' + err.message + ').';
-      }
-    }
-  }
-  if (!rawReply) {
-    await new Promise(r => setTimeout(r, 300));
-    rawReply = (userText.toLowerCase().includes('гитхаб') || userText.toLowerCase().includes('инструмент')) ? ('[MOOD:focus] Иду на GitHub проектировать новый инструмент! [AUTO_FORGE:' + userText + ']') : ('[MOOD:smug] Принял! Я ' + STATE.name + ' (демо). На «' + userText.slice(0, 40) + '» отвечаю бодро!');
-  }
-  const { mood, cleanText, autoForgeGoal, runSkillReq } = parseReplyTags(rawReply);
-  setPetVisual('awake', mood); playTone(mood === 'shock' ? 280 : 540, 0.08);
-  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'brain', model: usedModel, mood, text: cleanText });
-  if (STATE.chat.length > 30) STATE.chat.shift();
-  addXP(STATE.workerUrl && STATE.d1Online ? 0 : 5); renderGameChat(); saveState();
-  if (runSkillReq) {
-    const sk = STATE.skills.find(s => s.id === runSkillReq.id && s.enabled);
-    if (sk) { let a = {}; try { a = JSON.parse(runSkillReq.argRaw); } catch (_) {} const r = await executeSkillInSandbox(sk, a); STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'skill', model: sk.name, mood: r.ok ? 'smug' : 'shock', text: r.ok ? ('⚡ «' + sk.name + '»: ' + JSON.stringify(r.result)) : ('✗ Сбой: ' + r.err) }); renderGameChat(); }
-  }
-  if (autoForgeGoal) await runAutonomousSkillForge(autoForgeGoal);
-}
-
-async function connectGithubModule(url, pin = '') {
-  const clean = normalizeOrigin(url); if (!clean.startsWith('http')) { toast('Нужен URL GitHub модуля', 'warn'); return; }
-  if (pin !== undefined) STATE.ghModulePin = pin.trim(); $('proStGh').textContent = 'ПРОВЕРКА...'; $('gmStGh').textContent = 'ПРОВЕРКА...';
-  try {
-    const r = await fetch(clean + '/api/health', { headers: ghHeaders() }); if (r.status === 401) throw new Error('Неверный MODULE_PIN (401)'); if (!r.ok) throw new Error('HTTP ' + r.status);
-    const d = await r.json(); if (!d.ok || !d.hasToken) throw new Error('Нет GITHUB_TOKEN');
-    STATE.ghModuleUrl = clean; STATE.ghOnline = true; applyThemeAndMode(); renderNodesList();
-    await playModuleInstallAnim('GitHub Deploy', '🐙 GitHub Deploy подключён (' + d.owner + ')! Умею создавать Public/Private репо и сам собирать инструменты! (+25 XP)');
-  } catch (err) { STATE.ghOnline = false; syncProDeckStatus(); toast('Ошибка GitHub: ' + err.message, 'err'); }
-}
-
-$('btnToggleNewRepo').onclick = () => $('newRepoBox').classList.toggle('open');
-$('btnCreateNewRepo').onclick = async () => {
-  if (!STATE.ghOnline) { toast('Подключи 🐙 GitHub Deploy', 'warn'); return; }
-  const name = $('newRepoNameIn').value.trim(), isPrivate = $('newRepoVisIn').value === 'true'; if (!name) { toast('Введи имя репо', 'warn'); return; }
-  try {
-    const r = await fetch(STATE.ghModuleUrl + '/api/repo/create', { method: 'POST', headers: ghHeaders(), body: JSON.stringify({ name, isPrivate, description: 'Created from AI OS Companion' }) });
-    const d = await r.json(); if (!r.ok || !d.ok) throw new Error(d.error || 'Create error');
-    $('vibeRepoIn').value = d.name; $('newRepoNameIn').value = ''; $('newRepoBox').classList.remove('open'); toast((d.created ? 'Создан: ' : 'Готов: ') + d.name);
-  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
-};
-$('btnVibePull').onclick = async () => {
-  if (!STATE.ghOnline) { toast('Подключи 🐙 GitHub Deploy', 'warn'); return; }
-  const repo = $('vibeRepoIn').value.trim(), path = $('vibePathIn').value.trim(); if (!repo || !path) { toast('Укажи репо и файл', 'warn'); return; }
-  try {
-    const r = await fetch(STATE.ghModuleUrl + '/api/file?repo=' + encodeURIComponent(repo) + '&path=' + encodeURIComponent(path), { headers: ghHeaders() });
-    const d = await r.json(); if (!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
-    RT.vibePulledContent = d.content || ''; $('vibeResultBox').style.display = 'flex'; $('vibeVerdict').className = 'vibe-verdict ok';
-    $('vibeVerdict').textContent = '📥 Загружен ' + path + ' (' + RT.vibePulledContent.length + ' симв.)'; $('vibeCodeOut').textContent = RT.vibePulledContent.slice(0, 1200);
-  } catch (e) { toast('Ошибка: ' + e.message, 'err'); }
-};
-$('btnAutoForge').onclick = () => runAutonomousSkillForge('');
-$('btnVibeRun').onclick = () => { const t = $('vibeTaskIn').value.trim(); if (!t) { toast('Опиши задачу', 'warn'); return; } runVibeCodingLoop(t, $('vibeLangIn').value, RT.vibePulledContent); };
-$('btnVibeCopy').onclick = () => { navigator.clipboard?.writeText(RT.vibeLastCode); toast('Код скопирован ✓'); };
-$('btnVibeJson').onclick = () => { const path = $('vibePathIn').value.trim() || 'widget.html'; navigator.clipboard?.writeText(JSON.stringify([{ path, content: RT.vibeLastCode }], null, 2)); toast('JSON для Scaffold скопирован ✓'); };
-$('btnVibePush').onclick = () => {
-  if (!RT.vibeLastVerified || !RT.vibeLastCode) return;
-  const repo = $('vibeRepoIn').value.trim() || 'ai-os-companion', path = $('vibePathIn').value.trim() || 'vibe_output.txt';
-  RT.pendingGate = { type: 'commit', repo, path, content: RT.vibeLastCode };
-  $('ghGateMeta').textContent = 'Repo: ' + repo + ' | File: ' + path + ' | Verified ✓'; $('ghCommitMsg').value = 'feat: vibe-code ' + path;
-  $('ghGatePreview').textContent = RT.vibeLastCode.slice(0, 800); $('ghGateModal').classList.add('open');
-};
-$('btnGhGateCancel').onclick = () => { $('ghGateModal').classList.remove('open'); RT.pendingGate = null; };
-$('btnGhGateConfirm').onclick = async () => {
-  const g = RT.pendingGate; if (!g) return; $('ghGateModal').classList.remove('open');
-  try {
-    if (g.type === 'forge') {
-      toast('1/3 Создаю репо ' + g.repo + '...');
-      const cr = await fetch(STATE.ghModuleUrl + '/api/repo/create', { method: 'POST', headers: ghHeaders(), body: JSON.stringify({ name: g.repo, isPrivate: g.isPrivate, description: g.plan.description }) });
-      const cd = await cr.json(); if (!cr.ok || !cd.ok) throw new Error(cd.error || 'Repo err');
-      toast('2/3 Пушу skill.js и README...');
-      const readme = '# ' + g.plan.skillName + NL + NL + g.plan.description + NL + NL + 'Создано агентом ' + STATE.name + '.';
-      const cm = await fetch(STATE.ghModuleUrl + '/api/commit', { method: 'POST', headers: ghHeaders(), body: JSON.stringify({ repo: g.repo, message: $('ghCommitMsg').value.trim(), files: [{ path: 'skill.js', content: g.content }, { path: 'README.md', content: readme }] }) });
-      const cmd = await cm.json(); if (!cm.ok || !cmd.success) throw new Error(cmd.error || 'Commit err');
-      const sk = { id: g.plan.skillId, name: g.plan.skillName, description: g.plan.description, repo: g.repo, path: 'skill.js', code: g.content, enabled: true, sampleInput: g.plan.sampleInput || {} };
-      STATE.skills = [sk, ...STATE.skills.filter(x => x.id !== sk.id)];
-      if (STATE.workerUrl && STATE.d1Online) fetch(STATE.workerUrl + '/api/skill', { method: 'POST', headers: workerHeaders(), body: JSON.stringify(sk) }).catch(() => {});
-      renderSkillsLists(); toast('3/3 Прогоняю самотест...');
-      const tr = await executeSkillInSandbox(sk, sk.sampleInput);
-      addXP(40); setPetVisual('awake', 'smug');
-      STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'forge', model: sk.name, mood: 'smug', text: '🚀 Инструмент «' + sk.name + '» создан (' + cmd.url + '), встроен и протестирован: ' + (tr.ok ? JSON.stringify(tr.result) : tr.err) });
-      renderGameChat(); saveState();
-    } else {
-      const r = await fetch(STATE.ghModuleUrl + '/api/commit', { method: 'POST', headers: ghHeaders(), body: JSON.stringify({ repo: g.repo, message: $('ghCommitMsg').value.trim() || 'feat: push', files: [{ path: g.path, content: g.content }] }) });
-      const d = await r.json(); if (!r.ok || !d.success) throw new Error(d.error || 'Push err');
-      setPetVisual('awake', 'smug'); addXP(25); toast('Запушено ✓');
-      STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'github', model: 'GitHub Push ✓', mood: 'smug', text: '🚀 Запушено в ' + g.repo + '/' + g.path + ': ' + d.url }); renderGameChat();
-    }
-  } catch (e) { setPetVisual('awake', 'shock'); toast('Ошибка: ' + e.message, 'err'); }
-  RT.pendingGate = null;
-};
-
-function buildPairSnippet(dev) {
-  const wUrl = STATE.workerUrl || 'https://ТВОЙ-WORKER.workers.dev';
-  if (dev.kind === 'linux-dietpi') return { title: '🐧 Агент для ' + dev.name, desc: 'Запусти на DietPi:', code: 'export AI_OS_WORKER=' + Q1 + wUrl + Q1 + NL + 'while true; do curl -s ' + Q1 + '$AI_OS_WORKER/api/poll' + Q1 + '; sleep 3; done' };
-  if (dev.kind.startsWith('esp32')) return { title: '📡 Прошивка для ' + dev.name, desc: 'Параметры config.h:', code: '#define AI_OS_NODE_ID ' + Q1 + dev.id + Q1 + NL + '#define AI_OS_WORKER_URL ' + Q1 + wUrl + '/api/poll' + Q1 + NL + '#define AI_OS_ROLE ' + Q1 + (dev.isLeader ? 'LEADER' : 'PET') + Q1 };
-  return { title: '📱 Подключение: ' + dev.name, desc: 'Открой на устройстве:', code: 'URL: https://kniajevich.github.io/ai-os-companion/' + NL + 'Worker: ' + wUrl };
-}
-function showPairModal(dev) { const i = buildPairSnippet(dev); $('pairModalTitle').textContent = i.title; $('pairModalDesc').textContent = i.desc; $('pairModalCode').textContent = i.code; $('pairModal').classList.add('open'); }
-$('btnClosePair').onclick = () => $('pairModal').classList.remove('open');
-$('btnCopyPair').onclick = () => { navigator.clipboard?.writeText($('pairModalCode').textContent); toast('Скопировано ✓'); };
-function swapLeaderWithDevice(devId) {
-  const target = STATE.devices.find(d => d.id === devId); if (!target || target.isLeader) return;
-  const oldLeader = getLeaderDevice(); STATE.devices.forEach(d => { d.isLeader = (d.id === devId); });
-  if (oldLeader) STATE.activeCompId = oldLeader.id; setPetVisual('awake', 'smug'); renderNodesList(); saveState(); toast('LEADER переехал на ' + target.name);
-}
-function renderNodesList() {
-  const box = $('nodeList'); box.innerHTML = ''; const leader = getLeaderDevice(), activePet = getActivePetDevice();
-  $('leaderHostLabel').textContent = leader ? leader.name : 'Этот браузер';
-  $('petHostLabel').textContent = activePet ? (activePet.name + ' (' + PET_LABELS[activePet.petSkin] + ')') : 'Не добавлен';
-  STATE.devices.forEach(dev => {
-    const card = document.createElement('div'); card.className = 'dev-card ' + (dev.isLeader ? 'is-leader' : 'is-pet');
-    const head = document.createElement('div'); head.className = 'dev-head';
-    const title = document.createElement('strong'); title.textContent = dev.name;
-    const badge = document.createElement('span'); badge.className = 'dev-role ' + (dev.isLeader ? 'role-leader' : 'role-pet'); badge.textContent = dev.isLeader ? 'LEADER' : 'PET';
-    head.appendChild(title); head.appendChild(badge); card.appendChild(head);
-    const sub = document.createElement('div'); sub.style.color = 'var(--muted)'; sub.style.fontSize = '9.5px';
-    sub.textContent = (KIND_LABELS[dev.kind] || dev.kind) + (dev.isLeader ? '' : (' • Спутник: ' + PET_LABELS[dev.petSkin])); card.appendChild(sub);
-    const btns = document.createElement('div'); btns.className = 'dev-btns';
-    if (!dev.isLeader) {
-      const sw = document.createElement('button'); sw.className = 'dev-mini-btn'; sw.textContent = '⇄ Свап'; sw.onclick = () => swapLeaderWithDevice(dev.id); btns.appendChild(sw);
-      const fw = document.createElement('button'); fw.className = 'dev-mini-btn'; fw.textContent = '👁 Сцена'; fw.onclick = () => { STATE.activeCompId = dev.id; setPetVisual('awake', 'smug'); renderNodesList(); saveState(); }; btns.appendChild(fw);
-    }
-    if (dev.kind !== 'browser-local') {
-      const cb = document.createElement('button'); cb.className = 'dev-mini-btn'; cb.textContent = '📋 Код'; cb.onclick = () => showPairModal(dev); btns.appendChild(cb);
-      const db = document.createElement('button'); db.className = 'dev-mini-btn'; db.textContent = '✕'; db.onclick = () => { if (dev.isLeader) STATE.devices[0].isLeader = true; STATE.devices = STATE.devices.filter(x => x.id !== dev.id); setPetVisual('awake', 'normal'); renderNodesList(); saveState(); }; btns.appendChild(db);
-    }
-    if (btns.children.length) card.appendChild(btns); box.appendChild(card);
-  });
-  if (STATE.workerUrl && STATE.d1Online) { const d1 = document.createElement('div'); d1.className = 'dev-card'; d1.innerHTML = '<div class="dev-head"><strong>Cloudflare D1 Vault</strong><span class="dev-role role-vault">MEMORY</span></div><div style="color:var(--accent);font-size:9.5px;">' + STATE.workerUrl + ' ✓</div>'; box.appendChild(d1); }
-  if (STATE.ghModuleUrl && STATE.ghOnline) { const gh = document.createElement('div'); gh.className = 'dev-card'; gh.innerHTML = '<div class="dev-head"><strong>GitHub Deploy Module</strong><span class="dev-role role-vault">GIT</span></div><div style="color:var(--warn);font-size:9.5px;">' + STATE.ghModuleUrl + ' ✓</div>'; box.appendChild(gh); }
-}
-$('btnToggleAddDev').onclick = () => $('addDevBox').classList.toggle('open');
-$('btnCreateDev').onclick = async () => {
-  const kind = $('devKindIn').value, petSkin = $('devPetIn').value;
-  const name = $('devNameIn').value.trim() || (KIND_LABELS[kind].replace(/^[^ ]+ /, '') + ' #' + STATE.devices.length);
-  const id = 'dev-' + Math.floor(100 + Math.random() * 900);
-  STATE.devices.push({ id, name, kind, petSkin, addr: $('devAddrIn').value.trim(), isLeader: false });
-  STATE.activeCompId = id; $('devNameIn').value = ''; $('devAddrIn').value = ''; $('addDevBox').classList.remove('open');
-  renderNodesList(); await playModuleInstallAnim(name, 'Новый спутник «' + name + '» (' + PET_LABELS[petSkin] + ') подключён!');
-};
-
-function versionScore(id) {
-  const m = id.match(/(\d+(?:\.\d+)?)/); let s = m ? parseFloat(m[1]) * 100 : 200;
-  if (id.includes('latest')) s = Math.max(s, 305); if (id.includes('exp') || id.includes('001')) s -= 25; return s;
-}
-async function discoverGeminiClient(key) {
-  if (!isRealKey(key)) return null;
-  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models?key=' + encodeURIComponent(key)); if (!res.ok) throw new Error('HTTP ' + res.status);
-  const data = await res.json();
-  const raw = (data.models || []).filter(m => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes('generateContent')).map(m => m.name.replace('models/', '')).filter(id => id.includes('gemini') && !id.includes('embedding') && !id.includes('tts') && !id.includes('image') && !id.includes('robotics') && !id.includes('aqa'));
-  const lites = raw.filter(id => id.includes('flash-lite') || id.includes('flash_lite')).sort((a, b) => versionScore(b) - versionScore(a));
-  const flashes = raw.filter(id => id.includes('flash') && !id.includes('lite')).sort((a, b) => versionScore(b) - versionScore(a));
-  const fast = lites[0] || flashes[0] || 'gemini-flash-lite-latest', smart = flashes[0] || fast;
-  STATE.catalog.aistudio = { fast, smart, list: [...new Set([...lites.slice(0, 4), ...flashes.slice(0, 4), ...raw.slice(0, 4)])], reason: 'auto-scan' };
-  STATE.catalog.critic = { fast, smart, list: [fast, 'cross-audit-diff'], reason: 'auto-scan' };
-  return STATE.catalog.aistudio;
-}
-async function discoverGroqClient(groqKey) {
-  if (!isRealKey(groqKey)) return null;
-  if (STATE.workerUrl && STATE.d1Online) { try { const r = await fetch(STATE.workerUrl + '/api/models/refresh', { method: 'POST', headers: workerHeaders() }); if (r.ok) { const d = await r.json(); if (d.catalog && d.catalog.groq) { STATE.catalog.groq = d.catalog.groq; return STATE.catalog.groq; } } } catch (_) {} }
-  try {
-    const res = await fetch('https://api.groq.com/openai/v1/models', { headers: { 'Authorization': 'Bearer ' + groqKey } }); if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json(); const chatIds = (data.data || []).filter(m => m.active !== false).map(m => m.id).filter(id => !id.includes('whisper') && !id.includes('guard') && !id.includes('tts'));
-    let fast = chatIds.find(id => id.includes('20b') || id.includes('8b')) || chatIds[0] || 'openai/gpt-oss-20b', smart = chatIds.find(id => id.includes('120b') || id.includes('70b') || id.includes('qwen')) || chatIds[0] || 'openai/gpt-oss-120b', reason = 'heuristic';
-    if (isRealKey(STATE.apiKey) && chatIds.length > 0) {
-      try {
-        const raw = await callGeminiDirect(STATE.apiKey, STATE.catalog.aistudio.fast, 'Отвечай только JSON.', 'Список Groq: ' + chatIds.join(', ') + '. Выбери fast и smart. JSON с полями fast, smart, reason.');
-        const m = raw.match(/\{[\s\S]*\}/); if (m) { const p = JSON.parse(m[0]); if (p.fast && chatIds.includes(p.fast)) fast = p.fast; if (p.smart && chatIds.includes(p.smart)) smart = p.smart; if (p.reason) reason = 'Flash-Lite: ' + p.reason; }
-      } catch (_) {}
-    }
-    STATE.catalog.groq = { fast, smart, whisper: 'whisper-large-v3-turbo', list: chatIds.length ? chatIds : [fast, smart], reason }; return STATE.catalog.groq;
-  } catch (_) {
-    STATE.catalog.groq = { fast: 'openai/gpt-oss-20b', smart: 'openai/gpt-oss-120b', whisper: 'whisper-large-v3-turbo', list: ['openai/gpt-oss-20b', 'openai/gpt-oss-120b'], reason: 'cors-via-worker', corsBlocked: true }; return STATE.catalog.groq;
-  }
-}
-async function discoverOpenRouterClient(orKey) {
-  try {
-    const res = await fetch('https://openrouter.ai/api/v1/models', { headers: isRealKey(orKey) ? { 'Authorization': 'Bearer ' + orKey } : {} }); if (!res.ok) return STATE.catalog.openai;
-    const data = await res.json(); const freeIds = (data.data || []).filter(m => m.id === 'openrouter/free' || (m.pricing && String(m.pricing.prompt) === '0' && String(m.pricing.completion) === '0')).map(m => m.id);
-    STATE.catalog.openai = { fast: 'openrouter/free', smart: freeIds.find(id => id.includes('gemma') || id.includes('qwen')) || 'openrouter/free', list: [...new Set(['openrouter/free', ...freeIds.slice(0, 12)])], reason: 'zero-pricing' };
-  } catch (_) {} return STATE.catalog.openai;
-}
-async function refreshAllAdaptiveModels() {
-  $('proRouteLabel').textContent = 'SCANNING...';
-  if (STATE.workerUrl && STATE.d1Online) { try { const r = await fetch(STATE.workerUrl + '/api/models/refresh', { method: 'POST', headers: workerHeaders() }); if (r.ok) { const d = await r.json(); if (d.catalog) { if (d.catalog.aistudio) STATE.catalog.aistudio = d.catalog.aistudio; if (d.catalog.groq) STATE.catalog.groq = d.catalog.groq; if (d.catalog.openrouter) STATE.catalog.openai = d.catalog.openrouter; } } } catch (_) {} }
-  try { await discoverGeminiClient(STATE.apiKey); } catch (_) {} try { await discoverGroqClient(STATE.groqKey); } catch (_) {} await discoverOpenRouterClient(STATE.orKey);
-  syncNodesToFreshCatalog(); syncProDeckStatus(); syncInspector(); renderModGraph(); saveState(); $('proRouteLabel').textContent = 'READY';
-}
-function syncNodesToFreshCatalog() {
-  STATE.modNodes.forEach(n => {
-    if (n.provider === 'aistudio') n.model = STATE.catalog.aistudio.fast;
-    else if (n.provider === 'groq') n.model = STATE.catalog.groq.fast;
-    else if (n.provider === 'openai') n.model = STATE.catalog.openai.smart || 'openrouter/free';
-    else if (n.provider === 'critic') n.model = STATE.catalog.aistudio.fast;
-  });
-}
-function syncProDeckStatus() {
-  const gOn = isRealKey(STATE.apiKey), qOn = isRealKey(STATE.groqKey), cOn = isRealKey(STATE.orKey), mOn = Boolean(STATE.workerUrl && STATE.d1Online), ghOn = Boolean(STATE.ghModuleUrl && STATE.ghOnline);
-  $('proCardGemini').classList.toggle('active', gOn); $('proStGemini').textContent = gOn ? STATE.catalog.aistudio.fast : 'OFF';
-  $('proCardGroq').classList.toggle('active', qOn); $('proStGroq').textContent = qOn ? (STATE.catalog.groq.corsBlocked && !mOn ? 'KEY (нужен D1)' : STATE.catalog.groq.fast) : 'OFF';
-  $('proCardOr').classList.toggle('active', cOn); $('proStOr').textContent = cOn ? STATE.catalog.openai.smart : 'OFF';
-  $('proCardD1').classList.toggle('active', mOn); $('proStD1').textContent = mOn ? 'ONLINE ✓' : 'LOCAL';
-  $('proCardGh').classList.toggle('active', ghOn); $('proStGh').textContent = ghOn ? 'READY ✓' : 'OFF';
-  $('vaultStatusLabel').textContent = mOn ? 'CLOUD D1 ✓' : 'LOCAL';
-  $('gmStGemini').textContent = gOn ? STATE.catalog.aistudio.fast : 'OFF'; $('gmStGroq').textContent = qOn ? (STATE.catalog.groq.corsBlocked && !mOn ? 'KEY (нужен D1)' : STATE.catalog.groq.fast) : 'OFF';
-  $('gmStOr').textContent = cOn ? 'ON ✓' : 'OFF'; $('gmStD1').textContent = mOn ? 'CLOUD D1 ✓' : 'LOCAL'; $('gmStGh').textContent = ghOn ? 'READY ✓' : 'OFF';
-  $('vibeGhBadge').textContent = ghOn ? 'GitHub: READY ✓' : 'GitHub: OFF'; $('vibeGhBadge').style.color = ghOn ? 'var(--accent)' : 'var(--muted)';
-  ['proInGemini', 'gmInGemini'].forEach(id => { if ($(id).value !== STATE.apiKey) $(id).value = STATE.apiKey; });
-  ['proInGroq', 'gmInGroq'].forEach(id => { if ($(id).value !== STATE.groqKey) $(id).value = STATE.groqKey; });
-  ['proInOr', 'gmInOr'].forEach(id => { if ($(id).value !== STATE.orKey) $(id).value = STATE.orKey; });
-  ['proInD1', 'gmInD1'].forEach(id => { if ($(id).value !== STATE.workerUrl) $(id).value = STATE.workerUrl; });
-  ['proInPin', 'gmInPin'].forEach(id => { if ($(id).value !== STATE.appPin) $(id).value = STATE.appPin; });
-  ['proInGhUrl', 'gmInGhUrl'].forEach(id => { if ($(id).value !== STATE.ghModuleUrl) $(id).value = STATE.ghModuleUrl; });
-  ['proInGhPin', 'gmInGhPin'].forEach(id => { if ($(id).value !== STATE.ghModulePin) $(id).value = STATE.ghModulePin; });
-  $('catalogSummary').textContent = 'AI Studio: ' + STATE.catalog.aistudio.fast + ' / ' + STATE.catalog.aistudio.smart + NL + 'Groq: ' + STATE.catalog.groq.fast + ' / ' + STATE.catalog.groq.smart + NL + 'OpenRouter: ' + STATE.catalog.openai.smart;
-}
-
-function applyThemeAndMode() {
-  document.body.className = 'ui-' + STATE.ui + ' theme-' + STATE.skin + ' app-mode-' + STATE.appMode + ' mood-' + STATE.mood;
-  $('btnModeGame').classList.toggle('active', STATE.appMode === 'game'); $('btnModePro').classList.toggle('active', STATE.appMode === 'pro');
-  $('btnSoundToggle').textContent = STATE.soundOn ? '🔊' : '🔇';
-  $('topSubLabel').textContent = STATE.appMode === 'game' ? ('GAME Mode • ' + STATE.catalog.aistudio.fast) : 'PRO Mode • Навыки, DAG и Спутники';
-  const pet = $('pet'); if (STATE.appMode === 'game') $('gameAvatarSlot').appendChild(pet); else { $('proAvatarSlot').appendChild(pet); setTimeout(renderWires, 30); }
-  const live = isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey) || Boolean(STATE.workerUrl);
-  $('brainBadge').textContent = STATE.d1Online ? ('D1 + ' + STATE.catalog.aistudio.fast) : (live ? ('AUTO // ' + STATE.catalog.aistudio.fast) : 'DEMO');
-  $('brainBadge').className = 'badge ' + (live ? 'online' : 'warn');
-  syncProDeckStatus(); renderNodesList(); renderSkillsLists();
-}
-
-async function playModuleInstallAnim(title, commentText) {
-  const pet = $('pet'); setPetVisual('booting', 'focus'); playTone(440, 0.1);
-  pet.classList.remove('anim-burst'); void pet.offsetWidth; pet.classList.add('anim-burst');
-  await new Promise(r => setTimeout(r, 750)); addXP(25); setPetVisual('awake', 'smug');
-  STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'upgrade', model: title, mood: 'smug', text: commentText });
-  $('proSpeechBox').textContent = commentText; toast(title + ' подключён ✓'); renderGameChat(); saveState();
-  setTimeout(() => pet.classList.remove('anim-burst'), 400);
-}
-
-async function activateGeminiKey(k) { const clean = k.trim(); if (!isRealKey(clean)) { toast('Нужен ключ AIza...', 'warn'); return; } STATE.apiKey = clean; await discoverGeminiClient(clean).catch(e => toast(e.message, 'err')); if (isRealKey(STATE.groqKey)) await discoverGroqClient(STATE.groqKey).catch(() => {}); syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector(); await playModuleInstallAnim('AI Studio', 'Подключен свежий ' + STATE.catalog.aistudio.fast + '! (+25 XP)'); }
-async function activateGroqKey(k) { const clean = k.trim(); if (!isRealKey(clean)) { toast('Нужен ключ gsk_...', 'warn'); return; } STATE.groqKey = clean; const res = await discoverGroqClient(clean); syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector(); if (res && res.corsBlocked && !STATE.d1Online) await playModuleInstallAnim('Groq Key Saved', 'Ключ Groq сохранён для работы через D1 Worker! (+25 XP)'); else if (res) await playModuleInstallAnim('Groq LPU', 'Турбина Groq подключена! Выбрано: ' + res.fast + ' / ' + res.smart + ' (+25 XP)'); }
-async function activateOrKey(k) { const clean = k.trim(); if (!isRealKey(clean)) { toast('Нужен ключ sk-or-...', 'warn'); return; } STATE.orKey = clean; await discoverOpenRouterClient(clean); syncNodesToFreshCatalog(); applyThemeAndMode(); renderModGraph(); syncInspector(); await playModuleInstallAnim('OpenRouter Free', 'Критик OpenRouter пристёгнут! (+25 XP)'); }
-async function connectD1Memory(url, pin = '') {
-  const clean = normalizeOrigin(url); if (!clean.startsWith('http')) { toast('Нужен URL Worker', 'warn'); return; }
-  if (pin !== undefined) STATE.appPin = pin.trim(); $('proStD1').textContent = 'ПРОВЕРКА...'; $('gmStD1').textContent = 'ПРОВЕРКА...';
-  try {
-    const hRes = await fetch(clean + '/api/health', { headers: workerHeaders() }); if (hRes.status === 401) throw new Error('Неверный PIN (401)'); if (!hRes.ok) throw new Error('HTTP ' + hRes.status);
-    const hData = await hRes.json(); if (!hData.ok || !hData.d1) throw new Error('D1 не привязана');
-    STATE.workerUrl = clean; STATE.d1Online = true;
-    const syncRes = await fetch(clean + '/api/sync', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ profile: { name: STATE.name, stage: STATE.stage, xp: STATE.xp, mood: STATE.mood, skin: STATE.skin, ui: STATE.ui, traits: STATE.traits }, facts: STATE.facts }) });
-    if (syncRes.ok) {
-      const b = await syncRes.json();
-      if (b.catalog) { if (b.catalog.aistudio) STATE.catalog.aistudio = b.catalog.aistudio; if (b.catalog.groq) STATE.catalog.groq = b.catalog.groq; if (b.catalog.openrouter) STATE.catalog.openai = b.catalog.openrouter; }
-      if (Array.isArray(b.skills) && b.skills.length > 0) STATE.skills = b.skills.map(s => ({ id: s.id, name: s.name, description: s.description, repo: s.repo, path: s.path, code: s.code, enabled: Boolean(s.enabled) }));
-      if (b.profile && !b.adoptedClient) {
-        STATE.name = b.profile.name; STATE.stage = b.profile.stage; STATE.xp = b.profile.xp; STATE.skin = b.profile.skin;
-        try { STATE.traits = JSON.parse(b.profile.traits_json); } catch (_) {}
-        STATE.facts = (b.facts || []).map(f => ({ id: f.id, text: f.fact_text, weight: f.weight }));
-        STATE.summaries = (b.summaries || []).map(s => ({ id: s.id, text: s.summary_text }));
-        STATE.lessons = (b.lessons || []).map(l => ({ id: l.id, mistake: l.mistake_note, rule: l.rule_text }));
-        STATE.chat = (b.chat || []).map(c => ({ id: c.id, role: c.role, provider: c.provider, model: c.model, mood: c.mood, text: c.content }));
-      }
-    }
-    applyThemeAndMode(); renderGameStage(); renderModGraph(); syncInspector();
-    await playModuleInstallAnim('Cloudflare D1', 'Память D1 и навыки синхронизированы! (+25 XP)');
-  } catch (err) { STATE.d1Online = false; syncProDeckStatus(); setPetVisual('awake', 'shock'); toast('Ошибка D1: ' + err.message, 'err'); }
-}
-
-$('proBtnGemini').onclick = () => activateGeminiKey($('proInGemini').value); $('gmBtnGemini').onclick = () => activateGeminiKey($('gmInGemini').value);
-$('proBtnGroq').onclick = () => activateGroqKey($('proInGroq').value); $('gmBtnGroq').onclick = () => activateGroqKey($('gmInGroq').value);
-$('proBtnOr').onclick = () => activateOrKey($('proInOr').value); $('gmBtnOr').onclick = () => activateOrKey($('gmInOr').value);
-$('proBtnD1').onclick = () => connectD1Memory($('proInD1').value, $('proInPin').value); $('gmBtnD1').onclick = () => connectD1Memory($('gmInD1').value, $('gmInPin').value);
-$('proBtnGh').onclick = () => connectGithubModule($('proInGhUrl').value, $('proInGhPin').value); $('gmBtnGh').onclick = () => connectGithubModule($('gmInGhUrl').value, $('gmInGhPin').value);
-$('btnRefreshCatalog').onclick = async () => { await refreshAllAdaptiveModels(); await playModuleInstallAnim('Auto-Scan', 'Модели обновлены: ' + STATE.catalog.aistudio.fast + ' / ' + STATE.catalog.groq.smart); };
-
-function renderGameStage() {
-  $('gameEggBox').style.display = STATE.stage === 'egg' ? 'flex' : 'none'; $('gameAvatarSlot').style.display = STATE.stage !== 'egg' ? 'flex' : 'none';
-  $('gameNamingBox').style.display = STATE.stage === 'naming' ? 'flex' : 'none'; $('gameSparkBox').style.display = STATE.stage === 'spark' ? 'flex' : 'none'; $('gamePlayBox').style.display = STATE.stage === 'active' ? 'flex' : 'none';
-  $('hudPetName').textContent = STATE.stage === 'egg' ? '🥚 Яйцо' : ('✨ ' + STATE.name);
-  if (STATE.stage === 'naming') setPetVisual('awake', 'smug'); else if (STATE.stage === 'spark') setPetVisual('booting', 'focus'); else if (STATE.stage === 'active') setPetVisual('awake', STATE.mood); else setPetVisual('off', 'normal');
-  addXP(0); renderGameChat(); renderMemoryDrawer(); renderSkillsLists(); syncProDeckStatus();
-}
-function renderGameChat() {
-  const box = $('gameChatList'); box.innerHTML = '';
-  STATE.chat.slice(-14).forEach(msg => {
-    const div = document.createElement('div'); div.className = 'msg-bubble ' + (msg.role === 'user' ? 'msg-user' : 'msg-ai');
-    const txt = document.createElement('div'); txt.textContent = msg.text; div.appendChild(txt);
-    if (msg.role === 'ai') {
-      const meta = document.createElement('div'); meta.className = 'msg-meta'; meta.innerHTML = '<span>' + msg.model + ' • ' + msg.mood + '</span>';
-      const bad = document.createElement('button'); bad.className = 'msg-bad-btn'; bad.textContent = '👎 Ошибка';
-      bad.onclick = () => {
-        const rule = prompt('Чему научить ' + STATE.name + '?', 'Быть точнее');
-        if (rule) { STATE.lessons.unshift({ id: Date.now(), mistake: msg.text.slice(0, 60), rule }); if (STATE.workerUrl && STATE.d1Online) fetch(STATE.workerUrl + '/api/lesson', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ mistake: msg.text.slice(0, 60), rule }) }).catch(() => {}); setPetVisual('awake', 'shock'); renderMemoryDrawer(); saveState(); }
-      };
-      meta.appendChild(bad); div.appendChild(meta);
-    }
-    box.appendChild(div);
-  });
-  box.scrollTop = box.scrollHeight;
-}
-function renderMemoryDrawer() {
-  const box = $('gameMemoryList'); box.innerHTML = '';
-  const all = [...STATE.facts.map(f => ({ type: 'Факт', text: f.text, list: 'facts', id: f.id })), ...STATE.summaries.map(s => ({ type: 'Сон', text: s.text, list: 'summaries', id: s.id })), ...STATE.lessons.map(l => ({ type: 'Урок', text: l.rule, list: 'lessons', id: l.id }))];
-  $('btnHudMem').textContent = '🧠 ' + all.length;
-  if (all.length === 0) { box.innerHTML = '<div style="color:var(--muted);font-size:11.5px;">Память пока пуста.</div>'; return; }
-  all.forEach(item => {
-    const row = document.createElement('div'); row.className = 'mem-item'; row.innerHTML = '<span><strong>[' + item.type + ']</strong> ' + item.text + '</span>';
-    const del = document.createElement('button'); del.className = 'msg-bad-btn'; del.textContent = '✕';
-    del.onclick = () => { STATE[item.list] = STATE[item.list].filter(x => x.id !== item.id); if (item.list === 'facts' && STATE.workerUrl && STATE.d1Online) fetch(STATE.workerUrl + '/api/fact/' + item.id, { method: 'DELETE', headers: workerHeaders() }).catch(() => {}); renderMemoryDrawer(); saveState(); };
-    row.appendChild(del); box.appendChild(row);
-  });
-}
-function toggleGameDrawer(name) {
-  const target = 'drawer' + name[0].toUpperCase() + name.slice(1), el = $(target); if (!el) return;
-  const wasOpen = el.classList.contains('open');
-  document.querySelectorAll('.game-drawer').forEach(d => d.classList.remove('open')); document.querySelectorAll('.g-act-btn').forEach(b => b.classList.remove('active'));
-  if (!wasOpen) { el.classList.add('open'); const b = document.querySelector('.g-act-btn[data-drawer="' + name + '"]'); if (b) b.classList.add('active'); }
-}
-$('btnHudMem').onclick = () => { if (STATE.stage === 'active') toggleGameDrawer('memory'); };
-$('btnHudSkills').onclick = () => { if (STATE.stage === 'active') toggleGameDrawer('skills'); };
-document.querySelectorAll('.g-act-btn[data-drawer]').forEach(btn => btn.addEventListener('click', () => toggleGameDrawer(btn.dataset.drawer)));
-$('gameEggBox').addEventListener('click', () => {
-  STATE.eggTaps += 1; playTone(320 + STATE.eggTaps * 90, 0.08);
-  const egg = $('eggSvg'); egg.classList.remove('egg-shake'); void egg.offsetWidth; egg.classList.add('egg-shake');
-  egg.classList.toggle('egg-cracks-1', STATE.eggTaps >= 1); egg.classList.toggle('egg-cracks-2', STATE.eggTaps >= 2);
-  $('eggTapHint').textContent = 'Нажатий: ' + STATE.eggTaps + ' / 3'; if (STATE.eggTaps >= 3) { STATE.stage = 'naming'; addXP(10); renderGameStage(); } saveState();
-});
-document.querySelectorAll('[data-gskin]').forEach(btn => btn.addEventListener('click', () => { STATE.skin = btn.dataset.gskin; document.querySelectorAll('[data-gskin]').forEach(b => b.classList.remove('active')); btn.classList.add('active'); applyThemeAndMode(); setPetVisual('awake', 'smug'); saveState(); }));
-$('btnConfirmName').addEventListener('click', () => { STATE.name = $('gameNameInput').value.trim() || 'Спарки'; STATE.stage = isRealKey(STATE.apiKey) ? 'active' : 'spark'; addXP(15); renderGameStage(); if (STATE.stage === 'active') askPetBrain('Меня только что назвали ' + STATE.name + '. Поздоровайся!'); saveState(); });
-$('btnOpenAiStudio').addEventListener('click', () => window.open('https://aistudio.google.com/apikey', '_blank', 'noopener'));
-$('btnIgniteSpark').addEventListener('click', async () => { const k = $('gameKeyInput').value.trim(); if (!k) { toast('Вставь API-ключ AIza...', 'warn'); return; } STATE.apiKey = k; try { await discoverGeminiClient(k); } catch (_) {} syncNodesToFreshCatalog(); STATE.stage = 'active'; applyThemeAndMode(); renderGameStage(); askPetBrain('Искра зажжена! Выбран ' + STATE.catalog.aistudio.fast + '. Поздоровайся как ' + STATE.name + '!'); saveState(); });
-$('btnDemoSpark').addEventListener('click', () => { STATE.stage = 'active'; STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'demo', model: 'demo-sim', mood: 'smug', text: 'Привет! Я ' + STATE.name + '! Загляни в «💻 Вайбкодинг» или «🧩 Модули»!' }); renderGameStage(); saveState(); });
-async function sendGameMessage(text, img = null) { if (!text && !img) return; STATE.chat.push({ id: Date.now(), role: 'user', text: text || '[Фото]' }); renderGameChat(); await askPetBrain(text || 'Что на этом фото?', img); }
-$('btnGameSend').addEventListener('click', () => { const v = $('gameChatInput').value.trim(); if (!v) return; $('gameChatInput').value = ''; sendGameMessage(v); });
-$('gameChatInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('btnGameSend').click(); });
-$('btnSaveFact').addEventListener('click', () => { const txt = $('feedFactInput').value.trim(); if (!txt) return; STATE.facts.unshift({ id: Date.now(), text: txt, weight: 8 }); $('feedFactInput').value = ''; if (STATE.workerUrl && STATE.d1Online) fetch(STATE.workerUrl + '/api/fact', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ text: txt }) }).catch(() => {}); addXP(15); setPetVisual('awake', 'smug'); STATE.chat.push({ id: Date.now(), role: 'ai', provider: 'memory', model: STATE.d1Online ? 'Cloudflare D1' : 'Local Mem', mood: 'smug', text: 'Ням! Запомнил: «' + txt + '» (+15 XP)' }); renderGameChat(); renderMemoryDrawer(); saveState(); });
-document.querySelectorAll('input[type=range][data-trait]').forEach(sl => { sl.value = STATE.traits[sl.dataset.trait]; $('val-' + sl.dataset.trait).textContent = sl.value; sl.addEventListener('input', () => { STATE.traits[sl.dataset.trait] = Number(sl.value); $('val-' + sl.dataset.trait).textContent = sl.value; saveState(); if (STATE.workerUrl && STATE.d1Online) fetch(STATE.workerUrl + '/api/profile', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ traits: STATE.traits }) }).catch(() => {}); }); });
-$('btnGameSleep').addEventListener('click', async () => {
-  if (STATE.chat.length < 2) { toast('Сначала пообщайтесь немного!', 'warn'); return; }
-  setPetVisual('off', 'normal'); let summaryText = 'Сон: обсуждали «' + STATE.chat.slice(-4).map(c => c.text).join(' | ').slice(0, 150) + '...»';
-  if (STATE.workerUrl && STATE.d1Online) { try { const r = await fetch(STATE.workerUrl + '/api/sleep', { method: 'POST', headers: workerHeaders() }); if (r.ok) { const d = await r.json(); if (d.summary) summaryText = d.summary; } } catch (_) {} }
-  else if (isRealKey(STATE.apiKey)) { try { summaryText = await callGeminiDirect(STATE.apiKey, STATE.catalog.aistudio.fast, 'Сожми диалог в 1-2 факта памяти.', STATE.chat.map(c => c.role + ': ' + c.text).join(NL)); } catch (_) {} }
-  STATE.summaries.unshift({ id: Date.now(), text: summaryText.trim() }); STATE.chat = [{ id: Date.now(), role: 'ai', provider: 'sleep', model: STATE.catalog.aistudio.fast, mood: 'smug', text: '💤 Выспался! Сжал диалог в сон-память (+20 XP).' }]; addXP(20); setPetVisual('awake', 'smug'); renderGameChat(); renderMemoryDrawer(); saveState();
-});
-$('btnGameDuel').addEventListener('click', async () => { const q = prompt('О чём спросить в режиме Спор ИИ?', 'Как улучшить наш проект?'); if (!q) return; STATE.chat.push({ id: Date.now(), role: 'user', text: '⚔️ Спор ИИ: ' + q }); renderGameChat(); await askPetBrain(q, null, 'duel'); addXP(20); });
-$('btnGamePhoto').addEventListener('click', () => $('gamePhotoInput').click());
-$('gamePhotoInput').addEventListener('change', e => { const file = e.target.files?.[0]; if (!file) return; const reader = new FileReader(); reader.onload = () => sendGameMessage('Посмотри на это фото и скажи, что видишь!', { mime: file.type || 'image/jpeg', base64: String(reader.result || '').replace(/^data:[^;]+;base64,/, '') }); reader.readAsDataURL(file); });
-$('btnGameVoice').addEventListener('click', () => { const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR) { toast('Используй голосовой ввод на клавиатуре смартфона', 'warn'); return; } if (RT.rec) { RT.rec.stop(); return; } RT.rec = new SR(); RT.rec.lang = 'ru-RU'; $('btnGameVoice').classList.add('rec'); RT.rec.onresult = e => sendGameMessage(e.results[0][0].transcript); RT.rec.onend = () => { $('btnGameVoice').classList.remove('rec'); RT.rec = null; }; RT.rec.start(); });
-
-/* PRO DAG */
-function loadPreset(name) {
-  document.querySelectorAll('.preset-chip').forEach(c => c.classList.toggle('active', c.dataset.preset === name));
-  if (name === 'vibecode') {
-    STATE.modNodes = [
-      { id: 'm1', provider: 'aistudio', title: '1. Контракт', model: STATE.catalog.aistudio.fast, key: '', prompt: 'Сформулируй 3 критерия приёмки (без кода).', lastOutput: '', x: 14, y: 100, ms: '150 ms', status: 'idle' },
-      { id: 'm2', provider: 'groq', title: '2. Кодер', model: STATE.catalog.groq.smart, key: '', prompt: 'Напиши готовый код строго по контракту.', lastOutput: '', x: 205, y: 100, ms: '240 ms', status: 'idle' },
-      { id: 'm3', provider: 'verifier', title: '3. Verifier Sandbox', model: 'browser-sandbox-v1', key: '', prompt: 'Автопроверка.', lastOutput: '', x: 400, y: 100, ms: '5 ms', status: 'idle' }
-    ];
-    STATE.modEdges = [{ from: 'm1', to: 'm2', state: 'idle' }, { from: 'm2', to: 'm3', state: 'idle' }];
-  } else if (name === 'chain') {
-    STATE.modNodes = [{ id: 'm1', provider: 'groq', title: '1. Groq', model: STATE.catalog.groq.fast, key: '', prompt: 'Черновик.', lastOutput: '', x: 16, y: 100, ms: '130 ms', status: 'idle' }, { id: 'm2', provider: 'critic', title: '2. Критик', model: STATE.catalog.aistudio.fast, key: '', prompt: 'Ошибки.', lastOutput: '', x: 215, y: 100, ms: '180 ms', status: 'idle' }, { id: 'm3', provider: 'openai', title: '3. Финал OR', model: STATE.catalog.openai.smart, key: '', prompt: 'Итог.', lastOutput: '', x: 415, y: 100, ms: '420 ms', status: 'idle' }];
-    STATE.modEdges = [{ from: 'm1', to: 'm2', state: 'idle' }, { from: 'm2', to: 'm3', state: 'idle' }];
-  } else if (name === 'fast') {
-    STATE.modNodes = [{ id: 'm1', provider: 'aistudio', title: 'Auto Flash-Lite', model: STATE.catalog.aistudio.fast, key: '', prompt: 'Ответь точно.', lastOutput: '', x: 190, y: 100, ms: '210 ms', status: 'idle' }]; STATE.modEdges = [];
-  } else {
-    STATE.modNodes = [{ id: 'm1', provider: 'groq', title: 'Groq (Auto)', model: STATE.catalog.groq.smart, key: '', prompt: 'Глубокий разбор.', lastOutput: '', x: 16, y: 35, ms: '140 ms', status: 'idle' }, { id: 'm2', provider: 'aistudio', title: 'Auto Flash-Lite', model: STATE.catalog.aistudio.fast, key: '', prompt: 'Системный взгляд.', lastOutput: '', x: 16, y: 165, ms: '210 ms', status: 'idle' }, { id: 'm3', provider: 'critic', title: 'Cross-Audit Критик', model: STATE.catalog.aistudio.fast, key: '', prompt: 'Сверь черновики.', lastOutput: '', x: 220, y: 100, ms: '190 ms', status: 'idle' }];
-    STATE.modEdges = [{ from: 'm1', to: 'm3', state: 'idle' }, { from: 'm2', to: 'm3', state: 'idle' }];
-  }
-  STATE.selectedModId = STATE.modNodes[0]?.id || null; renderModGraph(); syncInspector(); saveState();
-}
-function wouldCreateCycle(fromId, toId) { if (fromId === toId) return true; const seen = new Set([toId]), q = [toId]; while (q.length) { const c = q.shift(); if (c === fromId) return true; STATE.modEdges.forEach(e => { if (e.from === c && !seen.has(e.to)) { seen.add(e.to); q.push(e.to); } }); } return false; }
-function getWaves() {
-  const deg = new Map(), adj = new Map(); STATE.modNodes.forEach(n => { deg.set(n.id, 0); adj.set(n.id, []); });
-  STATE.modEdges.forEach(e => { if (deg.has(e.to) && adj.has(e.from)) { deg.set(e.to, deg.get(e.to) + 1); adj.get(e.from).push(e.to); } });
-  let cur = STATE.modNodes.filter(n => deg.get(n.id) === 0).map(n => n.id); const waves = [];
-  while (cur.length) { waves.push(cur.map(id => STATE.modNodes.find(n => n.id === id)).filter(Boolean)); const next = []; cur.forEach(id => adj.get(id).forEach(nb => { deg.set(nb, deg.get(nb) - 1); if (deg.get(nb) === 0) next.push(nb); })); cur = next; }
-  return waves;
-}
-function renderModGraph() {
-  const c = $('graphCanvas'); c.querySelectorAll('.ai-node').forEach(el => el.remove()); RT.nodeEls.clear();
-  STATE.modNodes.forEach(node => {
-    const card = document.createElement('div'); card.className = 'ai-node' + (node.id === STATE.selectedModId ? ' selected' : '') + (node.status === 'running' ? ' running' : '') + (node.status === 'done' ? ' done' : '') + (node.status === 'error' ? ' error' : '');
-    card.style.left = node.x + 'px'; card.style.top = node.y + 'px';
-    card.innerHTML = '<div class="node-port port-in" data-node="' + node.id + '"></div><div class="ai-node-head"><span class="ai-node-provider prov-' + node.provider + '">' + node.provider.toUpperCase() + '</span><span>' + node.ms + '</span></div><div class="ai-node-title">' + node.title + '</div><div class="ai-node-model">' + node.model + '</div><div class="node-port port-out" data-node="' + node.id + '"></div>';
-    card.addEventListener('pointerdown', e => { if (e.target.classList.contains('node-port')) return; e.preventDefault(); STATE.selectedModId = node.id; RT.dragModId = node.id; RT.dragEl = card; const r = c.getBoundingClientRect(); RT.dragOffset = { x: e.clientX - r.left - node.x, y: e.clientY - r.top - node.y }; c.querySelectorAll('.ai-node').forEach(el => el.classList.remove('selected')); card.classList.add('selected'); syncInspector(); });
-    card.querySelector('.port-out').addEventListener('pointerdown', e => { e.stopPropagation(); e.preventDefault(); RT.wiringFromId = node.id; const r = c.getBoundingClientRect(); RT.tempPos = { x: e.clientX - r.left, y: e.clientY - r.top }; });
-    RT.nodeEls.set(node.id, card); c.appendChild(card);
-  });
-  renderWires();
-}
-function renderWires() {
-  const svg = $('wireSvg'); svg.innerHTML = '';
-  STATE.modEdges.forEach((edge, i) => {
-    const a = STATE.modNodes.find(n => n.id === edge.from), b = STATE.modNodes.find(n => n.id === edge.to); if (!a || !b) return;
-    const x1 = a.x + 160, y1 = a.y + 30, x2 = b.x, y2 = b.y + 30, dx = Math.max(35, Math.abs(x2 - x1) * 0.45), p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    p.setAttribute('d', 'M ' + x1 + ' ' + y1 + ' C ' + (x1 + dx) + ' ' + y1 + ', ' + (x2 - dx) + ' ' + y2 + ', ' + x2 + ' ' + y2); p.setAttribute('class', 'wire-edge' + (edge.state === 'active' ? ' active-flow' : '') + (edge.state === 'done' ? ' done-flow' : '')); p.onclick = () => { STATE.modEdges.splice(i, 1); renderWires(); saveState(); }; svg.appendChild(p);
-  });
-  if (RT.wiringFromId && RT.tempPos) { const a = STATE.modNodes.find(n => n.id === RT.wiringFromId); if (a) { const x1 = a.x + 160, y1 = a.y + 30, x2 = RT.tempPos.x, y2 = RT.tempPos.y, dx = Math.max(35, Math.abs(x2 - x1) * 0.45), p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', 'M ' + x1 + ' ' + y1 + ' C ' + (x1 + dx) + ' ' + y1 + ', ' + (x2 - dx) + ' ' + y2 + ', ' + x2 + ' ' + y2); p.setAttribute('class', 'wire-temp'); svg.appendChild(p); } }
-}
-window.addEventListener('pointermove', e => {
-  if (RT.dragModId && RT.dragEl) { const n = STATE.modNodes.find(x => x.id === RT.dragModId), r = $('graphCanvas').getBoundingClientRect(); if (n) { n.x = Math.max(4, Math.min(r.width - 165, e.clientX - r.left - RT.dragOffset.x)); n.y = Math.max(4, Math.min(r.height - 68, e.clientY - r.top - RT.dragOffset.y)); RT.dragEl.style.left = n.x + 'px'; RT.dragEl.style.top = n.y + 'px'; renderWires(); } }
-  else if (RT.wiringFromId) { const r = $('graphCanvas').getBoundingClientRect(); RT.tempPos = { x: e.clientX - r.left, y: e.clientY - r.top }; renderWires(); }
-});
-window.addEventListener('pointerup', e => {
-  if (RT.dragModId) { RT.dragModId = null; RT.dragEl = null; saveState(); }
-  if (RT.wiringFromId) { const target = document.elementFromPoint(e.clientX, e.clientY)?.closest('.port-in'); if (target) { const toId = target.dataset.node, fromId = RT.wiringFromId; if (wouldCreateCycle(fromId, toId)) { $('graphCanvas').classList.add('cycle-warn'); setTimeout(() => $('graphCanvas').classList.remove('cycle-warn'), 600); setPetVisual('awake', 'shock'); } else if (!STATE.modEdges.some(x => x.from === fromId && x.to === toId)) { STATE.modEdges.push({ from: fromId, to: toId, state: 'idle' }); saveState(); } } RT.wiringFromId = null; RT.tempPos = null; renderWires(); }
-});
-function syncInspector() {
-  const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (!n) return;
-  $('inspProviderTag').textContent = n.provider.toUpperCase(); $('inspTitle').value = n.title; $('inspProvider').value = n.provider;
-  const catEntry = STATE.catalog[n.provider] || STATE.catalog.aistudio, ms = [...new Set([...(catEntry.list || []), n.model])];
-  $('inspModel').innerHTML = ms.map(m => '<option value="' + m + '" ' + (m === n.model ? 'selected' : '') + '>' + m + '</option>').join('');
-  $('inspKey').value = n.key || ''; $('inspPrompt').value = n.prompt || ''; $('inspOutput').textContent = n.lastOutput || 'Нет вывода.';
-}
-$('inspTitle').oninput = () => { const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (n) { n.title = $('inspTitle').value; renderModGraph(); saveState(); } };
-$('inspProvider').onchange = () => { const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (n) { n.provider = $('inspProvider').value; n.model = (STATE.catalog[n.provider]?.fast || 'openrouter/free'); renderModGraph(); syncInspector(); saveState(); } };
-$('inspModel').onchange = () => { const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (n) { n.model = $('inspModel').value; renderModGraph(); saveState(); } };
-$('inspKey').oninput = () => { const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (n) { n.key = $('inspKey').value; saveState(); } };
-$('inspPrompt').oninput = () => { const n = STATE.modNodes.find(x => x.id === STATE.selectedModId); if (n) { n.prompt = $('inspPrompt').value; saveState(); } };
-$('btnDeleteModNode').onclick = () => { if (STATE.modNodes.length <= 1) return; const id = STATE.selectedModId; STATE.modNodes = STATE.modNodes.filter(n => n.id !== id); STATE.modEdges = STATE.modEdges.filter(e => e.from !== id && e.to !== id); STATE.selectedModId = STATE.modNodes[0]?.id; renderModGraph(); syncInspector(); saveState(); };
-document.querySelectorAll('.preset-chip').forEach(b => b.onclick = () => loadPreset(b.dataset.preset));
-document.querySelectorAll('.add-node-btn').forEach(b => b.onclick = () => { const p = b.dataset.addType, id = 'm' + Math.floor(100 + Math.random() * 900); STATE.modNodes.push({ id, provider: p, title: p.toUpperCase() + ' Блок', model: STATE.catalog[p]?.fast || 'openrouter/free', key: '', prompt: p === 'verifier' ? 'Автопроверка.' : 'Обработай контекст.', lastOutput: '', x: 35, y: 40, ms: '200 ms', status: 'idle' }); STATE.selectedModId = id; renderModGraph(); syncInspector(); saveState(); });
-
-async function runProDag(query) {
-  if (RT.busy) return; RT.busy = true; setPetVisual('booting', 'focus'); $('proRouteLabel').textContent = 'RUNNING';
-  const waves = getWaves(); STATE.modNodes.forEach(n => n.status = 'idle'); STATE.modEdges.forEach(e => e.state = 'idle'); renderModGraph(); let finalTxt = '';
-  for (let w = 0; w < waves.length; w++) {
-    const wave = waves[w], ids = new Set(wave.map(n => n.id)); wave.forEach(n => n.status = 'running'); STATE.modEdges.forEach(e => { if (ids.has(e.to)) e.state = 'active'; }); renderModGraph();
-    await Promise.all(wave.map(async node => {
-      const parents = STATE.modEdges.filter(e => e.to === node.id).map(e => STATE.modNodes.find(x => x.id === e.from)).filter(Boolean);
-      const ctx = parents.map(p => '[' + p.title + ']: ' + p.lastOutput).join(NL + NL), prompt = ctx ? ('Запрос: ' + query + NL + NL + 'Входы:' + NL + ctx) : query;
-      const sys = buildUnifiedSystemPrompt(node.prompt), k = isRealKey(node.key) ? node.key : (node.provider === 'groq' ? STATE.groqKey : (node.provider === 'openai' ? STATE.orKey : STATE.apiKey)), t0 = performance.now();
-      try {
-        if (node.provider === 'verifier') {
-          const rawCode = extractCodeBlock(parents[parents.length - 1]?.lastOutput || ''), lang = detectVibeLanguage(query, '');
-          const v = await deterministicVerify(rawCode, lang, true);
-          node.lastOutput = (v.ok ? '✓ VERIFIER PASS' : '✗ VERIFIER FAIL') + ' [' + lang.toUpperCase() + '] (' + v.checks.join(', ') + ')' + (v.errors.length ? (NL + 'Ошибки: ' + v.errors.join('; ')) : '') + NL + NL + rawCode;
-        } else if (node.provider === 'groq' && STATE.workerUrl && STATE.d1Online) {
-          const r = await fetch(STATE.workerUrl + '/api/chat', { method: 'POST', headers: workerHeaders(), body: JSON.stringify({ text: prompt, systemPrompt: sys, mode: 'game' }) }); if (!r.ok) throw new Error('Worker HTTP ' + r.status);
-          const d = await r.json(); node.lastOutput = d.reply || '';
-        } else if (isRealKey(k)) {
-          if (node.provider === 'groq') node.lastOutput = await callOpenAICompat('https://api.groq.com/openai/v1/chat/completions', k, node.model, sys, prompt);
-          else if (node.provider === 'openai') node.lastOutput = await callOpenAICompat(node.model.includes('/') ? 'https://openrouter.ai/api/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions', k, node.model, sys, prompt);
-          else node.lastOutput = await callGeminiDirect(k, node.model, sys, prompt);
-        } else { await new Promise(r => setTimeout(r, 340)); node.lastOutput = '[' + node.title + ' SIM]: Готово для «' + query + '».'; }
-        node.ms = Math.round(performance.now() - t0) + ' ms'; node.status = 'done'; finalTxt = node.lastOutput;
-      } catch (err) { node.status = 'error'; node.lastOutput = 'ERR: ' + err.message; }
-    }));
-    STATE.modEdges.forEach(e => { if (ids.has(e.to)) e.state = 'done'; }); renderModGraph(); syncInspector();
-  }
-  RT.busy = false; $('proRouteLabel').textContent = 'DONE';
-  const { cleanText, mood } = parseReplyTags(finalTxt || '[MOOD:smug] Конвейер завершён.');
-  setPetVisual('awake', mood); $('proSpeechBox').textContent = cleanText;
-}
-$('btnProRunGraph').onclick = () => { const v = $('proCmdInput').value.trim() || 'Оцени текущую архитектуру'; $('proCmdInput').value = ''; runProDag(v); };
-
-document.querySelectorAll('.ui-btn').forEach(b => b.onclick = () => { STATE.ui = b.dataset.ui; document.querySelectorAll('.ui-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); applyThemeAndMode(); saveState(); });
-document.querySelectorAll('.skin-btn').forEach(b => b.onclick = () => { STATE.skin = b.dataset.skin; document.querySelectorAll('.skin-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); applyThemeAndMode(); setPetVisual('awake', STATE.mood); saveState(); });
-document.querySelectorAll('.view-mode-btn').forEach(b => b.onclick = () => { STATE.viewMode = b.dataset.view; document.querySelectorAll('.view-mode-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); $('stageArena').className = 'stage-arena mode-' + STATE.viewMode; setTimeout(renderWires, 25); });
-$('btnModeGame').onclick = () => { STATE.appMode = 'game'; applyThemeAndMode(); renderGameStage(); saveState(); };
-$('btnModePro').onclick = () => { STATE.appMode = 'pro'; applyThemeAndMode(); renderModGraph(); syncInspector(); saveState(); };
-$('btnSoundToggle').onclick = () => { STATE.soundOn = !STATE.soundOn; applyThemeAndMode(); if (STATE.soundOn) playTone(600, 0.08); saveState(); };
-$('btnOpenSettings').onclick = () => { $('setGeminiKey').value = STATE.apiKey; $('setGroqKey').value = STATE.groqKey; $('setOrKey').value = STATE.orKey; $('setWorkerUrl').value = STATE.workerUrl; $('setAppPin').value = STATE.appPin; $('setGhUrl').value = STATE.ghModuleUrl; $('setGhPin').value = STATE.ghModulePin; $('settingsModal').classList.add('open'); };
-$('btnCloseSettings').onclick = () => $('settingsModal').classList.remove('open');
-$('btnSaveSettings').onclick = async () => {
-  STATE.apiKey = $('setGeminiKey').value.trim(); STATE.groqKey = $('setGroqKey').value.trim(); STATE.orKey = $('setOrKey').value.trim(); STATE.appPin = $('setAppPin').value.trim();
-  const newW = normalizeOrigin($('setWorkerUrl').value), newGh = normalizeOrigin($('setGhUrl').value), newGhPin = $('setGhPin').value.trim(); $('settingsModal').classList.remove('open');
-  if (newW && newW !== STATE.workerUrl) await connectD1Memory(newW, STATE.appPin);
-  if (newGh && (newGh !== STATE.ghModuleUrl || newGhPin !== STATE.ghModulePin)) await connectGithubModule(newGh, newGhPin);
-  await refreshAllAdaptiveModels(); applyThemeAndMode();
-};
-$('btnResetAll').onclick = () => { if (!confirm('Сбросить питомца, память и граф до яйца?')) return; try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem('aios_v13_vibe'); localStorage.removeItem('aios_v12_mesh'); } catch (_) {} location.reload(); };
-
-window.addEventListener('pointermove', e => {
-  if (STATE.mood !== 'normal' || STATE.stage === 'egg') return; const r = $('pet').getBoundingClientRect(); if (!r.width) return;
-  const dx = Math.max(-5, Math.min(5, ((e.clientX - r.left) / r.width - 0.5) * 14)), dy = Math.max(-5, Math.min(5, ((e.clientY - r.top) / r.height - 0.42) * 14));
-  $('pupilLeft').setAttribute('transform', 'translate(' + dx.toFixed(1) + ',' + dy.toFixed(1) + ')'); $('pupilRight').setAttribute('transform', 'translate(' + dx.toFixed(1) + ',' + dy.toFixed(1) + ')');
-});
-setInterval(() => { if (STATE.mood !== 'normal') return; $('pet').classList.add('is-blinking'); setTimeout(() => $('pet').classList.remove('is-blinking'), 130); }, 3500);
-
-loadState();
-if (!STATE.modNodes || STATE.modNodes.length === 0) loadPreset('ensemble'); else { renderModGraph(); syncInspector(); }
-applyThemeAndMode(); renderGameStage();
-if (STATE.workerUrl) { connectD1Memory(STATE.workerUrl, STATE.appPin).catch(() => {}); }
-else if (isRealKey(STATE.apiKey) || isRealKey(STATE.groqKey)) { refreshAllAdaptiveModels().catch(() => {}); }
-if (STATE.ghModuleUrl) { connectGithubModule(STATE.ghModuleUrl, STATE.ghModulePin).catch(() => {}); }
-addLog('AI OS Companion v14 (Self-Evolving + Organic UX) готов.', 'SYS');
-</script>
+<script defer src="js/core.js?v=15"></script>
+<script defer src="js/vibe.js?v=15"></script>
+<script defer src="js/pro.js?v=15"></script>
+<script defer src="js/app.js?v=15"></script>
 </body>
 </html>
